@@ -90,6 +90,10 @@
         </developer>
     </developers>
 
+    <organization>
+        <name>Infinitum</name>
+    </organization>	
+	
 	<!-- Licenses -->
     <licenses>
         <license>
