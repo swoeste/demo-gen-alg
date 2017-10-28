@@ -44,7 +44,7 @@ public class EatingSkill implements Skill {
         LOG.info("{} is eating", this.creature);
         this.creature.gainStarvation(-0.02);
 
-        if (this.creature.getStarvation() <= 0.0) {
+        if (this.creature.getStarvation() <= -1.0) {
             this.creature.gainHealth(-0.025);
         }
     }

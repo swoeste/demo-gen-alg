@@ -103,16 +103,12 @@ public class Network {
                     if (neuron2 instanceof BiasNeuron) {
                         continue;
                     }
-
                     neuron.connect(neuron2);
-
                 }
-
             }
 
             prevLayer = layer;
         }
-
     }
 
     public double[] feed(final double[] inputValues) {
@@ -136,14 +132,11 @@ public class Network {
     }
 
     public void evolve() {
-        // xxx;
+        // xxx
     }
 
     public void breed(final Network network) {
-
+        // xxx
     }
-
-    // feedForward()
-    // getResults()
 
 }
