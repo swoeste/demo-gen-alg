@@ -1,51 +1,61 @@
 package de.swoeste.demo.gen.alg;
 
-import java.io.File;
+import java.io.IOException;
 
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.SlickException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Main extends BasicGame {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Control;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
-    // Ideen
-    // - Travelling Salesman
-    // - Evtl. Java FX nutzen?
+/**
+ * @author swoeste
+ */
+public class Main extends Application {
 
-    public Main() {
-        super("SimpleTest");
-    }
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-    @Override
-    public void init(final GameContainer container) throws SlickException {
-    }
-
-    @Override
-    public void update(final GameContainer container, final int delta) throws SlickException {
-    }
+    private Stage               primaryStage;
 
     @Override
-    public void render(final GameContainer container, final Graphics g) throws SlickException {
-        g.drawString("Hello, Slick world!", 0, 100);
+    public void start(final Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("Infinitum - Genetic Algorithm & Neural Network Demo"); //$NON-NLS-1$
+        this.primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("ui/img/infinitum.png"))); //$NON-NLS-1$
+
+        initRoot();
+    }
+
+    /**
+     * Initializes the root layout.
+     */
+    public void initRoot() {
+        try {
+
+            // Load root layout from fxml file.
+            final FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("ui/view/root.fxml")); //$NON-NLS-1$
+
+            final Control root = loader.load();
+            final Scene scene = new Scene(root);
+            scene.getStylesheets().add(Main.class.getResource("ui/css/styles.css").toExternalForm()); //$NON-NLS-1$
+
+            // Show the scene containing the root layout.
+            this.primaryStage.setScene(scene);
+            this.primaryStage.show();
+        } catch (IOException ex) {
+            final String msg = "Unable to initialize user interface"; //$NON-NLS-1$
+            LOG.error(msg, ex);
+            throw new IllegalStateException(msg, ex);
+        }
     }
 
     public static void main(final String[] args) {
-        try {
-            final String lwjglLoc = "E:\\Dev\\m2_repository\\org\\lwjgl\\lwjgl\\lwjgl-platform\\2.9.3\\lwjgl-platform-2.9.3-natives-windows";
-            final String jinputLoc = "E:\\Dev\\m2_repository\\net\\java\\jinput\\jinput-platform\\2.0.5\\jinput-platform-2.0.5-natives-windows";
-            System.setProperty("org.lwjgl.librarypath", new File(lwjglLoc).getAbsolutePath());
-            System.setProperty("net.java.games.input.librarypath", new File(jinputLoc).getAbsolutePath());
-
-            AppGameContainer app = new AppGameContainer(new Main());
-            app.setDisplayMode(500, 500, false);
-            app.setTargetFrameRate(60);
-            app.setVSync(true);
-            app.start();
-
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        launch(args);
     }
+
 }
