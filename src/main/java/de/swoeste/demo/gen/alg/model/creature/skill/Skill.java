@@ -18,10 +18,14 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.skill;
 
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+
 /**
  * @author swoeste
  */
 public interface Skill {
+
+    CreatureAttribute getActivationAttribute();
 
     void doPerform();
 

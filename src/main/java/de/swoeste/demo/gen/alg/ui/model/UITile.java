@@ -14,51 +14,71 @@
  */
 package de.swoeste.demo.gen.alg.ui.model;
 
-import de.swoeste.demo.gen.alg.model.world.Tile;
+import java.text.MessageFormat;
+
+import de.swoeste.demo.gen.alg.model.RGBColor;
+import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * @author swoeste
  */
-public class UITile {
+public class UITile implements Selectable {
 
-    private final Tile tile;
-    private final int  x;
-    private final int  y;
-    private final int  size;
+    private static final Color COLOR_BODY          = Color.BLACK;
+    private static final Color COLOR_BODY_SELECTED = Color.RED;
 
-    public UITile(final Tile tile, final int x, final int y, final int size) {
+    private final Tile         tile;
+
+    private boolean            selected;
+
+    public UITile(final Tile tile) {
         this.tile = tile;
-        this.x = x;
-        this.y = y;
-        this.size = size;
+        this.selected = false;
     }
 
-    /**
-     * @return the tile
-     */
-    public Tile getTile() {
-        return this.tile;
+    public Vector getPosition() {
+        return this.tile.getPosition();
     }
 
-    /**
-     * @return the x
-     */
-    public int getX() {
-        return this.x;
-    }
-
-    /**
-     * @return the y
-     */
-    public int getY() {
-        return this.y;
-    }
-
-    /**
-     * @return the size
-     */
     public int getSize() {
-        return this.size;
+        return this.tile.getSize();
+    }
+
+    public Color getColor() {
+        final RGBColor color = this.tile.getColor();
+        return Color.rgb(color.getRed(), color.getGreen(), color.getBlue());
+    }
+
+    public void draw(final GraphicsContext gc) {
+        final Vector position = this.tile.getPosition();
+
+        // tile
+        gc.setFill(getColor());
+        gc.fillRect(position.getX(), position.getY(), getSize(), getSize());
+
+        // border
+        gc.setStroke(COLOR_BODY);
+        gc.strokeRect(position.getX(), position.getY(), getSize(), getSize());
+
+        if (this.selected) {
+            gc.setStroke(COLOR_BODY_SELECTED);
+            gc.strokeRect(position.getX() + 1, position.getY() + 1, getSize() - 2, getSize() - 2);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public String toString() {
+        return MessageFormat.format("UITile [tile={0}]", this.tile); //$NON-NLS-1$
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setSelected(final boolean selected) {
+        this.selected = selected;
     }
 
 }

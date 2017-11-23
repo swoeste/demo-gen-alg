@@ -23,6 +23,6 @@ package de.swoeste.demo.gen.alg.model.creature.sensor;
  */
 public interface Sensor {
 
-    double getValue();
+    double getSensorValue();
 
 }

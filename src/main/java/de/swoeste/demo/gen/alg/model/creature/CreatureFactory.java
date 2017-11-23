@@ -25,45 +25,105 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.creature.receptor.AttributeReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.MoveDirectionReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.MoveDistanceReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.ViewDirectionReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.ChangeMoveDirectionReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.ChangeMoveDistanceReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.ChangeViewDirectionReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.EatReceptor;
+import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.MoveReceptor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.HealthSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.HungerSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.Sensor;
-import de.swoeste.demo.gen.alg.model.creature.sensor.StarvationSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCenterTileColorSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCurrentTileColorSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionLeftTileColorSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionRightTileColorSensor;
 import de.swoeste.demo.gen.alg.model.creature.skill.EatingSkill;
+import de.swoeste.demo.gen.alg.model.creature.skill.MoveSkill;
 import de.swoeste.demo.gen.alg.model.creature.skill.Skill;
+import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDirectionSkill;
+import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDistanceSkill;
+import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeViewDirectionSkill;
+import de.swoeste.demo.gen.alg.model.world.World;
+import de.swoeste.demo.gen.alg.util.NumberUtil;
 
 /**
  * @author swoeste
  */
 public class CreatureFactory {
 
-    private static final Logger LOG    = LoggerFactory.getLogger(CreatureFactory.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CreatureFactory.class);
 
-    private static final Random RANDOM = new Random();
+    private int                 id;
+    private final int           seed;
+    private final Random        random;
 
-    private CreatureFactory() {
-        // hidden
+    public CreatureFactory(final int seed) {
+        this.seed = seed;
+        this.random = new Random(seed);
     }
 
-    public static final Creature createCreature() {
-        final Gender gender = Gender.valueOf(RANDOM.nextInt(2));
+    public final Creature create(final World world, final Vector position) {
+        final Gender gender = Gender.values()[this.random.nextInt(Gender.values().length)];
         final String name = NameFactory.getRandomName(gender);
         final String lastname = NameFactory.getRandomLastname();
-        return createCreature(gender, name, lastname);
+        return create(world, position, gender, name, lastname);
     }
 
-    public static final Creature createCreature(final Gender gender, final String name, final String lastname) {
-        final Creature creature = new Creature(gender, name, lastname);
+    public final Creature create(final World world, final Vector position, final Gender gender, final String name, final String lastname) {
+        final Creature creature = new Creature(this.id, gender, name, lastname);
 
         final List<Sensor> sensors = new ArrayList<>();
         sensors.add(new HealthSensor(creature));
-        sensors.add(new StarvationSensor(creature));
+        sensors.add(new HungerSensor(creature));
+        sensors.add(new VisionCurrentTileColorSensor(world, creature));
+        sensors.add(new VisionCenterTileColorSensor(world, creature));
+        sensors.add(new VisionLeftTileColorSensor(world, creature));
+        sensors.add(new VisionRightTileColorSensor(world, creature));
         creature.initializeSensors(sensors);
 
+        final List<AttributeReceptor> receptors = new ArrayList<>();
+        // Attributs
+        receptors.add(new MoveDirectionReceptor(creature));
+        receptors.add(new MoveDistanceReceptor(creature));
+        receptors.add(new ViewDirectionReceptor(creature));
+        // Skill Activation Attributes
+        receptors.add(new EatReceptor(creature));
+        receptors.add(new MoveReceptor(creature));
+        receptors.add(new ChangeMoveDirectionReceptor(creature));
+        receptors.add(new ChangeMoveDistanceReceptor(creature));
+        receptors.add(new ChangeViewDirectionReceptor(creature));
+        creature.initializeReceptors(receptors);
+
         final List<Skill> skills = new ArrayList<>();
-        skills.add(new EatingSkill(creature));
+        // Real Skills
+        skills.add(new EatingSkill(world, creature));
+        skills.add(new MoveSkill(world, creature));
+        // Decision Skills
+        skills.add(new ChangeMoveDirectionSkill(creature));
+        skills.add(new ChangeMoveDistanceSkill(creature));
+        skills.add(new ChangeViewDirectionSkill(creature));
+
         creature.initializeSkills(skills);
 
-        creature.initializeNetwork();
+        creature.initializeNetwork(this.random.nextInt());
+
+        creature.setAttributeValue(CreatureAttribute.POSITION_X, NumberUtil.round(position.getX()));
+        creature.setAttributeValue(CreatureAttribute.POSITION_Y, NumberUtil.round(position.getY()));
+
+        // TODO configurable
+        creature.setAttributeValue(CreatureAttribute.SIZE, 10);
+
+        // TODO configurable
+        creature.setAttributeValue(CreatureAttribute.COLOR_R, this.random.nextInt(256));
+        creature.setAttributeValue(CreatureAttribute.COLOR_G, this.random.nextInt(256));
+        creature.setAttributeValue(CreatureAttribute.COLOR_B, this.random.nextInt(256));
+
+        this.id++;
 
         LOG.info("{} {} has been created out of dust and love", name, lastname); //$NON-NLS-1$
 

@@ -18,24 +18,11 @@
  */
 package de.swoeste.demo.gen.alg.model.creature;
 
-import java.text.MessageFormat;
-
 /**
  * @author swoeste
  */
 public enum Gender {
 
     MALE, FEMALE;
-
-    public static final Gender valueOf(final int ordinal) {
-        for (Gender gender : Gender.values()) {
-            if (gender.ordinal() == ordinal) {
-                return gender;
-            }
-        }
-
-        final String msg = MessageFormat.format("No Gender with ordinal {0} available", ordinal); //$NON-NLS-1$
-        throw new IllegalArgumentException(msg);
-    }
 
 }

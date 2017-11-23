@@ -22,41 +22,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
  * @author swoeste
  */
-public class EatingSkill implements Skill {
+public class EatingSkill extends AbstractSkill {
 
     private static final Logger LOG = LoggerFactory.getLogger(EatingSkill.class);
 
     // TODO we need something to eat ...
 
-    private final Creature      creature;
+    // TODO we need to ensure, that hunger stays in border 0 ... MAX !
 
-    public EatingSkill(final Creature creature) {
-        this.creature = creature;
+    public EatingSkill(final World world, final Creature creature) {
+        super(world, creature, CreatureAttribute.EAT);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void doPerform() {
-        LOG.info("{} is eating", this.creature);
-        this.creature.gainStarvation(-0.02);
+    protected void doPerform(final World world, final Creature creature) {
+        final int hunger = creature.decreaseAttributeValue(CreatureAttribute.HUNGER, 1);
 
-        if (this.creature.getStarvation() <= -1.0) {
-            this.creature.gainHealth(-0.025);
+        // the creature has eaten too much foot, so it will lose some health
+        if (hunger < 0) {
+            creature.decreaseAttributeValue(CreatureAttribute.HEALTH, 1);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public void doNotPerform() {
-        LOG.info("{} is not eating", this.creature);
-        this.creature.gainStarvation(0.02);
+    protected void doNotPerform(final World world, final Creature creature) {
+        final int hunger = creature.increaseAttributeValue(CreatureAttribute.HUNGER, 1);
 
-        if (this.creature.getStarvation() >= 1.0) {
-            this.creature.gainHealth(-0.05);
+        // the creature is very hungry, so it will lose some health
+        if (hunger > creature.getAttributeValue(CreatureAttribute.MAX_HUNGER)) {
+            creature.decreaseAttributeValue(CreatureAttribute.HEALTH, 1);
         }
     }
 

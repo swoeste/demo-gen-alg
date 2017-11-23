@@ -38,7 +38,7 @@ public class NameFactory {
 
     private static final Logger       LOG          = LoggerFactory.getLogger(NameFactory.class);
 
-    private static final String       UTF_8        = "UTF-8";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     //$NON-NLS-1$
+    private static final String       UTF_8        = "UTF-8";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              //$NON-NLS-1$
 
     private static final Random       RANDOM       = new Random();
 
@@ -61,7 +61,7 @@ public class NameFactory {
             return FEMALE_NAMES.get(index);
         }
 
-        final String msg = MessageFormat.format("Gender {0} not supported", gender);
+        final String msg = MessageFormat.format("Gender {0} not supported", gender); //$NON-NLS-1$
         throw new IllegalArgumentException(msg);
     }
 

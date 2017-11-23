@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<TitledPane fx:id="pane" animated="false" prefWidth="300.0" text="Simulation Configuration" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="de.swoeste.demo.gen.alg.ui.controller.section.UISimulationConfigurationController">
+    <content>
+        <ScrollPane>
+            <content>
+                <GridPane prefWidth="298.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="World Width:" GridPane.rowIndex="1" />
+                        <Label text="World Height:" GridPane.rowIndex="2" />
+                        <Label text="Tile Size:" GridPane.rowIndex="3" />
+                        <Label text="Creature Seed:" GridPane.rowIndex="4" />
+                        <Label text="World Seed:" />
+                        <Label text="Creature Amount:" GridPane.rowIndex="5" />
+                        <Button fx:id="btnCreatureSeedRandom" mnemonicParsing="false" onAction="#createRandomCreatureSeed" text="Random" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                        <Button fx:id="btnWorldSeedRandom" mnemonicParsing="false" onAction="#createRandomWorldSeed" text="Random" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Slider fx:id="sldrWorldWidth" max="125.0" min="10.0" minorTickCount="5" showTickMarks="true" snapToTicks="true" value="50.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                            <tooltip>
+                                <Tooltip fx:id="ttipWorldWidth" text="Empty Tooltip" />
+                            </tooltip>
+                        </Slider>
+                        <Slider fx:id="sldrWorldHeight" max="125.0" min="10.0" minorTickCount="5" showTickMarks="true" snapToTicks="true" value="50.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                            <tooltip>
+                                <Tooltip fx:id="ttipWorldHeight" text="Empty Tooltip" />
+                            </tooltip>
+                        </Slider>
+                        <Slider fx:id="sldrTileSize" majorTickUnit="20.0" min="20.0" minorTickCount="10" showTickMarks="true" snapToTicks="true" value="20.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                            <tooltip>
+                                <Tooltip fx:id="ttipTileSize" text="Empty Tooltip" />
+                            </tooltip>
+                        </Slider>
+                        <Slider fx:id="sldrCreatureAmount" blockIncrement="5.0" min="10.0" minorTickCount="5" showTickMarks="true" snapToTicks="true" value="25.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                            <tooltip>
+                                <Tooltip fx:id="ttipCreatureAmount" text="Empty Tooltip" />
+                            </tooltip>
+                        </Slider>
+                        <TextField fx:id="txtWorldSeed" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <TextField fx:id="txtCreatureSeed" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                    </children>
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                    </padding>
+                </GridPane>
+            </content>
+        </ScrollPane>
+    </content>
+</TitledPane>

@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 
 /**
  * @author swoeste
@@ -38,10 +39,12 @@ public class HealthSensor implements Sensor {
 
     /** {@inheritDoc} */
     @Override
-    public double getValue() {
-        final double health = this.creature.getHealth();
-        LOG.debug("{} has {} health", this.creature, health);
-        return health;
+    public double getSensorValue() {
+        final int health = this.creature.getAttributeValue(CreatureAttribute.HEALTH);
+        final int maxHealth = this.creature.getAttributeValue(CreatureAttribute.MAX_HEALTH);
+        final double value = (health - (maxHealth / 2.0)) / (maxHealth / 2.0);
+        LOG.debug("{} has {}({}) health", this.creature, health, value); //$NON-NLS-1$
+        return value;
     }
 
 }

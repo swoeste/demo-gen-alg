@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.VBox?>
+
+<TitledPane fx:id="pane" animated="false" prefWidth="300.0" text="Creature History" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.swoeste.demo.gen.alg.ui.controller.section.UICreatureHistoryController">
+    <content>
+      <VBox>
+         <children>
+              <TableView fx:id="tblCreatureHistory" prefHeight="300.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                  <columns>
+                      <TableColumn editable="false" prefWidth="100.0" sortable="false" text="Creature">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="name" />
+                          </cellValueFactory>
+                      </TableColumn>
+                      <TableColumn editable="false" prefWidth="100.0" sortable="false" text="Age">
+                          <cellValueFactory>
+                              <PropertyValueFactory property="age" />
+                          </cellValueFactory>
+                      </TableColumn>
+                  </columns>
+                  <columnResizePolicy>
+                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+              </TableView>
+         </children>
+      </VBox>
+    </content>
+</TitledPane>
