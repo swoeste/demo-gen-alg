@@ -26,7 +26,7 @@ import javafx.beans.property.StringProperty;
 /**
  * @author swoeste
  */
-public class UISimulationConfiguration {
+public class UISimulationConfigurationModel {
 
     private final StringProperty  worldSeed      = new SimpleStringProperty();
     private final IntegerProperty worldWidth     = new SimpleIntegerProperty();

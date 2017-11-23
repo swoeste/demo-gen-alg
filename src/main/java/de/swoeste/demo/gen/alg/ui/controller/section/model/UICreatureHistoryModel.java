@@ -25,11 +25,11 @@ import javafx.collections.FXCollections;
 /**
  * @author swoeste
  */
-public class UICreatureHistory {
+public class UICreatureHistoryModel {
 
     private final SimpleListProperty<UICreature> creatures = new SimpleListProperty<>();
 
-    public UICreatureHistory() {
+    public UICreatureHistoryModel() {
         this.creatures.set(FXCollections.observableArrayList());
     }
 

@@ -24,7 +24,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * @author swoeste
  */
-public class UIMain {
+public class UIWorldModel {
 
     // TODO currently some values are ui -> model and some are model -> ui we need to find a naming pattern to sep both.
 

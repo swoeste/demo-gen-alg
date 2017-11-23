@@ -24,7 +24,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 /**
  * @author swoeste
  */
-public class UISimulationControl {
+public class UISimulationControlModel {
 
     private final DoubleProperty speed = new SimpleDoubleProperty();
 

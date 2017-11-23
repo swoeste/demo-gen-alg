@@ -21,7 +21,7 @@ package de.swoeste.demo.gen.alg.ui.controller.section.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class UIRuntimeInformation {
+public class UIRuntimeInformationModel {
 
     private final StringProperty age           = new SimpleStringProperty();
     private final StringProperty aps           = new SimpleStringProperty();

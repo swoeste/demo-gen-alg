@@ -27,14 +27,14 @@ import javafx.collections.FXCollections;
 /**
  * @author swoeste
  */
-public class UISelectionInformation {
+public class UISelectionInformationModel {
 
     private final StringProperty                 selection  = new SimpleStringProperty();
     private final StringProperty                 positionX  = new SimpleStringProperty();
     private final StringProperty                 positionY  = new SimpleStringProperty();
     private final SimpleListProperty<UIProperty> properties = new SimpleListProperty<>();
 
-    public UISelectionInformation() {
+    public UISelectionInformationModel() {
         this.properties.set(FXCollections.observableArrayList());
     }
 
