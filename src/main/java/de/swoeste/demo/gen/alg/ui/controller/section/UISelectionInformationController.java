@@ -14,7 +14,7 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section;
 
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISelectionInformation;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISelectionInformationModel;
 import de.swoeste.demo.gen.alg.ui.model.UIProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -25,7 +25,7 @@ import javafx.scene.control.TableView;
  */
 public class UISelectionInformationController extends AbstractUISectionController {
 
-    private final UISelectionInformation model;
+    private final UISelectionInformationModel model;
 
     @FXML
     private Label                        lblSelection;

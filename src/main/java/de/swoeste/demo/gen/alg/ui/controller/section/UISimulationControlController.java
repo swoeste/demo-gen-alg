@@ -14,7 +14,7 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section;
 
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationControl;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationControlModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -26,7 +26,7 @@ import javafx.scene.control.Tooltip;
  */
 public class UISimulationControlController extends AbstractUISectionController {
 
-    private final UISimulationControl model;
+    private final UISimulationControlModel model;
 
     @FXML
     private Button                    btnStartSimulation;

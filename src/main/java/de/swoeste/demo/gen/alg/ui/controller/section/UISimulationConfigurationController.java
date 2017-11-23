@@ -20,7 +20,7 @@ package de.swoeste.demo.gen.alg.ui.controller.section;
 
 import java.util.Random;
 
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfiguration;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfigurationModel;
 import de.swoeste.demo.gen.alg.ui.listener.AllowOnlyNumbersTextChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,7 +34,7 @@ import javafx.scene.control.Tooltip;
  */
 public class UISimulationConfigurationController extends AbstractUISectionController {
 
-    private final UISimulationConfiguration model;
+    private final UISimulationConfigurationModel model;
     private final Random                    random;
 
     @FXML

@@ -23,12 +23,12 @@ import java.text.DecimalFormat;
 import de.swoeste.demo.gen.alg.Configuration;
 import de.swoeste.demo.gen.alg.Simulation;
 import de.swoeste.demo.gen.alg.model.Vector;
-import de.swoeste.demo.gen.alg.ui.controller.model.UIMain;
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UICreatureHistory;
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UIRuntimeInformation;
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISelectionInformation;
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfiguration;
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationControl;
+import de.swoeste.demo.gen.alg.ui.controller.model.UIWorldModel;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UICreatureHistoryModel;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UIRuntimeInformationModel;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISelectionInformationModel;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfigurationModel;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationControlModel;
 import de.swoeste.demo.gen.alg.ui.model.Selectable;
 import de.swoeste.demo.gen.alg.ui.model.UICreature;
 import de.swoeste.demo.gen.alg.ui.model.UITile;
@@ -45,12 +45,12 @@ public class UIBackingBean {
     private static final DecimalFormat      DECIMAL_FORMAT = new DecimalFormat("#.##"); //$NON-NLS-1$
     private static final DecimalFormat      INTEGER_FORMAT = new DecimalFormat("#");                                                                         //$NON-NLS-1$
 
-    private final UIMain                 control;
-    private final UICreatureHistory         creatureHistory;
-    private final UIRuntimeInformation      runtimeInformation;
-    private final UISelectionInformation    selectionInformation;
-    private final UISimulationConfiguration simulationConfiguration;
-    private final UISimulationControl       simulationControl;
+    private final UIWorldModel                 control;
+    private final UICreatureHistoryModel         creatureHistory;
+    private final UIRuntimeInformationModel      runtimeInformation;
+    private final UISelectionInformationModel    selectionInformation;
+    private final UISimulationConfigurationModel simulationConfiguration;
+    private final UISimulationControlModel       simulationControl;
 
     private UIWorld                         world;
     private Simulation                      simulation;
@@ -62,35 +62,35 @@ public class UIBackingBean {
     private GraphicsContext                 overlayGC;
 
     public UIBackingBean() {
-        this.control = new UIMain();
-        this.creatureHistory = new UICreatureHistory();
-        this.runtimeInformation = new UIRuntimeInformation();
-        this.selectionInformation = new UISelectionInformation();
-        this.simulationConfiguration = new UISimulationConfiguration();
-        this.simulationControl = new UISimulationControl();
+        this.control = new UIWorldModel();
+        this.creatureHistory = new UICreatureHistoryModel();
+        this.runtimeInformation = new UIRuntimeInformationModel();
+        this.selectionInformation = new UISelectionInformationModel();
+        this.simulationConfiguration = new UISimulationConfigurationModel();
+        this.simulationControl = new UISimulationControlModel();
     }
 
-    public UICreatureHistory getCreatureHistory() {
+    public UICreatureHistoryModel getCreatureHistory() {
         return this.creatureHistory;
     }
 
-    public UIRuntimeInformation getRuntimeInformation() {
+    public UIRuntimeInformationModel getRuntimeInformation() {
         return this.runtimeInformation;
     }
 
-    public UISelectionInformation getSelectionInformation() {
+    public UISelectionInformationModel getSelectionInformation() {
         return this.selectionInformation;
     }
 
-    public UISimulationConfiguration getSimulationConfiguration() {
+    public UISimulationConfigurationModel getSimulationConfiguration() {
         return this.simulationConfiguration;
     }
 
-    public UISimulationControl getSimulationControl() {
+    public UISimulationControlModel getSimulationControl() {
         return this.simulationControl;
     }
 
-    public UIMain getControl() {
+    public UIWorldModel getControl() {
         return this.control;
     }
 

@@ -15,14 +15,14 @@
 package de.swoeste.demo.gen.alg.ui.controller;
 
 import de.swoeste.demo.gen.alg.model.Vector;
-import de.swoeste.demo.gen.alg.ui.controller.model.UIMain;
+import de.swoeste.demo.gen.alg.ui.controller.model.UIWorldModel;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 
-public class UIMainController {
+public class UIWorldController {
 
     private final UIBackingBean backingBean;
-    private final UIMain     model;
+    private final UIWorldModel     model;
 
     @FXML
     private Canvas              worldCanvas;
@@ -30,7 +30,7 @@ public class UIMainController {
     @FXML
     private Canvas              overlayCanvas;
 
-    public UIMainController() {
+    public UIWorldController() {
         this.backingBean = UIBackingBean.getInstance();
         this.model = this.backingBean.getControl();
     }
@@ -52,7 +52,7 @@ public class UIMainController {
     }
 
     private void initializeHandler() {
-        this.overlayCanvas.setOnMouseClicked(event -> UIMainController.this.backingBean.setSelection(new Vector(event.getX(), event.getY())));
+        this.overlayCanvas.setOnMouseClicked(event -> UIWorldController.this.backingBean.setSelection(new Vector(event.getX(), event.getY())));
     }
 
 }

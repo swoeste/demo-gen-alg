@@ -14,7 +14,7 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section;
 
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UIRuntimeInformation;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UIRuntimeInformationModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -23,7 +23,7 @@ import javafx.scene.control.Label;
  */
 public class UIRuntimeInformationController extends AbstractUISectionController {
 
-    private final UIRuntimeInformation model;
+    private final UIRuntimeInformationModel model;
 
     @FXML
     private Label                      lblAge;

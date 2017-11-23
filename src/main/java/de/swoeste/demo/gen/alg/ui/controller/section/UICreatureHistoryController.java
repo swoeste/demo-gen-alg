@@ -14,7 +14,7 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section;
 
-import de.swoeste.demo.gen.alg.ui.controller.section.model.UICreatureHistory;
+import de.swoeste.demo.gen.alg.ui.controller.section.model.UICreatureHistoryModel;
 import de.swoeste.demo.gen.alg.ui.model.UICreature;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
@@ -24,7 +24,7 @@ import javafx.scene.control.TableView;
  */
 public class UICreatureHistoryController extends AbstractUISectionController {
 
-    private final UICreatureHistory model;
+    private final UICreatureHistoryModel model;
 
     @FXML
     private TableView<UICreature>   tblCreatureHistory;
