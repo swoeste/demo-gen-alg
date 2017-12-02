@@ -19,6 +19,7 @@
 package de.swoeste.demo.gen.alg.ui.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
@@ -32,7 +33,9 @@ import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.ui.util.UICreatureAgeComparator;
 import de.swoeste.demo.gen.alg.util.FPSCalculator;
+import de.swoeste.demo.gen.alg.util.SortedList;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -41,24 +44,39 @@ import javafx.scene.canvas.GraphicsContext;
 public class UIWorld implements SimpleEventListener {
 
     private final World                        world;
-    private final List<UITile>                 tiles;
-    private final HashMap<Integer, UICreature> creatures;
 
-    private final FPSCalculator                fpsCalculator;
+    private final List<UITile>                 tiles;
+
+    private final HashMap<Integer, UICreature> creatures;
+    private final List<UICreature>             creaturesHistory;
 
     private final Queue<SimpleEvent>           eventCollector;
+
+    private final FPSCalculator                fpsCalculator;
 
     private int                                drawCount;
 
     public UIWorld(final World world) {
-        this.fpsCalculator = new FPSCalculator();
         this.world = world;
         this.tiles = new ArrayList<>();
         this.creatures = new HashMap<>();
+        this.creaturesHistory = new SortedList<>(new ArrayList<>(), new UICreatureAgeComparator());
         this.eventCollector = new ConcurrentLinkedQueue<>();
-        createTiles(world);
-        createCreatures(world);
+        this.fpsCalculator = new FPSCalculator();
+        this.drawCount = 0;
 
+        init();
+    }
+
+    private void init() {
+        // create tiles
+        createTiles(this.world);
+
+        // create creatures
+        createCreatures(this.world);
+
+        // finally register listeners
+        this.world.getEventBus().registerListener(SimpleEventType.CREATURE_CREATED, this);
         this.world.getEventBus().registerListener(SimpleEventType.CREATURE_DIED, this);
     }
 
@@ -146,20 +164,15 @@ public class UIWorld implements SimpleEventListener {
     }
 
     public List<UICreature> getCreatureHistory() {
-        // TODO we can also store the history here and only update if the size differs!
-        final List<UICreature> result = new ArrayList<>();
-        for (Creature creature : this.world.getCreatureHistory()) {
-            result.add(new UICreature(creature));
-        }
-        return result;
+        return Collections.unmodifiableList(this.creaturesHistory);
     }
 
     public int countCreatures() {
-        return this.world.getCreatures().size();
+        return this.creatures.size();
     }
 
     public int countDeadCreatures() {
-        return this.world.getCreatureHistory().size();
+        return this.creaturesHistory.size();
     }
 
     /** {@inheritDoc} */
@@ -178,10 +191,21 @@ public class UIWorld implements SimpleEventListener {
         while (!this.eventCollector.isEmpty()) {
             final SimpleEvent event = this.eventCollector.poll();
             //
-            if (SimpleEventType.CREATURE_DIED.equals(event.getType())) {
-                // TODO
+            if (SimpleEventType.CREATURE_CREATED.equals(event.getType())) {
+                // TODO move to extra method
                 final Creature creature = (Creature) event.getData();
-                this.creatures.remove(creature.getId());
+                this.creatures.put(creature.getId(), new UICreature(creature));
+                continue;
+            }
+            //
+            if (SimpleEventType.CREATURE_DIED.equals(event.getType())) {
+                // TODO move to extra method
+                final Creature deadCreature = (Creature) event.getData();
+                final UICreature deadUICreature = this.creatures.remove(deadCreature.getId());
+                this.creaturesHistory.add(deadUICreature);
+
+                // TODO this is not sorted !!!
+
                 continue;
             }
         }

@@ -41,25 +41,25 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class UIBackingBean {
 
-    private static final UIBackingBean      INSTANCE       = new UIBackingBean();
-    private static final DecimalFormat      DECIMAL_FORMAT = new DecimalFormat("#.##"); //$NON-NLS-1$
-    private static final DecimalFormat      INTEGER_FORMAT = new DecimalFormat("#");                                                                         //$NON-NLS-1$
+    private static final UIBackingBean           INSTANCE       = new UIBackingBean();
+    private static final DecimalFormat           DECIMAL_FORMAT = new DecimalFormat("#.##"); //$NON-NLS-1$
+    private static final DecimalFormat           INTEGER_FORMAT = new DecimalFormat("#");                                                                            //$NON-NLS-1$
 
-    private final UIWorldModel                 control;
+    private final UIWorldModel                   control;
     private final UICreatureHistoryModel         creatureHistory;
     private final UIRuntimeInformationModel      runtimeInformation;
     private final UISelectionInformationModel    selectionInformation;
     private final UISimulationConfigurationModel simulationConfiguration;
     private final UISimulationControlModel       simulationControl;
 
-    private UIWorld                         world;
-    private Simulation                      simulation;
-    private SimulationAnimationTimer        simulationAnimationTimer;
+    private UIWorld                              world;
+    private Simulation                           simulation;
+    private SimulationAnimationTimer             simulationAnimationTimer;
 
-    private Selectable                      selection;
+    private Selectable                           selection;
 
-    private GraphicsContext                 worldGC;
-    private GraphicsContext                 overlayGC;
+    private GraphicsContext                      worldGC;
+    private GraphicsContext                      overlayGC;
 
     public UIBackingBean() {
         this.control = new UIWorldModel();
@@ -135,8 +135,8 @@ public class UIBackingBean {
 
         final Configuration configuration = new Configuration();
         configuration.setWorldSeed(Integer.valueOf(this.simulationConfiguration.getWorldSeedValue()));
-        configuration.setWorldWidth(this.simulationConfiguration.getWorldWithValue());
-        configuration.setWorldHeight(this.simulationConfiguration.getWorldHeightValue());
+        configuration.setWorldWidthTiles(this.simulationConfiguration.getWorldWithValue());
+        configuration.setWorldHeightTiles(this.simulationConfiguration.getWorldHeightValue());
         configuration.setTileSize(this.simulationConfiguration.getTileSizeValue());
         configuration.setCreatureSeed(Integer.valueOf(this.simulationConfiguration.getCreatureSeedValue()));
         configuration.setCreatureAmount(this.simulationConfiguration.getCreatureAmountValue());

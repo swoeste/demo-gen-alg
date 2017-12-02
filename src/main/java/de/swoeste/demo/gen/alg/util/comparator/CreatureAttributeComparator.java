@@ -16,13 +16,27 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.event;
+package de.swoeste.demo.gen.alg.util.comparator;
+
+import java.util.Comparator;
+
+import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 
 /**
  * @author swoeste
  */
-public enum SimpleEventType {
+public class CreatureAttributeComparator implements Comparator<Creature> {
 
-    CREATURE_SIZE_CHANGED, CREATURE_POS_CHANGED, CREATURE_CREATED, CREATURE_DIED;
+    private final CreatureAttribute attribute;
 
+    public CreatureAttributeComparator(final CreatureAttribute attribute) {
+        this.attribute = attribute;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int compare(final Creature o1, final Creature o2) {
+        return Integer.compare(o1.getAttributeValue(this.attribute), o2.getAttributeValue(this.attribute)) * -1;
+    }
 }

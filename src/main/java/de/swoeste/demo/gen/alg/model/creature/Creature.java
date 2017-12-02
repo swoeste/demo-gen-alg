@@ -19,8 +19,6 @@
 package de.swoeste.demo.gen.alg.model.creature;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,66 +35,68 @@ import de.swoeste.demo.gen.alg.position.Shapeaware;
  */
 public class Creature implements Identifiable, Shapeaware {
 
-    private final int                             id;
-    private final Gender                          gender;
-    private final String                          name;
-    private final String                          lastname;
+    // TODO add a parent attribute?
 
-    private final List<Sensor>                    sensors;
-    private final List<AttributeReceptor>         receptors;
-    private final Map<CreatureAttribute, Integer> attributes;
-    private final List<Skill>                     skills;
+    private final int                       id;
+    private final Gender                    gender;
+    private final String                    name;
+    private final String                    lastname;
 
-    private Network                               network;
+    private Network                         network;
 
-    public Creature(final int id, final Gender gender, final String name, final String lastname) {
+    private List<Sensor>                    sensors;
+    private List<AttributeReceptor>         receptors;
+    private List<Skill>                     skills;
+
+    private Map<CreatureAttribute, Integer> attributes;
+
+    Creature(final int id, final Gender gender, final String name, final String lastname) {
         this.id = id;
         this.gender = gender;
         this.name = name;
         this.lastname = lastname;
-
-        this.sensors = new ArrayList<>();
-        this.receptors = new ArrayList<>();
-        this.skills = new ArrayList<>();
-        this.attributes = new EnumMap<>(CreatureAttribute.class);
-
-        initializeAttributes();
     }
 
-    private void initializeAttributes() {
-        for (CreatureAttribute attribute : CreatureAttribute.values()) {
-            this.attributes.put(attribute, attribute.getDefaultValue());
-        }
+    void setNetwork(final Network network) {
+        this.network = network;
     }
 
-    public void initializeSensors(final List<Sensor> sensors) {
-        checkMultipleInitialization();
-        this.sensors.clear();
-        this.sensors.addAll(sensors);
+    void setSensors(final List<Sensor> sensors) {
+        this.sensors = sensors;
     }
 
-    public void initializeReceptors(final List<AttributeReceptor> receptors) {
-        checkMultipleInitialization();
-        this.receptors.clear();
-        this.receptors.addAll(receptors);
+    void setReceptors(final List<AttributeReceptor> receptors) {
+        this.receptors = receptors;
     }
 
-    public void initializeSkills(final List<Skill> skills) {
-        checkMultipleInitialization();
-        this.skills.clear();
-        this.skills.addAll(skills);
+    void setSkills(final List<Skill> skills) {
+        this.skills = skills;
     }
 
-    public void initializeNetwork(final int seed) {
-        checkMultipleInitialization();
-        final int[] hidden = { this.sensors.size() + 1, this.receptors.size() + 1 };
-        this.network = new Network(this.sensors.size(), hidden, this.receptors.size(), seed);
+    void setAttributes(final Map<CreatureAttribute, Integer> attributes) {
+        this.attributes = attributes;
     }
 
-    private void checkMultipleInitialization() {
-        if (this.network != null) {
-            throw new IllegalStateException("The neural network has already been initialized!"); //$NON-NLS-1$
-        }
+    /** {@inheritDoc} */
+    @Override
+    public int getId() {
+        return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getLastname() {
+        return this.lastname;
+    }
+
+    @Override
+    public Rectangle getShape() {
+        final int posX = getAttributeValue(CreatureAttribute.POSITION_X);
+        final int posY = getAttributeValue(CreatureAttribute.POSITION_Y);
+        final int size = getAttributeValue(CreatureAttribute.SIZE);
+        return new Rectangle(posX, posY, size, size);
     }
 
     public void update() {
@@ -127,26 +127,9 @@ public class Creature implements Identifiable, Shapeaware {
 
         increaseAttributeValue(CreatureAttribute.AGE, 1);
 
-        // TODO add a flag to only execute one skill per tick based on the highest activation value.
+        // TODO - Idea
+        // Add a flag to only execute one skill per tick based on the highest activation value.
         // Therefore we somehow have to get the original values from the receptor!
-    }
-
-    // TODO this is also a skill ?
-    public void evolve() {
-
-        // this wont happen? - a creature dies and the network may be used for a new creature but not for the dead one
-
-        this.network.evolve();
-    }
-
-    // TODO this is also a skill ?
-    public Creature reproduce(final Creature parent) {
-        this.network.evolve(parent.network);
-        // TODO
-        // example keep 1 hidden layer of dad and one hidden layer of mother
-        // switch randomly
-        // + chance of x % for a mutation
-        return null;
     }
 
     public int getAttributeValue(final CreatureAttribute attribute) {
@@ -169,28 +152,6 @@ public class Creature implements Identifiable, Shapeaware {
         final Integer newValue = currentValue - value;
         this.attributes.put(attribute, newValue);
         return newValue; // this is the new value!
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public int getId() {
-        return this.id;
-    }
-
-    @Override
-    public Rectangle getShape() {
-        final int posX = getAttributeValue(CreatureAttribute.POSITION_X);
-        final int posY = getAttributeValue(CreatureAttribute.POSITION_Y);
-        final int size = getAttributeValue(CreatureAttribute.SIZE);
-        return new Rectangle(posX, posY, size, size);
     }
 
     @Override

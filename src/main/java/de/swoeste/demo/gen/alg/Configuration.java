@@ -26,8 +26,10 @@ import java.util.Random;
 public class Configuration {
 
     // world
-    private int worldWidth;
-    private int worldHeight;
+    private int worldWidthTiles;
+    private int worldHeightTiles;
+    private int worldWidthPixel;
+    private int worldHeightPixel;
     private int worldSeed;
 
     // tile
@@ -38,56 +40,70 @@ public class Configuration {
     private int creatureSeed;
 
     public Configuration() {
-        this.worldWidth = 50;
-        this.worldHeight = 50;
-        this.worldSeed = new Random().nextInt();
         this.tileSize = 20;
+        this.worldWidthTiles = 50;
+        this.worldHeightTiles = 50;
+        this.worldWidthPixel = this.worldWidthTiles * this.tileSize;
+        this.worldHeightPixel = this.worldHeightTiles * this.tileSize;
+        this.worldSeed = new Random().nextInt();
         this.creatureAmount = 25;
         this.creatureSeed = new Random().nextInt();
     }
 
-    public int getWorldWidth() {
-        return this.worldWidth;
+    public int getWorldWidthTiles() {
+        return this.worldWidthTiles;
     }
 
-    public int getWorldHeight() {
-        return this.worldHeight;
+    public void setWorldWidthTiles(final int worldWidthTiles) {
+        this.worldWidthTiles = worldWidthTiles;
+        this.worldWidthPixel = this.worldWidthTiles * this.tileSize;
+    }
+
+    public int getWorldHeightTiles() {
+        return this.worldHeightTiles;
+    }
+
+    public void setWorldHeightTiles(final int worldHeightTiles) {
+        this.worldHeightTiles = worldHeightTiles;
+        this.worldHeightPixel = this.worldHeightTiles * this.tileSize;
+    }
+
+    public int getWorldWidthPixel() {
+        return this.worldWidthPixel;
+    }
+
+    public int getWorldHeightPixel() {
+        return this.worldHeightPixel;
     }
 
     public int getWorldSeed() {
         return this.worldSeed;
     }
 
+    public void setWorldSeed(final int worldSeed) {
+        this.worldSeed = worldSeed;
+    }
+
     public int getTileSize() {
         return this.tileSize;
+    }
+
+    public void setTileSize(final int tileSize) {
+        this.tileSize = tileSize;
+        this.worldWidthPixel = this.worldWidthTiles * this.tileSize;
+        this.worldHeightPixel = this.worldHeightTiles * this.tileSize;
     }
 
     public int getCreatureAmount() {
         return this.creatureAmount;
     }
 
-    public int getCreatureSeed() {
-        return this.creatureSeed;
-    }
-
-    public void setWorldWidth(final int worldWidth) {
-        this.worldWidth = worldWidth;
-    }
-
-    public void setWorldHeight(final int worldHeight) {
-        this.worldHeight = worldHeight;
-    }
-
-    public void setWorldSeed(final int worldSeed) {
-        this.worldSeed = worldSeed;
-    }
-
-    public void setTileSize(final int tileSize) {
-        this.tileSize = tileSize;
-    }
-
     public void setCreatureAmount(final int creatureAmount) {
         this.creatureAmount = creatureAmount;
+    }
+
+    public int getCreatureSeed() {
+        return this.creatureSeed;
     }
 
     public void setCreatureSeed(final int creatureSeed) {

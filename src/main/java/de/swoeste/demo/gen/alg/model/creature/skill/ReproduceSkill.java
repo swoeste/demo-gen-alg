@@ -16,13 +16,13 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.event;
+package de.swoeste.demo.gen.alg.model.creature.skill;
 
 /**
  * @author swoeste
  */
-public enum SimpleEventType {
+public class ReproduceSkill {
 
-    CREATURE_SIZE_CHANGED, CREATURE_POS_CHANGED, CREATURE_CREATED, CREATURE_DIED;
+    // TODO implement
 
 }

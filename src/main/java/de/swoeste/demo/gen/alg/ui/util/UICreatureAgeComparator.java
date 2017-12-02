@@ -16,13 +16,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.event;
+package de.swoeste.demo.gen.alg.ui.util;
+
+import java.util.Comparator;
+
+import de.swoeste.demo.gen.alg.ui.model.UICreature;
 
 /**
  * @author swoeste
  */
-public enum SimpleEventType {
+public class UICreatureAgeComparator implements Comparator<UICreature> {
 
-    CREATURE_SIZE_CHANGED, CREATURE_POS_CHANGED, CREATURE_CREATED, CREATURE_DIED;
+    /** {@inheritDoc} */
+    @Override
+    public int compare(final UICreature o1, final UICreature o2) {
+        return Integer.compare(o1.getAge(), o2.getAge()) * -1;
+    }
 
 }

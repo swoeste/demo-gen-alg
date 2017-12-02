@@ -17,7 +17,6 @@ package de.swoeste.demo.gen.alg.model.world;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,6 +38,8 @@ import de.swoeste.demo.gen.alg.model.world.tile.TileFactory;
 import de.swoeste.demo.gen.alg.position.PositionTracker;
 import de.swoeste.demo.gen.alg.util.FPSCalculator;
 import de.swoeste.demo.gen.alg.util.FastNoise;
+import de.swoeste.demo.gen.alg.util.SortedList;
+import de.swoeste.demo.gen.alg.util.comparator.CreatureAttributeComparator;
 
 /**
  * @author swoeste
@@ -47,111 +48,122 @@ public class World implements SimpleEventListener {
 
     private static final Logger             LOG = LoggerFactory.getLogger(World.class);
 
+    private final Configuration             config;
+
     private final SimpleEventBus            eventBus;
 
+    private final Random                    worldRandom;
+
+    private final FPSCalculator             apsCalculator;
+
+    private final TileFactory               tileFactory;
     private final List<Tile>                tiles;
+
+    private final CreatureFactory           creatureFactory;
     private final List<Creature>            creatures;
-    private final List<Creature>            creatureHistory;
+    private final List<Creature>            creaturesHistory;
     private final PositionTracker<Creature> creaturePositionTracker;
 
-    private final int                       worldWidthTiles;
-    private final int                       worldHeightTiles;
-    private final int                       worldWidthPixel;
-    private final int                       worldHeightPixel;
-    private final int                       tileSize;
-    private final int                       worldSeed;
-    private final int                       creatureSeed;
-
-    private final Random                    random;
-
-    private final FPSCalculator             fpsCalculator;
     private long                            age;
 
     public World(final Configuration config) {
+        this.config = config;
+
         this.eventBus = new SimpleEventBus();
+
+        this.worldRandom = new Random(config.getWorldSeed());
+
+        this.apsCalculator = new FPSCalculator();
+
+        this.tileFactory = new TileFactory(config.getWorldSeed());
+        this.tiles = new ArrayList<>(config.getWorldWidthTiles() * config.getWorldHeightTiles());
+
+        this.creatureFactory = new CreatureFactory(config.getCreatureSeed());
+        this.creatures = new ArrayList<>();
+        this.creaturesHistory = new SortedList<>(new ArrayList<>(), new CreatureAttributeComparator(CreatureAttribute.AGE));
+        this.creaturePositionTracker = createCreaturePositionTracker();
+
+        this.age = 0;
+
+        init();
+    }
+
+    private void init() {
+        // create tiles
+        createTiles();
+
+        // create creatures
+        createCreatures(this.config.getCreatureAmount());
+
+        // finally register listeners
         this.eventBus.registerListener(SimpleEventType.CREATURE_SIZE_CHANGED, this);
         this.eventBus.registerListener(SimpleEventType.CREATURE_POS_CHANGED, this);
         this.eventBus.registerListener(SimpleEventType.CREATURE_DIED, this);
-
-        this.worldWidthTiles = config.getWorldWidth();
-        this.worldHeightTiles = config.getWorldHeight();
-        this.tileSize = config.getTileSize();
-        this.worldWidthPixel = this.worldWidthTiles * this.tileSize;
-        this.worldHeightPixel = this.worldHeightTiles * this.tileSize;
-
-        this.worldSeed = config.getWorldSeed();
-        this.random = new Random(this.worldSeed);
-        this.creatureSeed = config.getCreatureSeed();
-
-        this.tiles = createTiles();
-        this.creatures = createCreatures(config.getCreatureAmount());
-        this.creatureHistory = new LinkedList<>();
-        this.creaturePositionTracker = createCreaturePositionTracker();
-
-        this.fpsCalculator = new FPSCalculator();
-        this.age = 0;
-    }
-
-    private List<Tile> createTiles() {
-        final TileFactory factory = new TileFactory(this.worldSeed);
-        final FastNoise noise = new FastNoise(this.worldSeed);
-
-        final List<Tile> result = new ArrayList<>(this.worldWidthTiles * this.worldHeightTiles);
-        for (int x = 0; x < this.worldWidthTiles; x++) {
-            for (int y = 0; y < this.worldHeightTiles; y++) {
-                final Vector position = new Vector(x * this.tileSize, y * this.tileSize);
-
-                final double noiseValue = (1 * noise.getSimplex(1.0f * x, 1.0f * y))  //
-                        + (0.5 * noise.getSimplex(2.0f * x, 2.0f * y)) //
-                        + (0.25 * noise.getSimplex(4.0f * x, 4.0f * y));
-
-                final Tile tile = factory.create(position, this.tileSize, noiseValue);
-                result.add(tile);
-            }
-        }
-
-        return result;
-    }
-
-    private List<Creature> createCreatures(final int amount) {
-        final CreatureFactory factory = new CreatureFactory(this.creatureSeed);
-        final List<Creature> result = new ArrayList<>();
-
-        int count = 0;
-        while (count < amount) {
-            final int x = this.random.nextInt(this.worldWidthPixel);
-            final int y = this.random.nextInt(this.worldHeightPixel);
-            final Vector position = new Vector(x, y);
-
-            final Tile tile = getTile(position);
-
-            if (tile.isPlaceable()) {
-                result.add(factory.create(this, position));
-                count++;
-            }
-        }
-
-        return result;
     }
 
     private PositionTracker<Creature> createCreaturePositionTracker() {
-        final Rectangle worldShape = new Rectangle(0, 0, this.worldWidthPixel, this.worldHeightPixel);
-        final PositionTracker<Creature> tracker = new PositionTracker<>(worldShape);
-
-        for (Creature creature : this.creatures) {
-            tracker.addElement(creature);
-        }
-
-        return tracker;
+        final Rectangle worldShape = new Rectangle(0, 0, this.config.getWorldWidthPixel(), this.config.getWorldHeightPixel());
+        return new PositionTracker<>(worldShape);
     }
 
-    public List<Tile> getTiles() {
-        return this.tiles;
+    private void createTiles() {
+        final FastNoise noise = new FastNoise(this.config.getWorldSeed());
+
+        for (int x = 0; x < this.config.getWorldWidthTiles(); x++) {
+            for (int y = 0; y < this.config.getWorldHeightTiles(); y++) {
+                final Vector position = new Vector(x * this.config.getTileSize(), y * this.config.getTileSize());
+
+                final double n1 = 1.0 * noise.getSimplex(1.0f * x, 1.0f * y);
+                final double n2 = 0.5 * noise.getSimplex(2.0f * x, 2.0f * y);
+                final double n3 = 0.25 * noise.getSimplex(4.0f * x, 4.0f * y);
+                final double noiseValue = n1 + n2 + n3;
+
+                final Tile tile = this.tileFactory.create(position, this.config.getTileSize(), noiseValue);
+                registerTile(tile);
+            }
+        }
+    }
+
+    private void registerTile(final Tile tile) {
+        this.tiles.add(tile);
+    }
+
+    private void createCreatures(final int amount) {
+        int count = 0;
+        while (count < amount) {
+            final Vector position = getRandomPositionForCreature();
+            final Creature creature = this.creatureFactory.create(this, position);
+            registerCreature(creature);
+            count++;
+        }
+    }
+
+    private Vector getRandomPositionForCreature() {
+        while (true) {
+            final Vector position = getRandomPositionInWorld();
+            final Tile tile = getTile(position);
+            if (tile.isPlaceable()) {
+                return position;
+            }
+        }
+    }
+
+    private Vector getRandomPositionInWorld() {
+        final int x = this.worldRandom.nextInt(this.config.getWorldWidthPixel());
+        final int y = this.worldRandom.nextInt(this.config.getWorldHeightPixel());
+        return new Vector(x, y);
+    }
+
+    public void registerCreature(final Creature creature) {
+        this.creatures.add(creature);
+        this.creaturePositionTracker.addElement(creature);
+        this.creaturePositionTracker.isValid();
+        this.eventBus.fireEvent(new SimpleEvent(SimpleEventType.CREATURE_CREATED, creature));
     }
 
     public void update() {
         this.age++;
-        this.fpsCalculator.pass();
+        this.apsCalculator.pass();
 
         LOG.debug("starting of iteration {} with {} living creatures", this.age, this.creatures.size()); //$NON-NLS-1$
 
@@ -160,41 +172,58 @@ public class World implements SimpleEventListener {
 
         // creatures
         for (Iterator<Creature> iterator = this.creatures.iterator(); iterator.hasNext();) {
-            Creature creature = iterator.next();
+            final Creature creature = iterator.next(); // CME if a creature is added while iterating :D
             creature.update();
             if (creature.getAttributeValue(CreatureAttribute.HEALTH) <= 0) {
                 iterator.remove();
-                LOG.warn("{} died alone after {} steps", creature, this.age); //$NON-NLS-1$
-                this.creatureHistory.add(0, creature);
+                LOG.warn("{} died after {} steps", creature, this.age); //$NON-NLS-1$
                 this.eventBus.fireEvent(SimpleEventType.CREATURE_DIED, creature);
             }
+        }
+
+        // TODO just a first test
+        // re-create creatures
+        while (this.creatures.size() < this.config.getCreatureAmount()) {
+            final Vector position = getRandomPositionForCreature();
+            final Creature newCreature = this.creatureFactory.create(this, position);
+            registerCreature(newCreature);
         }
 
         // any further living things ...
     }
 
-    public List<Creature> getCreatures() {
-        return this.creatures;
-    }
+    // TODO creature replication
+
+    // IDEE:
+    // - creatures replicate themself with a partner and die after some time
+    // - if all creatures are dead, we restore an specific amount based on the creature history
 
     public int getWorldHeightTiles() {
-        return this.worldHeightTiles;
+        return this.config.getWorldHeightTiles();
     }
 
     public int getWorldHeightPixel() {
-        return this.worldHeightPixel;
+        return this.config.getWorldHeightPixel();
     }
 
     public int getWorldWidthTiles() {
-        return this.worldWidthTiles;
+        return this.config.getWorldWidthTiles();
     }
 
     public int getWorldWidthPixel() {
-        return this.worldWidthPixel;
+        return this.config.getWorldWidthPixel();
     }
 
     public int getTileSize() {
-        return this.tileSize;
+        return this.config.getTileSize();
+    }
+
+    public List<Tile> getTiles() {
+        return Collections.unmodifiableList(this.tiles);
+    }
+
+    public List<Creature> getCreatures() {
+        return Collections.unmodifiableList(this.creatures);
     }
 
     public long getAge() {
@@ -202,23 +231,19 @@ public class World implements SimpleEventListener {
     }
 
     public double getAPS() {
-        return this.fpsCalculator.getFrameRate();
-    }
-
-    public List<Creature> getCreatureHistory() {
-        return Collections.unmodifiableList(this.creatureHistory);
+        return this.apsCalculator.getFrameRate();
     }
 
     // TODO write a unit test for this !
     public Tile getTile(final Vector position) {
-        final int tileX = (int) position.getX() / this.tileSize;
-        final int tileY = (int) position.getY() / this.tileSize;
-        return this.tiles.get(tileY + (tileX * this.worldHeightTiles));
+        final int tileX = (int) position.getX() / this.config.getTileSize();
+        final int tileY = (int) position.getY() / this.config.getTileSize();
+        return this.tiles.get(tileY + (tileX * this.getWorldHeightTiles()));
     }
 
     public boolean isPositionInWorld(final Vector position) {
-        return (position.getX() >= 0) && (position.getX() < this.worldWidthPixel) && //
-                (position.getY() >= 0) && (position.getY() < this.worldHeightPixel);
+        return (position.getX() >= 0) && (position.getX() < this.config.getWorldWidthPixel()) && //
+                (position.getY() >= 0) && (position.getY() < this.config.getWorldHeightPixel());
     }
 
     public SimpleEventBus getEventBus() {
@@ -243,6 +268,7 @@ public class World implements SimpleEventListener {
         //
         if (SimpleEventType.CREATURE_DIED.equals(event.getType())) {
             final Creature creature = (Creature) event.getData();
+            this.creaturesHistory.add(creature);
             this.creaturePositionTracker.removeElement(creature);
             this.creaturePositionTracker.isValid();
             return;

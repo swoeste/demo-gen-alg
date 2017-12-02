@@ -86,6 +86,10 @@ public class UICreature implements Selectable {
         return new Vector(x, y);
     }
 
+    public int getId() {
+        return this.creature.getId();
+    }
+
     public int getAge() {
         return this.creature.getAttributeValue(CreatureAttribute.AGE);
     }

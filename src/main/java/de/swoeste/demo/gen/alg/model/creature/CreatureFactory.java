@@ -19,7 +19,9 @@
 package de.swoeste.demo.gen.alg.model.creature;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -48,6 +50,7 @@ import de.swoeste.demo.gen.alg.model.creature.skill.Skill;
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDirectionSkill;
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDistanceSkill;
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeViewDirectionSkill;
+import de.swoeste.demo.gen.alg.model.neural.network.Network;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.util.NumberUtil;
 
@@ -77,57 +80,96 @@ public class CreatureFactory {
     public final Creature create(final World world, final Vector position, final Gender gender, final String name, final String lastname) {
         final Creature creature = new Creature(this.id, gender, name, lastname);
 
-        final List<Sensor> sensors = new ArrayList<>();
-        sensors.add(new HealthSensor(creature));
-        sensors.add(new HungerSensor(creature));
-        sensors.add(new VisionCurrentTileColorSensor(world, creature));
-        sensors.add(new VisionCenterTileColorSensor(world, creature));
-        sensors.add(new VisionLeftTileColorSensor(world, creature));
-        sensors.add(new VisionRightTileColorSensor(world, creature));
-        creature.initializeSensors(sensors);
+        final List<Sensor> sensors = createSensors(world, creature);
+        creature.setSensors(sensors);
 
-        final List<AttributeReceptor> receptors = new ArrayList<>();
-        // Attributs
-        receptors.add(new MoveDirectionReceptor(creature));
-        receptors.add(new MoveDistanceReceptor(creature));
-        receptors.add(new ViewDirectionReceptor(creature));
-        // Skill Activation Attributes
-        receptors.add(new EatReceptor(creature));
-        receptors.add(new MoveReceptor(creature));
-        receptors.add(new ChangeMoveDirectionReceptor(creature));
-        receptors.add(new ChangeMoveDistanceReceptor(creature));
-        receptors.add(new ChangeViewDirectionReceptor(creature));
-        creature.initializeReceptors(receptors);
+        final List<AttributeReceptor> receptors = createAttributeReceptors(creature);
+        creature.setReceptors(receptors);
 
-        final List<Skill> skills = new ArrayList<>();
-        // Real Skills
-        skills.add(new EatingSkill(world, creature));
-        skills.add(new MoveSkill(world, creature));
-        // Decision Skills
-        skills.add(new ChangeMoveDirectionSkill(creature));
-        skills.add(new ChangeMoveDistanceSkill(creature));
-        skills.add(new ChangeViewDirectionSkill(creature));
+        final List<Skill> skills = createSkills(world, creature);
+        creature.setSkills(skills);
 
-        creature.initializeSkills(skills);
+        final Map<CreatureAttribute, Integer> attributes = createAttributes();
+        creature.setAttributes(attributes);
 
-        creature.initializeNetwork(this.random.nextInt());
+        final Network network = createNetwork(sensors.size(), receptors.size());
+        creature.setNetwork(network);
 
         creature.setAttributeValue(CreatureAttribute.POSITION_X, NumberUtil.round(position.getX()));
         creature.setAttributeValue(CreatureAttribute.POSITION_Y, NumberUtil.round(position.getY()));
 
-        // TODO configurable
+        // TODO configurable ?
         creature.setAttributeValue(CreatureAttribute.SIZE, 10);
 
-        // TODO configurable
+        // TODO configurable ?
         creature.setAttributeValue(CreatureAttribute.COLOR_R, this.random.nextInt(256));
         creature.setAttributeValue(CreatureAttribute.COLOR_G, this.random.nextInt(256));
         creature.setAttributeValue(CreatureAttribute.COLOR_B, this.random.nextInt(256));
 
         this.id++;
 
-        LOG.info("{} {} has been created out of dust and love", name, lastname); //$NON-NLS-1$
-
+        LOG.debug("Created new creature: {}", creature); //$NON-NLS-1$
         return creature;
+    }
+
+    private Network createNetwork(final int sensors, final int receptors) {
+        final int[] hidden = { sensors + 1, receptors + 1 };
+        return new Network(sensors, hidden, receptors, this.seed);
+    }
+
+    private List<Skill> createSkills(final World world, final Creature creature) {
+        final List<Skill> skills = new ArrayList<>();
+
+        // Real Skills
+        skills.add(new EatingSkill(world, creature));
+        skills.add(new MoveSkill(world, creature));
+
+        // Decision Skills
+        skills.add(new ChangeMoveDirectionSkill(creature));
+        skills.add(new ChangeMoveDistanceSkill(creature));
+        skills.add(new ChangeViewDirectionSkill(creature));
+
+        return skills;
+    }
+
+    private List<AttributeReceptor> createAttributeReceptors(final Creature creature) {
+        final List<AttributeReceptor> receptors = new ArrayList<>();
+
+        // Attributs
+        receptors.add(new MoveDirectionReceptor(creature));
+        receptors.add(new MoveDistanceReceptor(creature));
+        receptors.add(new ViewDirectionReceptor(creature));
+
+        // Skill Activation Attributes
+        receptors.add(new EatReceptor(creature));
+        receptors.add(new MoveReceptor(creature));
+        receptors.add(new ChangeMoveDirectionReceptor(creature));
+        receptors.add(new ChangeMoveDistanceReceptor(creature));
+        receptors.add(new ChangeViewDirectionReceptor(creature));
+
+        return receptors;
+    }
+
+    private List<Sensor> createSensors(final World world, final Creature creature) {
+        final List<Sensor> sensors = new ArrayList<>();
+
+        sensors.add(new HealthSensor(creature));
+        sensors.add(new HungerSensor(creature));
+
+        sensors.add(new VisionCurrentTileColorSensor(world, creature));
+        sensors.add(new VisionCenterTileColorSensor(world, creature));
+        sensors.add(new VisionLeftTileColorSensor(world, creature));
+        sensors.add(new VisionRightTileColorSensor(world, creature));
+
+        return sensors;
+    }
+
+    private Map<CreatureAttribute, Integer> createAttributes() {
+        final Map<CreatureAttribute, Integer> attributes = new EnumMap<>(CreatureAttribute.class);
+        for (CreatureAttribute attribute : CreatureAttribute.values()) {
+            attributes.put(attribute, attribute.getDefaultValue());
+        }
+        return attributes;
     }
 
 }

@@ -34,7 +34,7 @@ public class EatingSkill extends AbstractSkill {
 
     // TODO we need something to eat ...
 
-    // TODO we need to ensure, that hunger stays in border 0 ... MAX !
+    // TODO we need to ensure, that hunger (and other attributes) stays in border 0 ... MAX !
 
     public EatingSkill(final World world, final Creature creature) {
         super(world, creature, CreatureAttribute.EAT);
