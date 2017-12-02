@@ -16,7 +16,6 @@ package de.swoeste.demo.gen.alg.ui.model;
 
 import java.text.MessageFormat;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import javafx.scene.canvas.GraphicsContext;
@@ -48,8 +47,7 @@ public class UITile implements Selectable {
     }
 
     public Color getColor() {
-        final RGBColor color = this.tile.getColor();
-        return Color.rgb(color.getRed(), color.getGreen(), color.getBlue());
+        return RGBColorUtil.getColor(this.tile.getColor());
     }
 
     public void draw(final GraphicsContext gc) {

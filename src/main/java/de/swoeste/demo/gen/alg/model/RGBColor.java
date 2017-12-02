@@ -53,13 +53,38 @@ public class RGBColor {
         return this.b;
     }
 
-    // TODO write a test for this
-    public double getDistance(final RGBColor color) {
-        // ((r2 - r1)^2 + (g2 - g1)^2 + (b2 - b1)^2) ^ (1/2)
-        int r = color.getRed() - this.r;
-        int g = color.getGreen() - this.g;
-        int b = color.getBlue() - this.b;
-        return Math.pow((r * r) + (g * g) + (b * b), 0.5);
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + this.b;
+        result = (prime * result) + this.g;
+        result = (prime * result) + this.r;
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        RGBColor other = (RGBColor) obj;
+        if (this.b != other.b) {
+            return false;
+        }
+        if (this.g != other.g) {
+            return false;
+        }
+        if (this.r != other.r) {
+            return false;
+        }
+        return true;
     }
 
     /** {@inheritDoc} */
