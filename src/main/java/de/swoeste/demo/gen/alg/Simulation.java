@@ -18,6 +18,8 @@
  */
 package de.swoeste.demo.gen.alg;
 
+import java.text.MessageFormat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +69,8 @@ public class Simulation {
             final long delay = (long) (MAX_DELAY - (MAX_DELAY * percentage));
             this.task.setDelay(delay);
         } else {
-            throw new IllegalArgumentException("'" + percentage + "' is not a valid speed value!");
+            final String msg = MessageFormat.format("''{0}'' is not a valid speed value!", percentage); //$NON-NLS-1$
+            throw new IllegalArgumentException(msg);
         }
     }
 

@@ -18,6 +18,8 @@
  */
 package de.swoeste.demo.gen.alg.model;
 
+import java.text.MessageFormat;
+
 /**
  * @author swoeste
  */
@@ -65,7 +67,7 @@ public class Rectangle {
 
     @Override
     public String toString() {
-        return "Rectangle [posX=" + this.posX + ", posY=" + this.posY + ", sizeX=" + this.sizeX + ", sizeY=" + this.sizeY + "]";
+        return MessageFormat.format("Rectangle [posX={0}, posY={1}, sizeX={2}, sizeY={3}]", this.posX, this.posY, this.sizeX, this.sizeY); //$NON-NLS-1$
     }
 
 }
