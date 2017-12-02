@@ -27,12 +27,16 @@ import java.util.List;
  */
 public class Layer {
 
-    private final List<Neuron> neurons;
     private final String       name;
+    private final List<Neuron> neurons;
 
     public Layer(final String name) {
         this.name = name;
         this.neurons = new ArrayList<>();
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void addNeuron(final Neuron neuron) {
@@ -41,10 +45,6 @@ public class Layer {
 
     public List<Neuron> getNeurons() {
         return Collections.unmodifiableList(this.neurons);
-    }
-
-    public String getName() {
-        return this.name;
     }
 
 }

@@ -26,24 +26,24 @@ public class Connection {
     private final Neuron source;
     private final Neuron target;
 
-    private double       weigth;
+    private double       weight;
 
     public Connection(final Neuron source, final Neuron target, final double weight) {
         this.source = source;
         this.target = target;
-        this.weigth = weight;
+        this.weight = weight;
     }
 
     public double getNeuronValue() {
-        return this.weigth * this.source.getOutputValue();
+        return this.weight * this.source.getOutputValue();
     }
 
-    public double getWeigth() {
-        return this.weigth;
+    public double getWeight() {
+        return this.weight;
     }
 
-    public void setWeigth(final double weigth) {
-        this.weigth = weigth;
+    public void setWeight(final double weight) {
+        this.weight = weight;
     }
 
     public Neuron getSource() {

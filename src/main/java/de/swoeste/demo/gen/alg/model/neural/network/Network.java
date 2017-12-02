@@ -19,6 +19,7 @@
 package de.swoeste.demo.gen.alg.model.neural.network;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -29,32 +30,40 @@ import org.apache.commons.lang3.Validate;
  */
 public class Network {
 
-    private final int    seed;
-    private final Random random;
+    private final int        seed;
+    private final Random     random;
 
-    private Layer        inputLayer;
-    private Layer        outputLayer;
-    private List<Layer>  hiddenLayers;
+    private final int        inputLayerSize;
+    private final int[]      hiddenLayerSize;
+    private final int        outputLayerSize;
+
+    private Layer            inputLayer;
+    private List<Layer>      hiddenLayers;
+    private Layer            outputLayer;
+
+    private List<Connection> connections;
 
     public Network(final int input, final int[] hidden, final int output, final int seed) {
-        Validate.isTrue(input >= 1, "Expected at least 1 input neuron."); //$NON-NLS-1$
-        // TODO validate hidden
-        Validate.isTrue(output >= 1, "Expected at least 1 output neuron."); //$NON-NLS-1$
-
         this.seed = seed;
         this.random = new Random(seed);
 
-        createInputLayer(input);
-        createHiddenLayer(hidden);
-        createOutputLayer(output);
+        this.inputLayerSize = input;
+        this.hiddenLayerSize = hidden;
+        this.outputLayerSize = output;
+
+        createInputLayer();
+        createHiddenLayer();
+        createOutputLayer();
         createConnections();
     }
 
-    private void createInputLayer(final int size) {
+    private void createInputLayer() {
+        Validate.isTrue(this.inputLayerSize >= 1, "Expected at least 1 input neuron."); //$NON-NLS-1$
+
         this.inputLayer = new Layer("Input"); //$NON-NLS-1$
 
         // create input neurons
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.inputLayerSize; i++) {
             this.inputLayer.addNeuron(new InputNeuron("Input_" + i)); //$NON-NLS-1$
         }
 
@@ -62,13 +71,14 @@ public class Network {
         this.inputLayer.addNeuron(new BiasNeuron("Bias_Input")); //$NON-NLS-1$
     }
 
-    private void createHiddenLayer(final int[] sizePerLayer) {
+    private void createHiddenLayer() {
         this.hiddenLayers = new ArrayList<>();
 
-        for (int i = 0; i < sizePerLayer.length; i++) {
+        for (int i = 0; i < this.hiddenLayerSize.length; i++) {
             final Layer layer = new Layer("Hidden_" + i); //$NON-NLS-1$
 
-            final int size = sizePerLayer[i];
+            final int size = this.hiddenLayerSize[i];
+            Validate.isTrue(size >= 1, "Expected at least 1 hidden neuron in hidden layer " + i + "."); //$NON-NLS-1$ //$NON-NLS-2$
             for (int j = 0; j < size; j++) {
                 layer.addNeuron(new Neuron("Hidden_" + i + "_" + j)); //$NON-NLS-1$ //$NON-NLS-2$
             }
@@ -80,16 +90,20 @@ public class Network {
         }
     }
 
-    private void createOutputLayer(final int size) {
+    private void createOutputLayer() {
+        Validate.isTrue(this.outputLayerSize >= 1, "Expected at least 1 output neuron."); //$NON-NLS-1$
+
         this.outputLayer = new Layer("Output"); //$NON-NLS-1$
 
         // create output neurons
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < this.outputLayerSize; i++) {
             this.outputLayer.addNeuron(new Neuron("Output_" + i)); //$NON-NLS-1$
         }
     }
 
     private void createConnections() {
+        this.connections = new ArrayList<>();
+
         final List<Layer> allLayers = new ArrayList<>();
         allLayers.addAll(this.hiddenLayers);
         allLayers.add(this.outputLayer);
@@ -97,16 +111,16 @@ public class Network {
         Layer prevLayer = this.inputLayer;
         for (Layer layer : allLayers) {
 
-            final List<Neuron> neurons = prevLayer.getNeurons();
-            for (Neuron neuron : neurons) {
+            final List<Neuron> inNeurons = prevLayer.getNeurons();
+            for (final Neuron inNeuron : inNeurons) {
 
-                List<Neuron> neurons2 = layer.getNeurons();
-                for (Neuron neuron2 : neurons2) {
-                    if (neuron2 instanceof BiasNeuron) {
+                final List<Neuron> outNeurons = layer.getNeurons();
+                for (final Neuron outNeuron : outNeurons) {
+                    if (outNeuron instanceof BiasNeuron) {
                         continue;
                     }
-
-                    neuron.connect(neuron2, this.random.nextDouble());
+                    final double weight = this.random.nextDouble();
+                    this.connections.add(inNeuron.connect(outNeuron, weight));
                 }
             }
 
@@ -115,7 +129,7 @@ public class Network {
     }
 
     public double[] feed(final double[] inputValues) {
-        // TODO check inputvalues = inputlayer size - 1 (bias)
+        Validate.isTrue(inputValues.length == this.inputLayerSize, "Expected input values to match input layer neurons!"); //$NON-NLS-1$
 
         final List<Neuron> inputNeurons = this.inputLayer.getNeurons();
         for (int i = 0; i < (inputNeurons.size() - 1); i++) {
@@ -133,24 +147,51 @@ public class Network {
         return result;
     }
 
-    public Network evolve() {
-        // TODO implement
-
-        // TODO add parameter for mutation chance
-
-        // create a new network, based on this one with a chance of a mutation
-
-        return null;
+    public void mutate() {
+        final int connectionToMutate = this.random.nextInt(this.connections.size());
+        final double weight = this.random.nextDouble();
+        this.connections.get(connectionToMutate).setWeight(weight);
     }
 
-    public Network evolve(final Network network) {
-        // TODO implement
+    public Network replicate() {
+        return replicate(null);
+    }
 
-        // TODO add parameter for mutation chance
+    public Network replicate(final Network cohabitant) {
+        final Network network = new Network(this.inputLayerSize, this.hiddenLayerSize, this.outputLayerSize, this.seed);
 
-        // create a new network, based on this and the given one with a chance of a mutation
+        // create crossover segments
+        final List<Integer> segmentSizes = new ArrayList<>();
+        Arrays.stream(this.hiddenLayerSize).forEach(entry -> segmentSizes.add(entry));
+        segmentSizes.add(this.outputLayerSize);
 
-        return null;
+        // perform crossover
+        Network currentCohabitant = this;
+        Network prevCohabitant = cohabitant == null ? this : cohabitant;
+        Network temp;
+
+        int checkSum = 0;
+        for (Integer segmentSize : segmentSizes) {
+            for (int i = 0; i < segmentSize; i++) {
+                network.connections.get(i).setWeight(currentCohabitant.connections.get(i).getWeight());
+                checkSum++;
+            }
+            // swap cohabitant
+            temp = prevCohabitant;
+            prevCohabitant = currentCohabitant;
+            currentCohabitant = temp;
+        }
+        Validate.isTrue(checkSum == this.connections.size());
+
+        // TODO configurable (mutation change + mutation possible)
+        // perform a mutation ?
+        final double mutationChance = 0.5;
+        final boolean mutate = this.random.nextDouble() <= mutationChance;
+        if (mutate) {
+            network.mutate();
+        }
+
+        return network;
     }
 
 }

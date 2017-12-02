@@ -18,6 +18,7 @@
  */
 package de.swoeste.demo.gen.alg.model.neural.network;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class Neuron {
     private final List<Connection> connectionsIn  = new ArrayList<>();
     private final List<Connection> connectionsOut = new ArrayList<>();
 
-    private final String           name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       // ?
+    private final String           name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // ?
 
     public Neuron(final String name) {
         this.name = name;
@@ -45,35 +46,43 @@ public class Neuron {
         return this.name;
     }
 
-    public void connect(final Neuron target, final double weight) {
+    public Connection connect(final Neuron target, final double weight) {
         LOG.debug("[{}] connecting with {}", this, target); //$NON-NLS-1$
-        Connection connection = new Connection(this, target, weight);
+        final Connection connection = new Connection(this, target, weight);
         this.connectionsOut.add(connection);
         target.connectionsIn.add(connection);
+        return connection;
     }
 
     public double getOutputValue() {
         double sum = 0.0;
 
-        // Sum the previous layer's outputs (which are out inputs) including the
-        // bias neuron from the previous layer.
+        // Sum the previous layer's outputs (which are our inputs), including the
+        // bias neuron of the previous layer.
 
         for (int i = 0; i < this.connectionsIn.size(); i++) {
             Connection connection = this.connectionsIn.get(i);
             sum = sum + connection.getNeuronValue();
-
         }
 
         return activate(sum);
     }
 
-    public double activate(final double value) {
+    private double activate(final double value) {
         return FastMath.tanh(value);
     }
 
-    /** {@inheritDoc} */
+    List<Connection> getConnectionsIn() {
+        return this.connectionsIn;
+    }
+
+    List<Connection> getConnectionsOut() {
+        return this.connectionsOut;
+    }
+
     @Override
     public String toString() {
-        return this.name;
+        return MessageFormat.format("Neuron [name={0}]", this.name); //$NON-NLS-1$
     }
+
 }
