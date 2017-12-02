@@ -23,8 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import de.swoeste.demo.gen.alg.model.RGBColor;
 import de.swoeste.demo.gen.alg.model.Vector;
-import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 
@@ -43,7 +43,7 @@ public class VisionLeftTileColorSensor extends AbstractVisionSensor {
     @Override
     protected double getSensorValue(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
-        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees + 45);
+        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees + 45.0);
 
         final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
         final Vector visionPosition = position.project(viewDirectionRadians, visionSize);
