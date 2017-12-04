@@ -18,15 +18,15 @@
  */
 package de.swoeste.demo.gen.alg.model.creature;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class NameFactory {
 
     private static final Logger       LOG          = LoggerFactory.getLogger(NameFactory.class);
 
-    private static final String       UTF_8        = "UTF-8";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              //$NON-NLS-1$
+    private static final String       UTF_8        = "UTF-8";                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             //$NON-NLS-1$
 
     private static final Random       RANDOM       = new Random();
 
@@ -85,16 +85,15 @@ public class NameFactory {
     private static final List<String> getValuesFromResource(final String resource) {
         try {
             final List<String> result = new ArrayList<>();
-            final File file = new File(NameFactory.class.getResource(resource).toURI());
-            final List<String> lines = FileUtils.readLines(file, UTF_8);
-            for (final String line : lines) {
-                final String trimmedLine = StringUtils.trimToNull(line);
-                if (trimmedLine != null) {
-                    result.add(trimmedLine);
-                }
+
+            try (final InputStream is = NameFactory.class.getResourceAsStream(resource);
+                    final InputStreamReader isr = new InputStreamReader(is, UTF_8);
+                    final BufferedReader br = new BufferedReader(isr);) {
+                br.lines().forEach(entry -> result.add(StringUtils.trimToNull(entry)));
             }
+
             return result;
-        } catch (IOException | URISyntaxException ex) {
+        } catch (IOException ex) {
             LOG.error("Unable to read {}", resource, ex); //$NON-NLS-1$
             throw new IllegalStateException("unable to read " + resource, ex); //$NON-NLS-1$
         }
