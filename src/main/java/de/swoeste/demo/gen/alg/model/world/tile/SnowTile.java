@@ -24,10 +24,20 @@ import de.swoeste.demo.gen.alg.model.Vector;
 /**
  * @author swoeste
  */
-public class SnowTile extends Tile {
+public class SnowTile extends AbstractTile {
 
     public SnowTile(final Vector position, final int size, final double height) {
-        super(position, size, height, true, 2, RGBColor.WHITE);
+        super(position, size, height, true, true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    void init() {
+        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.WHITE.getRed());
+        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.WHITE.getGreen());
+        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.WHITE.getBlue());
+
+        this.setAttributeValue(TileAttribute.STEP_COST, 2);
     }
 
 }

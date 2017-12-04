@@ -83,6 +83,10 @@ public class Creature implements Identifiable, Shapeaware {
         return this.id;
     }
 
+    public Gender getGender() {
+        return this.gender;
+    }
+
     public String getName() {
         return this.name;
     }
@@ -125,7 +129,7 @@ public class Creature implements Identifiable, Shapeaware {
             }
         }
 
-        increaseAttributeValue(CreatureAttribute.AGE, 1);
+        increaseAttributeByValue(CreatureAttribute.AGE, 1);
 
         // TODO - Idea
         // Add a flag to only execute one skill per tick based on the highest activation value.
@@ -140,14 +144,14 @@ public class Creature implements Identifiable, Shapeaware {
         return this.attributes.put(attribute, value);
     }
 
-    public int increaseAttributeValue(final CreatureAttribute attribute, final int value) {
+    public int increaseAttributeByValue(final CreatureAttribute attribute, final int value) {
         final Integer currentValue = this.attributes.get(attribute);
         final Integer newValue = currentValue + value;
         this.attributes.put(attribute, newValue);
         return newValue;  // this is the new value!
     }
 
-    public int decreaseAttributeValue(final CreatureAttribute attribute, final int value) {
+    public int decreaseAttributeByValue(final CreatureAttribute attribute, final int value) {
         final Integer currentValue = this.attributes.get(attribute);
         final Integer newValue = currentValue - value;
         this.attributes.put(attribute, newValue);

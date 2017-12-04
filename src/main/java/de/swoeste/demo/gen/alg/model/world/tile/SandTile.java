@@ -18,16 +18,25 @@
  */
 package de.swoeste.demo.gen.alg.model.world.tile;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
 import de.swoeste.demo.gen.alg.model.Vector;
 
 /**
  * @author swoeste
  */
-public class SandTile extends Tile {
+public class SandTile extends AbstractTile {
 
     public SandTile(final Vector position, final int size, final double height) {
-        super(position, size, height, true, 2, new RGBColor(244, 164, 96));
+        super(position, size, height, true, true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    void init() {
+        this.setAttributeValue(TileAttribute.COLOR_R, 244);
+        this.setAttributeValue(TileAttribute.COLOR_G, 164);
+        this.setAttributeValue(TileAttribute.COLOR_B, 96);
+
+        this.setAttributeValue(TileAttribute.STEP_COST, 2);
     }
 
 }

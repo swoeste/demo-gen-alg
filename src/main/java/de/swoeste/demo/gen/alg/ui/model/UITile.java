@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -47,7 +48,10 @@ public class UITile implements Selectable {
     }
 
     public Color getColor() {
-        return RGBColorUtil.getColor(this.tile.getColor());
+        final int r = this.tile.getAttributeValue(TileAttribute.COLOR_R);
+        final int g = this.tile.getAttributeValue(TileAttribute.COLOR_G);
+        final int b = this.tile.getAttributeValue(TileAttribute.COLOR_B);
+        return RGBColorUtil.getColor(r, g, b);
     }
 
     public void draw(final GraphicsContext gc) {

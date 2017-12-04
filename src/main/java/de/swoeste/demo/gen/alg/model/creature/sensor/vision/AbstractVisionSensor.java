@@ -21,7 +21,6 @@ package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
@@ -54,9 +53,9 @@ public abstract class AbstractVisionSensor implements Sensor {
 
     protected abstract double getSensorValue(World world, Creature creature, Vector position);
 
-    protected final double getNumberRepresentation(final RGBColor color) {
+    protected final double getNumberRepresentation(final int red, final int green, final int blue) {
         final int max = 16777215;
-        final int rgb = (color.getRed() << 16) + (color.getGreen() << 8) + color.getBlue();
+        final int rgb = (red << 16) + (green << 8) + blue;
         return (rgb - (max / 2.0)) / (max / 2.0);
     }
 

@@ -35,6 +35,10 @@ public class RGBColorUtil {
         // hidden
     }
 
+    public static Color getColor(final int red, final int green, final int blue) {
+        return getColor(new RGBColor(red, green, blue));
+    }
+
     public static Color getColor(final RGBColor color) {
         if (!CACHE.containsKey(color)) {
             final Color uiColor = Color.rgb(color.getRed(), color.getGreen(), color.getBlue());

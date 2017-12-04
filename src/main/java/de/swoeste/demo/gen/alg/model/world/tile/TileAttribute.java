@@ -18,25 +18,25 @@
  */
 package de.swoeste.demo.gen.alg.model.world.tile;
 
-import de.swoeste.demo.gen.alg.model.Vector;
-
 /**
  * @author swoeste
  */
-public class MountainTile extends AbstractTile {
+public enum TileAttribute {
 
-    public MountainTile(final Vector position, final int size, final double height) {
-        super(position, size, height, true, true);
+    STEP_COST(1),
+
+    COLOR_R(0), COLOR_G(0), COLOR_B(0),//
+
+    FOOD(0), MAX_FOOD(200); //
+
+    private final int defaultValue;
+
+    private TileAttribute(final int defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    void init() {
-        this.setAttributeValue(TileAttribute.COLOR_R, 48);
-        this.setAttributeValue(TileAttribute.COLOR_G, 186);
-        this.setAttributeValue(TileAttribute.COLOR_B, 143);
-
-        this.setAttributeValue(TileAttribute.STEP_COST, 1);
+    public int getDefaultValue() {
+        return this.defaultValue;
     }
 
 }

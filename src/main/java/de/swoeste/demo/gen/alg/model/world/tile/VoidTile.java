@@ -24,10 +24,18 @@ import de.swoeste.demo.gen.alg.model.Vector;
 /**
  * @author swoeste
  */
-public class VoidTile extends Tile {
+public class VoidTile extends AbstractTile {
 
     public VoidTile(final Vector position, final int size, final double height) {
-        super(position, size, height, false, false, RGBColor.BLACK);
+        super(position, size, height, false, false);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    void init() {
+        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.BLACK.getRed());
+        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.BLACK.getGreen());
+        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.BLACK.getBlue());
     }
 
 }

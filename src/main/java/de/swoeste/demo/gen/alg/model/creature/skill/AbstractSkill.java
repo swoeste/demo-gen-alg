@@ -21,6 +21,7 @@ package de.swoeste.demo.gen.alg.model.creature.skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
@@ -70,5 +71,11 @@ public abstract class AbstractSkill implements Skill {
     }
 
     protected abstract void doNotPerform(World world, Creature creature);
+
+    protected Vector getPosition(final Creature creature) {
+        final int x = creature.getAttributeValue(CreatureAttribute.POSITION_X);
+        final int y = creature.getAttributeValue(CreatureAttribute.POSITION_Y);
+        return new Vector(x, y);
+    }
 
 }

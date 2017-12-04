@@ -21,12 +21,12 @@ package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.sensor.HealthSensor;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 
 /**
  * @author swoeste
@@ -43,8 +43,10 @@ public class VisionCurrentTileColorSensor extends AbstractVisionSensor {
     @Override
     protected double getSensorValue(final World world, final Creature creature, final Vector position) {
         final Tile tile = world.getTile(position);
-        final RGBColor color = tile.getColor();
-        return getNumberRepresentation(color);
+        final int r = tile.getAttributeValue(TileAttribute.COLOR_R);
+        final int g = tile.getAttributeValue(TileAttribute.COLOR_G);
+        final int b = tile.getAttributeValue(TileAttribute.COLOR_B);
+        return getNumberRepresentation(r, g, b);
     }
 
 }

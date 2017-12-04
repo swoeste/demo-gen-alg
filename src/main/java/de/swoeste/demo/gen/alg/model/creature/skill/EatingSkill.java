@@ -21,9 +21,11 @@ package de.swoeste.demo.gen.alg.model.creature.skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
+import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 
 /**
  * @author swoeste
@@ -43,23 +45,34 @@ public class EatingSkill extends AbstractSkill {
     /** {@inheritDoc} */
     @Override
     protected void doPerform(final World world, final Creature creature) {
-        final int hunger = creature.decreaseAttributeValue(CreatureAttribute.HUNGER, 1);
+        if (canEat(world, creature)) {
+            final int hunger = creature.decreaseAttributeByValue(CreatureAttribute.HUNGER, 1);
 
-        // the creature has eaten too much foot, so it will lose some health
-        if (hunger < 0) {
-            creature.decreaseAttributeValue(CreatureAttribute.HEALTH, 1);
+            // the creature has eaten too much foot, so it will lose some health
+            if (hunger < 0) {
+                creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1);
+            }
         }
     }
 
     /** {@inheritDoc} */
     @Override
     protected void doNotPerform(final World world, final Creature creature) {
-        final int hunger = creature.increaseAttributeValue(CreatureAttribute.HUNGER, 1);
+        final int hunger = creature.increaseAttributeByValue(CreatureAttribute.HUNGER, 1);
 
         // the creature is very hungry, so it will lose some health
         if (hunger > creature.getAttributeValue(CreatureAttribute.MAX_HUNGER)) {
-            creature.decreaseAttributeValue(CreatureAttribute.HEALTH, 1);
+            creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1);
         }
+    }
+
+    private boolean canEat(final World world, final Creature creature) {
+        final Vector position = getPosition(creature);
+        final Tile tile = world.getTile(position);
+
+        // TODO implement
+
+        return true;
     }
 
 }

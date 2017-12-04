@@ -24,10 +24,20 @@ import de.swoeste.demo.gen.alg.model.Vector;
 /**
  * @author swoeste
  */
-public class GrassTile extends Tile {
+public class GrassTile extends AbstractTile {
 
     public GrassTile(final Vector position, final int size, final double height) {
-        super(position, size, height, true, 1.0, RGBColor.GREEN);
+        super(position, size, height, true, true);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    void init() {
+        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.GREEN.getRed());
+        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.GREEN.getGreen());
+        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.GREEN.getBlue());
+
+        this.setAttributeValue(TileAttribute.STEP_COST, 1);
     }
 
 }

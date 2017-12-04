@@ -24,10 +24,18 @@ import de.swoeste.demo.gen.alg.model.Vector;
 /**
  * @author swoeste
  */
-public class WaterTile extends Tile {
+public class WaterTile extends AbstractTile {
 
     public WaterTile(final Vector position, final int size, final double height) {
-        super(position, size, height, false, 2, RGBColor.BLUE);
+        super(position, size, height, false, false);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    void init() {
+        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.BLUE.getRed());
+        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.BLUE.getGreen());
+        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.BLUE.getBlue());
     }
 
 }

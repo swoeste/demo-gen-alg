@@ -27,6 +27,7 @@ import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 import de.swoeste.demo.gen.alg.util.NumberUtil;
 
 /**
@@ -78,17 +79,11 @@ public class MoveSkill extends AbstractSkill {
             // XXX - do some further collision detection
 
             // reduce the distance to move by the step-cost for one step on the current tile
-            distanceToMove = distanceToMove - currTile.getStepCost();
+            distanceToMove = distanceToMove - currTile.getAttributeValue(TileAttribute.STEP_COST);
             prevPosition = nextPosition;
         }
 
         setPosition(world, creature, nextPosition);
-    }
-
-    private Vector getPosition(final Creature creature) {
-        final int x = creature.getAttributeValue(CreatureAttribute.POSITION_X);
-        final int y = creature.getAttributeValue(CreatureAttribute.POSITION_Y);
-        return new Vector(x, y);
     }
 
     private void setPosition(final World world, final Creature creature, final Vector position) {

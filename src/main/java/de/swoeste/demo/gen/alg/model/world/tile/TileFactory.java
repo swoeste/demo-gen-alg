@@ -18,6 +18,8 @@
  */
 package de.swoeste.demo.gen.alg.model.world.tile;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.swoeste.demo.gen.alg.model.Vector;
@@ -36,19 +38,36 @@ public class TileFactory {
     }
 
     public Tile create(final Vector pos, final int size, final double noise) {
+
+        final AbstractTile tile;
+
+        // XXX create extra method?
         if (noise <= -0.9) {
-            return new VoidTile(pos, size, noise);
+            tile = new VoidTile(pos, size, noise);
         } else if (noise <= -0.4) {
-            return new WaterTile(pos, size, noise);
+            tile = new WaterTile(pos, size, noise);
         } else if (noise <= -0.3) {
-            return new SandTile(pos, size, noise);
+            tile = new SandTile(pos, size, noise);
         } else if (noise <= 0.1) {
-            return new GrassTile(pos, size, noise);
+            tile = new GrassTile(pos, size, noise);
         } else if (noise <= 0.35) {
-            return new MountainTile(pos, size, noise);
+            tile = new MountainTile(pos, size, noise);
         } else {
-            return new SnowTile(pos, size, noise);
+            tile = new SnowTile(pos, size, noise);
         }
+
+        tile.setAttributes(createAttributes());
+        tile.init();
+
+        return tile;
+    }
+
+    private Map<TileAttribute, Integer> createAttributes() {
+        final Map<TileAttribute, Integer> attributes = new EnumMap<>(TileAttribute.class);
+        for (TileAttribute attribute : TileAttribute.values()) {
+            attributes.put(attribute, attribute.getDefaultValue());
+        }
+        return attributes;
     }
 
 }

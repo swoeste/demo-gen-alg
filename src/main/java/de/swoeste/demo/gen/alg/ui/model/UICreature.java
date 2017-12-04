@@ -77,7 +77,7 @@ public class UICreature implements Selectable {
         final int r = this.creature.getAttributeValue(CreatureAttribute.COLOR_R);
         final int g = this.creature.getAttributeValue(CreatureAttribute.COLOR_G);
         final int b = this.creature.getAttributeValue(CreatureAttribute.COLOR_B);
-        return Color.rgb(r, g, b);
+        return RGBColorUtil.getColor(r, g, b);
     }
 
     public Vector getPosition() {

@@ -168,7 +168,7 @@ public class World implements SimpleEventListener {
         LOG.debug("starting of iteration {} with {} living creatures", this.age, this.creatures.size()); //$NON-NLS-1$
 
         // tiles
-        this.tiles.parallelStream().forEach(Tile::tick);
+        this.tiles.parallelStream().forEach(Tile::update);
 
         // creatures
         for (Iterator<Creature> iterator = this.creatures.iterator(); iterator.hasNext();) {
