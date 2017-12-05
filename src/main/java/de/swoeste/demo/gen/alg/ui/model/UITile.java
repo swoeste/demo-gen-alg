@@ -15,6 +15,8 @@
 package de.swoeste.demo.gen.alg.ui.model;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
@@ -69,6 +71,18 @@ public class UITile implements Selectable {
             gc.setStroke(COLOR_BODY_SELECTED);
             gc.strokeRect(position.getX() + 1, position.getY() + 1, getSize() - 2, getSize() - 2);
         }
+    }
+
+    public List<UIProperty> getProperties() {
+        final List<UIProperty> result = new ArrayList<>();
+
+        for (TileAttribute creatureAttribute : TileAttribute.values()) {
+            final int attributeValue = this.tile.getAttributeValue(creatureAttribute);
+            // TODO check if the tile has the attribute?
+            result.add(new UIProperty(creatureAttribute.name(), String.valueOf(attributeValue)));
+        }
+
+        return result;
     }
 
     /** {@inheritDoc} */

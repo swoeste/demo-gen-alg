@@ -103,6 +103,7 @@ public class UICreature implements Selectable {
 
         for (CreatureAttribute creatureAttribute : CreatureAttribute.values()) {
             final int attributeValue = this.creature.getAttributeValue(creatureAttribute);
+            // TODO check if the creature has the attribute?
             result.add(new UIProperty(creatureAttribute.name(), String.valueOf(attributeValue)));
         }
 
