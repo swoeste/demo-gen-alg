@@ -25,13 +25,11 @@ import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.sensor.HealthSensor;
 import de.swoeste.demo.gen.alg.model.world.World;
-import de.swoeste.demo.gen.alg.model.world.tile.Tile;
-import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 
 /**
  * @author swoeste
  */
-public class VisionCurrentTileColorSensor extends AbstractVisionSensor {
+public class VisionCurrentTileColorSensor extends AbstractTileColorVisionSensor {
 
     private static final Logger LOG = LoggerFactory.getLogger(HealthSensor.class);
 
@@ -41,12 +39,8 @@ public class VisionCurrentTileColorSensor extends AbstractVisionSensor {
 
     /** {@inheritDoc} */
     @Override
-    protected double getSensorValue(final World world, final Creature creature, final Vector position) {
-        final Tile tile = world.getTile(position);
-        final int r = tile.getAttributeValue(TileAttribute.COLOR_R);
-        final int g = tile.getAttributeValue(TileAttribute.COLOR_G);
-        final int b = tile.getAttributeValue(TileAttribute.COLOR_B);
-        return getNumberRepresentation(r, g, b);
+    protected Vector getPosition(final World world, final Creature creature, final Vector position) {
+        return position;
     }
 
 }

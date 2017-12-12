@@ -26,6 +26,7 @@ import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 
 /**
  * @author swoeste
@@ -34,10 +35,6 @@ public class EatingSkill extends AbstractSkill {
 
     private static final Logger LOG = LoggerFactory.getLogger(EatingSkill.class);
 
-    // TODO we need something to eat ...
-
-    // TODO we need to ensure, that hunger (and other attributes) stays in border 0 ... MAX !
-
     public EatingSkill(final World world, final Creature creature) {
         super(world, creature, CreatureAttribute.EAT);
     }
@@ -45,34 +42,42 @@ public class EatingSkill extends AbstractSkill {
     /** {@inheritDoc} */
     @Override
     protected void doPerform(final World world, final Creature creature) {
-        if (canEat(world, creature)) {
-            final int hunger = creature.decreaseAttributeByValue(CreatureAttribute.HUNGER, 1);
+        final Vector position = getPosition(creature);
+        final Tile tile = world.getTile(position);
 
-            // the creature has eaten too much foot, so it will lose some health
-            if (hunger < 0) {
-                creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1);
-            }
+        if (tile.getAttributeValue(TileAttribute.FOOD) > 0) {
+            eat(creature);
+
+            // remove 1 food unit from tile
+            tile.decreaseAttributeByValue(TileAttribute.FOOD, 1, 0);
+        } else {
+            starve(creature);
         }
     }
 
     /** {@inheritDoc} */
     @Override
     protected void doNotPerform(final World world, final Creature creature) {
-        final int hunger = creature.increaseAttributeByValue(CreatureAttribute.HUNGER, 1);
+        starve(creature);
+    }
 
-        // the creature is very hungry, so it will lose some health
-        if (hunger > creature.getAttributeValue(CreatureAttribute.MAX_HUNGER)) {
-            creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1);
+    private void eat(final Creature creature) {
+        final int hunger = creature.decreaseAttributeByValue(CreatureAttribute.HUNGER, 1, 0);
+
+        // the creature has eaten too much foot, so it will lose some health
+        if (hunger <= 0) {
+            creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1, 0);
         }
     }
 
-    private boolean canEat(final World world, final Creature creature) {
-        final Vector position = getPosition(creature);
-        final Tile tile = world.getTile(position);
+    private void starve(final Creature creature) {
+        final int maxHunger = creature.getAttributeValue(CreatureAttribute.MAX_HUNGER);
+        final int hunger = creature.increaseAttributeByValue(CreatureAttribute.HUNGER, 1, maxHunger);
 
-        // TODO implement
-
-        return true;
+        // the creature is very hungry, so it will lose some health
+        if (hunger >= creature.getAttributeValue(CreatureAttribute.MAX_HUNGER)) {
+            creature.decreaseAttributeByValue(CreatureAttribute.HEALTH, 1, 0);
+        }
     }
 
 }

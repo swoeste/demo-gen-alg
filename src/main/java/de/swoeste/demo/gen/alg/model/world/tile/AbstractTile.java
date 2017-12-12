@@ -87,6 +87,13 @@ public abstract class AbstractTile implements Tile {
 
     /** {@inheritDoc} */
     @Override
+    public boolean hasAttributeValue(final TileAttribute attribute) {
+        // TODO remove? - we init always with all values ...
+        return this.attributes.containsKey(attribute);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public int getAttributeValue(final TileAttribute attribute) {
         return this.attributes.get(attribute);
     }
@@ -99,18 +106,18 @@ public abstract class AbstractTile implements Tile {
 
     /** {@inheritDoc} */
     @Override
-    public int increaseAttributeByValue(final TileAttribute attribute, final int value) {
+    public int increaseAttributeByValue(final TileAttribute attribute, final int value, final int maxValue) {
         final Integer currentValue = this.attributes.get(attribute);
-        final Integer newValue = currentValue + value;
+        final Integer newValue = Math.min(currentValue + value, maxValue);
         this.attributes.put(attribute, newValue);
         return newValue;  // this is the new value!
     }
 
     /** {@inheritDoc} */
     @Override
-    public int decreaseAttributeByValue(final TileAttribute attribute, final int value) {
+    public int decreaseAttributeByValue(final TileAttribute attribute, final int value, final int minValue) {
         final Integer currentValue = this.attributes.get(attribute);
-        final Integer newValue = currentValue - value;
+        final Integer newValue = Math.max(currentValue - value, minValue);
         this.attributes.put(attribute, newValue);
         return newValue; // this is the new value!
     }

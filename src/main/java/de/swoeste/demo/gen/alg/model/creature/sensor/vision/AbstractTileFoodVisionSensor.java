@@ -18,40 +18,37 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
-import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
-import de.swoeste.demo.gen.alg.model.creature.sensor.AbstractSensor;
 import de.swoeste.demo.gen.alg.model.world.World;
+import de.swoeste.demo.gen.alg.model.world.tile.Tile;
+import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 
 /**
  * @author swoeste
  */
-public abstract class AbstractVisionSensor extends AbstractSensor {
+public abstract class AbstractTileFoodVisionSensor extends AbstractVisionSensor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractVisionSensor.class);
-
-    private final World         world;
-    private final Creature      creature;
-
-    public AbstractVisionSensor(final World world, final Creature creature) {
-        this.world = world;
-        this.creature = creature;
+    public AbstractTileFoodVisionSensor(final World world, final Creature creature) {
+        super(world, creature);
     }
 
     /** {@inheritDoc} */
     @Override
-    public final double getSensorValue() {
-        final int x = this.creature.getAttributeValue(CreatureAttribute.POSITION_X);
-        final int y = this.creature.getAttributeValue(CreatureAttribute.POSITION_Y);
-        final Vector position = new Vector(x, y);
-        // TODO logging debug?
-        return getSensorValue(this.world, this.creature, position);
+    protected double getSensorValue(final World world, final Creature creature, final Vector position) {
+        final Vector visionPosition = getPosition(world, creature, position);
+        if (world.isPositionInWorld(visionPosition)) {
+            final Tile tile = world.getTile(visionPosition);
+            final int food = tile.getAttributeValue(TileAttribute.FOOD);
+            final int maxFood = tile.getAttributeValue(TileAttribute.MAX_FOOD);
+            final double value = normalizeInputValue(food, maxFood);
+            // TODO logging debug?
+            return value;
+        } else {
+            return 0.0;
+        }
     }
 
-    protected abstract double getSensorValue(World world, Creature creature, Vector position);
+    protected abstract Vector getPosition(final World world, final Creature creature, final Vector position);
 
 }

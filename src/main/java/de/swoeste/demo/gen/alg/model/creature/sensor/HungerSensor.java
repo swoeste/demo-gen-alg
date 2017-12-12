@@ -27,7 +27,7 @@ import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 /**
  * @author swoeste
  */
-public class HungerSensor implements Sensor {
+public class HungerSensor extends AbstractSensor {
 
     private static final Logger LOG = LoggerFactory.getLogger(HealthSensor.class);
 
@@ -42,7 +42,8 @@ public class HungerSensor implements Sensor {
     public double getSensorValue() {
         final int hunger = this.creature.getAttributeValue(CreatureAttribute.HUNGER);
         final int maxHunger = this.creature.getAttributeValue(CreatureAttribute.MAX_HUNGER);
-        final double value = (hunger - (maxHunger / 2.0)) / (maxHunger / 2.0);
+        final double value = normalizeInputValue(hunger, maxHunger);
+
         LOG.debug("{} has {}({}) hunger", this.creature, hunger, value); //$NON-NLS-1$
         return value;
     }

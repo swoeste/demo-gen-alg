@@ -18,34 +18,21 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.creature.Creature;
-import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
-
 /**
  * @author swoeste
  */
-public class HealthSensor extends AbstractSensor {
+public abstract class AbstractSensor implements Sensor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HealthSensor.class);
+    protected double normalizeInputValue(final int value, final int maxValue) {
 
-    private final Creature      creature;
+        // double result = (value - (maxValue / 2.0)) / (maxValue / 2.0);
 
-    public HealthSensor(final Creature creature) {
-        this.creature = creature;
-    }
+        double result = (1.0 * value) / (1.0 * maxValue);
+        if (result <= 0) {
+            result = -1;
+        }
 
-    /** {@inheritDoc} */
-    @Override
-    public double getSensorValue() {
-        final int health = this.creature.getAttributeValue(CreatureAttribute.HEALTH);
-        final int maxHealth = this.creature.getAttributeValue(CreatureAttribute.MAX_HEALTH);
-        final double value = normalizeInputValue(health, maxHealth);
-
-        LOG.debug("{} has {}({}) health", this.creature, health, value); //$NON-NLS-1$
-        return value;
+        return result;
     }
 
 }

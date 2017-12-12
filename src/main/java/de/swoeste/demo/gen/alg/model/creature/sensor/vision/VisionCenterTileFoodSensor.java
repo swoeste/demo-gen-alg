@@ -24,34 +24,28 @@ import org.slf4j.LoggerFactory;
 import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
-import de.swoeste.demo.gen.alg.model.creature.sensor.AbstractSensor;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
  * @author swoeste
  */
-public abstract class AbstractVisionSensor extends AbstractSensor {
+public class VisionCenterTileFoodSensor extends AbstractTileFoodVisionSensor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractVisionSensor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VisionCenterTileFoodSensor.class);
 
-    private final World         world;
-    private final Creature      creature;
-
-    public AbstractVisionSensor(final World world, final Creature creature) {
-        this.world = world;
-        this.creature = creature;
+    public VisionCenterTileFoodSensor(final World world, final Creature creature) {
+        super(world, creature);
     }
 
     /** {@inheritDoc} */
     @Override
-    public final double getSensorValue() {
-        final int x = this.creature.getAttributeValue(CreatureAttribute.POSITION_X);
-        final int y = this.creature.getAttributeValue(CreatureAttribute.POSITION_Y);
-        final Vector position = new Vector(x, y);
-        // TODO logging debug?
-        return getSensorValue(this.world, this.creature, position);
-    }
+    protected Vector getPosition(final World world, final Creature creature, final Vector position) {
+        final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
 
-    protected abstract double getSensorValue(World world, Creature creature, Vector position);
+        final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
+        return position.project(viewDirectionRadians, visionSize);
+
+    }
 
 }

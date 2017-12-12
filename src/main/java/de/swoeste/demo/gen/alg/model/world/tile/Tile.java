@@ -22,7 +22,6 @@ import de.swoeste.demo.gen.alg.model.Vector;
 
 /**
  * @author swoeste
- *
  */
 public interface Tile {
 
@@ -38,12 +37,14 @@ public interface Tile {
 
     void update();
 
+    boolean hasAttributeValue(final TileAttribute attribute);
+
     int getAttributeValue(TileAttribute attribute);
 
     int setAttributeValue(TileAttribute attribute, int value);
 
-    int increaseAttributeByValue(TileAttribute attribute, int value);
+    int increaseAttributeByValue(TileAttribute attribute, int value, int maxValue);
 
-    int decreaseAttributeByValue(TileAttribute attribute, int value);
+    int decreaseAttributeByValue(TileAttribute attribute, int value, int minValue);
 
 }

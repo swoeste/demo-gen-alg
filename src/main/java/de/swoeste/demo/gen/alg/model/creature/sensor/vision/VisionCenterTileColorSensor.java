@@ -25,13 +25,11 @@ import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.world.World;
-import de.swoeste.demo.gen.alg.model.world.tile.Tile;
-import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 
 /**
  * @author swoeste
  */
-public class VisionCenterTileColorSensor extends AbstractVisionSensor {
+public class VisionCenterTileColorSensor extends AbstractTileColorVisionSensor {
 
     private static final Logger LOG = LoggerFactory.getLogger(VisionCenterTileColorSensor.class);
 
@@ -41,22 +39,12 @@ public class VisionCenterTileColorSensor extends AbstractVisionSensor {
 
     /** {@inheritDoc} */
     @Override
-    protected double getSensorValue(final World world, final Creature creature, final Vector position) {
+    protected Vector getPosition(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
         final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
 
         final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        final Vector visionPosition = position.project(viewDirectionRadians, visionSize);
-
-        if (world.isPositionInWorld(visionPosition)) {
-            final Tile tile = world.getTile(visionPosition);
-            final int r = tile.getAttributeValue(TileAttribute.COLOR_R);
-            final int g = tile.getAttributeValue(TileAttribute.COLOR_G);
-            final int b = tile.getAttributeValue(TileAttribute.COLOR_B);
-            return getNumberRepresentation(r, g, b);
-        } else {
-            return 0.0;
-        }
+        return position.project(viewDirectionRadians, visionSize);
     }
 
 }

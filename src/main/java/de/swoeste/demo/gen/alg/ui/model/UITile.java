@@ -77,9 +77,8 @@ public class UITile implements Selectable {
         final List<UIProperty> result = new ArrayList<>();
 
         for (TileAttribute creatureAttribute : TileAttribute.values()) {
-            final int attributeValue = this.tile.getAttributeValue(creatureAttribute);
-            // TODO check if the tile has the attribute?
-            result.add(new UIProperty(creatureAttribute.name(), String.valueOf(attributeValue)));
+            final String attributeValue = String.valueOf(this.tile.getAttributeValue(creatureAttribute));
+            result.add(new UIProperty(creatureAttribute.name(), attributeValue));
         }
 
         return result;

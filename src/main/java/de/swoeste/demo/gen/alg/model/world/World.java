@@ -176,7 +176,7 @@ public class World implements SimpleEventListener {
             creature.update();
             if (creature.getAttributeValue(CreatureAttribute.HEALTH) <= 0) {
                 iterator.remove();
-                LOG.warn("{} died after {} steps", creature, this.age); //$NON-NLS-1$
+                LOG.warn("{} died after {} steps", creature, creature.getAttributeValue(CreatureAttribute.AGE)); //$NON-NLS-1$
                 this.eventBus.fireEvent(SimpleEventType.CREATURE_DIED, creature);
             }
         }
