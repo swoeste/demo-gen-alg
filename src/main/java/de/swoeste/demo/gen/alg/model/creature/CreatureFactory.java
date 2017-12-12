@@ -55,6 +55,8 @@ import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDirection
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDistanceSkill;
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeViewDirectionSkill;
 import de.swoeste.demo.gen.alg.model.neural.network.Network;
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
+import de.swoeste.demo.gen.alg.model.neural.network.activation.TanH;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.util.NumberUtil;
 
@@ -63,15 +65,20 @@ import de.swoeste.demo.gen.alg.util.NumberUtil;
  */
 public class CreatureFactory {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CreatureFactory.class);
+    private static final Logger      LOG = LoggerFactory.getLogger(CreatureFactory.class);
 
-    private int                 id;
-    private final int           seed;
-    private final Random        random;
+    private int                      id;
+    private final int                seed;
+    private final Random             random;
+
+    // TODO implement this a little bit more nicely
+    private final ActivationFunction activationFunction;
 
     public CreatureFactory(final int seed) {
         this.seed = seed;
         this.random = new Random(seed);
+        this.activationFunction = new TanH();
+        // this.activationFunction = new Sigmoid();
     }
 
     public final Creature create(final World world, final Vector position) {
@@ -118,7 +125,7 @@ public class CreatureFactory {
 
     private Network createNetwork(final int sensors, final int receptors) {
         final int[] hidden = { sensors + 1, receptors + 1 };
-        return new Network(sensors, hidden, receptors, this.seed);
+        return new Network(sensors, hidden, receptors, this.seed, this.activationFunction);
     }
 
     private List<Skill> createSkills(final World world, final Creature creature) {

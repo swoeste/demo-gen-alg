@@ -16,27 +16,17 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.neural.network;
+package de.swoeste.demo.gen.alg.model.neural.network.activation;
 
 /**
  * @author swoeste
  */
-public class InputNeuron extends Neuron {
+public interface ActivationFunction {
 
-    private double value;
+    double apply(double rawValue);
 
-    public InputNeuron(final String name) {
-        super(name, null);
-    }
+    boolean isActive(double activatedValue);
 
-    public void setInputValue(final double value) {
-        this.value = value;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public double getOutputValue() {
-        return this.value;
-    }
+    double normalize(double activatedValue);
 
 }

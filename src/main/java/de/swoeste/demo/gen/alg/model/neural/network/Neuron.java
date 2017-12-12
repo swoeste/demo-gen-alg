@@ -22,24 +22,27 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.util.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
 
 /**
  * @author swoeste
  */
 public class Neuron {
 
-    private static final Logger    LOG            = LoggerFactory.getLogger(Neuron.class);
+    private static final Logger      LOG            = LoggerFactory.getLogger(Neuron.class);
 
-    private final List<Connection> connectionsIn  = new ArrayList<>();
-    private final List<Connection> connectionsOut = new ArrayList<>();
+    private final List<Connection>   connectionsIn  = new ArrayList<>();
+    private final List<Connection>   connectionsOut = new ArrayList<>();
 
-    private final String           name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           // ?
+    private final String             name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     // ?
+    private final ActivationFunction activationFunction;
 
-    public Neuron(final String name) {
+    public Neuron(final String name, final ActivationFunction activationFunction) {
         this.name = name;
+        this.activationFunction = activationFunction;
     }
 
     public String getName() {
@@ -65,11 +68,7 @@ public class Neuron {
             sum = sum + connection.getNeuronValue();
         }
 
-        return activate(sum);
-    }
-
-    private double activate(final double value) {
-        return FastMath.tanh(value);
+        return this.activationFunction.apply(sum);
     }
 
     List<Connection> getConnectionsIn() {

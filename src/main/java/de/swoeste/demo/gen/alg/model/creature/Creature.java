@@ -27,6 +27,7 @@ import de.swoeste.demo.gen.alg.model.creature.receptor.AttributeReceptor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.Sensor;
 import de.swoeste.demo.gen.alg.model.creature.skill.Skill;
 import de.swoeste.demo.gen.alg.model.neural.network.Network;
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
 import de.swoeste.demo.gen.alg.position.Identifiable;
 import de.swoeste.demo.gen.alg.position.Shapeaware;
 
@@ -115,14 +116,18 @@ public class Creature implements Identifiable, Shapeaware {
         final double[] output = this.network.feed(input);
         for (int i = 0; i < this.receptors.size(); i++) {
             final AttributeReceptor receptor = this.receptors.get(i);
-            receptor.receive(output[i]);
+
+            final ActivationFunction activationFunction = this.network.getActivationFunction();
+            receptor.receive(activationFunction.normalize(output[i]));
         }
 
         // activate skill depending on activation attributes
         for (Skill skill : this.skills) {
             final CreatureAttribute activationAttribute = skill.getActivationAttribute();
             final int activationAttributeValue = getAttributeValue(activationAttribute);
-            if (activationAttributeValue >= 0) {
+
+            final ActivationFunction activationFunction = this.network.getActivationFunction();
+            if (activationFunction.isActive(activationAttributeValue)) {
                 skill.doPerform();
             } else {
                 skill.doNotPerform();

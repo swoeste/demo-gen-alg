@@ -25,25 +25,31 @@ import java.util.Random;
 
 import org.apache.commons.lang3.Validate;
 
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
+
 /**
  * @author swoeste
  */
 public class Network {
 
-    private final int        seed;
-    private final Random     random;
+    private final int                seed;
+    private final Random             random;
 
-    private final int        inputLayerSize;
-    private final int[]      hiddenLayerSize;
-    private final int        outputLayerSize;
+    private final ActivationFunction activationFunction;
 
-    private Layer            inputLayer;
-    private List<Layer>      hiddenLayers;
-    private Layer            outputLayer;
+    private final int                inputLayerSize;
+    private final int[]              hiddenLayerSize;
+    private final int                outputLayerSize;
 
-    private List<Connection> connections;
+    private Layer                    inputLayer;
+    private List<Layer>              hiddenLayers;
+    private Layer                    outputLayer;
 
-    public Network(final int input, final int[] hidden, final int output, final int seed) {
+    private List<Connection>         connections;
+
+    public Network(final int input, final int[] hidden, final int output, final int seed, final ActivationFunction activationFunction) {
+        this.activationFunction = activationFunction;
+
         this.seed = seed;
         this.random = new Random(seed);
 
@@ -55,6 +61,10 @@ public class Network {
         createHiddenLayer();
         createOutputLayer();
         createConnections();
+    }
+
+    public ActivationFunction getActivationFunction() {
+        return this.activationFunction;
     }
 
     private void createInputLayer() {
@@ -80,7 +90,8 @@ public class Network {
             final int size = this.hiddenLayerSize[i];
             Validate.isTrue(size >= 1, "Expected at least 1 hidden neuron in hidden layer " + i + "."); //$NON-NLS-1$ //$NON-NLS-2$
             for (int j = 0; j < size; j++) {
-                layer.addNeuron(new Neuron("Hidden_" + i + "_" + j)); //$NON-NLS-1$ //$NON-NLS-2$
+                final String name = "Hidden_" + i + "_" + j; //$NON-NLS-1$ //$NON-NLS-2$
+                layer.addNeuron(new Neuron(name, this.activationFunction));
             }
 
             // create bias
@@ -97,7 +108,8 @@ public class Network {
 
         // create output neurons
         for (int i = 0; i < this.outputLayerSize; i++) {
-            this.outputLayer.addNeuron(new Neuron("Output_" + i)); //$NON-NLS-1$
+            final String name = "Output_" + i;
+            this.outputLayer.addNeuron(new Neuron(name, this.activationFunction));
         }
     }
 
@@ -158,7 +170,7 @@ public class Network {
     }
 
     public Network replicate(final Network cohabitant) {
-        final Network network = new Network(this.inputLayerSize, this.hiddenLayerSize, this.outputLayerSize, this.seed);
+        final Network network = new Network(this.inputLayerSize, this.hiddenLayerSize, this.outputLayerSize, this.seed, this.activationFunction);
 
         // create crossover segments
         final List<Integer> segmentSizes = new ArrayList<>();

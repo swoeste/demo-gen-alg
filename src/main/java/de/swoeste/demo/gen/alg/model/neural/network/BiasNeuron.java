@@ -24,7 +24,7 @@ package de.swoeste.demo.gen.alg.model.neural.network;
 public class BiasNeuron extends Neuron {
 
     public BiasNeuron(final String name) {
-        super(name);
+        super(name, null);
     }
 
     /** {@inheritDoc} */

@@ -16,27 +16,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.neural.network;
+package de.swoeste.demo.gen.alg.model.neural.network.activation;
+
+import org.apache.commons.math3.util.FastMath;
 
 /**
  * @author swoeste
  */
-public class InputNeuron extends Neuron {
+public class TanH implements ActivationFunction {
 
-    private double value;
-
-    public InputNeuron(final String name) {
-        super(name, null);
-    }
-
-    public void setInputValue(final double value) {
-        this.value = value;
+    /** {@inheritDoc} */
+    @Override
+    public double apply(final double rawValue) {
+        // Range: -1..1
+        return FastMath.tanh(rawValue);
     }
 
     /** {@inheritDoc} */
     @Override
-    public double getOutputValue() {
-        return this.value;
+    public boolean isActive(final double activatedValue) {
+        return activatedValue >= 0;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public double normalize(final double activatedValue) {
+        // the activated value is already in range of -1 .. 1
+        return activatedValue;
     }
 
 }

@@ -18,8 +18,8 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill;
 
-import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.AbstractAttributeReceptor;
 
 /**
