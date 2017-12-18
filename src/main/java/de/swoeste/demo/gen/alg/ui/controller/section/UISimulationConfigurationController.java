@@ -20,14 +20,15 @@ package de.swoeste.demo.gen.alg.ui.controller.section;
 
 import java.util.Random;
 
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
 import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfigurationModel;
+import de.swoeste.demo.gen.alg.ui.listener.AllowOnlyNumbersInRangeTextChangeListener;
 import de.swoeste.demo.gen.alg.ui.listener.AllowOnlyNumbersTextChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 
 /**
  * @author swoeste
@@ -35,43 +36,34 @@ import javafx.scene.control.Tooltip;
 public class UISimulationConfigurationController extends AbstractUISectionController {
 
     private final UISimulationConfigurationModel model;
-    private final Random                    random;
+    private final Random                         random;
 
     @FXML
-    private Button                          btnCreatureSeedRandom;
+    private ComboBox<ActivationFunctionType>     cbActivationFunction;
 
     @FXML
-    private Button                          btnWorldSeedRandom;
+    private TextField                            txtWorldSeed;
 
     @FXML
-    private Slider                          sldrWorldWidth;
+    private Button                               btnWorldSeedRandom;
 
     @FXML
-    private Tooltip                         ttipWorldWidth;
+    private TextField                            txtWorldWidth;
 
     @FXML
-    private Slider                          sldrWorldHeight;
+    private TextField                            txtWorldHeight;
 
     @FXML
-    private Tooltip                         ttipWorldHeight;
+    private TextField                            txtTileSize;
 
     @FXML
-    private Slider                          sldrTileSize;
+    private TextField                            txtCreatureSeed;
 
     @FXML
-    private Tooltip                         ttipTileSize;
+    private Button                               btnCreatureSeedRandom;
 
     @FXML
-    private Slider                          sldrCreatureAmount;
-
-    @FXML
-    private Tooltip                         ttipCreatureAmount;
-
-    @FXML
-    private TextField                       txtWorldSeed;
-
-    @FXML
-    private TextField                       txtCreatureSeed;
+    private TextField                            txtCreatureAmount;
 
     public UISimulationConfigurationController() {
         this.model = getBackingBean().getSimulationConfiguration();
@@ -80,33 +72,44 @@ public class UISimulationConfigurationController extends AbstractUISectionContro
 
     @FXML
     void initialize() {
-        initializeToolTips();
         initializeNumericTextFields();
+        initializeComboBox();
         initializeBindings();
-    }
-
-    private void initializeToolTips() {
-        bindTooltipValueToSliderValue(this.ttipWorldWidth, this.sldrWorldWidth);
-        bindTooltipValueToSliderValue(this.ttipWorldHeight, this.sldrWorldHeight);
-        bindTooltipValueToSliderValue(this.ttipTileSize, this.sldrTileSize);
-        bindTooltipValueToSliderValue(this.ttipCreatureAmount, this.sldrCreatureAmount);
     }
 
     private void initializeNumericTextFields() {
         this.txtWorldSeed.textProperty().addListener(new AllowOnlyNumbersTextChangeListener(this.txtWorldSeed));
         this.txtWorldSeed.setText(String.valueOf(this.random.nextInt()));
 
+        this.txtWorldWidth.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtWorldWidth, 2, 100));
+        this.txtWorldWidth.setText("20"); //$NON-NLS-1$
+
+        this.txtWorldHeight.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtWorldHeight, 2, 100));
+        this.txtWorldHeight.setText("20"); //$NON-NLS-1$
+
+        this.txtTileSize.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtTileSize, 20, 200));
+        this.txtTileSize.setText("20"); //$NON-NLS-1$
+
         this.txtCreatureSeed.textProperty().addListener(new AllowOnlyNumbersTextChangeListener(this.txtCreatureSeed));
         this.txtCreatureSeed.setText(String.valueOf(this.random.nextInt()));
+
+        this.txtCreatureAmount.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtCreatureAmount, 0, 100));
+        this.txtCreatureAmount.setText("25"); //$NON-NLS-1$
+    }
+
+    private void initializeComboBox() {
+        this.cbActivationFunction.getItems().setAll(ActivationFunctionType.values());
+        this.cbActivationFunction.setValue(ActivationFunctionType.TANH);
     }
 
     private void initializeBindings() {
+        this.model.getActivationFunction().bind(this.cbActivationFunction.valueProperty());
         this.model.getWorldSeed().bind(this.txtWorldSeed.textProperty());
-        this.model.getWorldWidth().bind(this.sldrWorldWidth.valueProperty());
-        this.model.getWorldHeight().bind(this.sldrWorldHeight.valueProperty());
-        this.model.getTileSize().bind(this.sldrTileSize.valueProperty());
+        this.model.getWorldWidth().bind(this.txtWorldWidth.textProperty());
+        this.model.getWorldHeight().bind(this.txtWorldHeight.textProperty());
+        this.model.getTileSize().bind(this.txtTileSize.textProperty());
         this.model.getCreatureSeed().bind(this.txtCreatureSeed.textProperty());
-        this.model.getCreatureAmount().bind(this.sldrCreatureAmount.valueProperty());
+        this.model.getCreatureAmount().bind(this.txtCreatureAmount.textProperty());
     }
 
     @FXML

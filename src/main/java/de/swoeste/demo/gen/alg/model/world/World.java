@@ -78,7 +78,8 @@ public class World implements SimpleEventListener {
         this.tileFactory = new TileFactory(config.getWorldSeed());
         this.tiles = new ArrayList<>(config.getWorldWidthTiles() * config.getWorldHeightTiles());
 
-        this.creatureFactory = new CreatureFactory(config.getCreatureSeed());
+        // TODO die ganze config übergeben?
+        this.creatureFactory = new CreatureFactory(config.getActivationFunction(), config.getCreatureSeed());
         this.creatures = new ArrayList<>();
         this.creaturesHistory = new SortedList<>(new ArrayList<>(), new CreatureAttributeComparator(CreatureAttribute.AGE));
         this.creaturePositionTracker = createCreaturePositionTracker();

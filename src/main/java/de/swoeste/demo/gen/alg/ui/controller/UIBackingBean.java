@@ -43,7 +43,7 @@ public class UIBackingBean {
 
     private static final UIBackingBean           INSTANCE       = new UIBackingBean();
     private static final DecimalFormat           DECIMAL_FORMAT = new DecimalFormat("#.##"); //$NON-NLS-1$
-    private static final DecimalFormat           INTEGER_FORMAT = new DecimalFormat("#");                                                                                  //$NON-NLS-1$
+    private static final DecimalFormat           INTEGER_FORMAT = new DecimalFormat("#");                                                                                        //$NON-NLS-1$
 
     private final UIWorldModel                   control;
     private final UICreatureHistoryModel         creatureHistory;
@@ -134,12 +134,13 @@ public class UIBackingBean {
         shutdownSimulation();
 
         final Configuration configuration = new Configuration();
+        configuration.setActivationFunction(this.simulationConfiguration.getActivationFunctionValue());
         configuration.setWorldSeed(Integer.valueOf(this.simulationConfiguration.getWorldSeedValue()));
-        configuration.setWorldWidthTiles(this.simulationConfiguration.getWorldWithValue());
-        configuration.setWorldHeightTiles(this.simulationConfiguration.getWorldHeightValue());
-        configuration.setTileSize(this.simulationConfiguration.getTileSizeValue());
+        configuration.setWorldWidthTiles(Integer.valueOf(this.simulationConfiguration.getWorldWithValue()));
+        configuration.setWorldHeightTiles(Integer.valueOf(this.simulationConfiguration.getWorldHeightValue()));
+        configuration.setTileSize(Integer.valueOf(this.simulationConfiguration.getTileSizeValue()));
         configuration.setCreatureSeed(Integer.valueOf(this.simulationConfiguration.getCreatureSeedValue()));
-        configuration.setCreatureAmount(this.simulationConfiguration.getCreatureAmountValue());
+        configuration.setCreatureAmount(Integer.valueOf(this.simulationConfiguration.getCreatureAmountValue()));
 
         this.simulation = new Simulation(configuration);
         this.world = new UIWorld(this.simulation.getWorld());

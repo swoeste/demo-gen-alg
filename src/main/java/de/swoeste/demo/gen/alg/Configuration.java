@@ -20,26 +20,32 @@ package de.swoeste.demo.gen.alg;
 
 import java.util.Random;
 
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
+
 /**
  * @author swoeste
  */
 public class Configuration {
 
+    // general
+    private ActivationFunctionType activationFunction;
+
     // world
-    private int worldWidthTiles;
-    private int worldHeightTiles;
-    private int worldWidthPixel;
-    private int worldHeightPixel;
-    private int worldSeed;
+    private int                    worldWidthTiles;
+    private int                    worldHeightTiles;
+    private int                    worldWidthPixel;
+    private int                    worldHeightPixel;
+    private int                    worldSeed;
 
     // tile
-    private int tileSize;
+    private int                    tileSize;
 
     // creature
-    private int creatureAmount;
-    private int creatureSeed;
+    private int                    creatureAmount;
+    private int                    creatureSeed;
 
     public Configuration() {
+        this.activationFunction = ActivationFunctionType.TANH;
         this.tileSize = 20;
         this.worldWidthTiles = 50;
         this.worldHeightTiles = 50;
@@ -48,6 +54,14 @@ public class Configuration {
         this.worldSeed = new Random().nextInt();
         this.creatureAmount = 25;
         this.creatureSeed = new Random().nextInt();
+    }
+
+    public ActivationFunctionType getActivationFunction() {
+        return this.activationFunction;
+    }
+
+    public void setActivationFunction(final ActivationFunctionType activationFunction) {
+        this.activationFunction = activationFunction;
     }
 
     public int getWorldWidthTiles() {

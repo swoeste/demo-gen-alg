@@ -56,7 +56,8 @@ import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeMoveDistanceS
 import de.swoeste.demo.gen.alg.model.creature.skill.decision.ChangeViewDirectionSkill;
 import de.swoeste.demo.gen.alg.model.neural.network.Network;
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
-import de.swoeste.demo.gen.alg.model.neural.network.activation.TanH;
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionFactory;
+import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.util.NumberUtil;
 
@@ -74,11 +75,10 @@ public class CreatureFactory {
     // TODO implement this a little bit more nicely
     private final ActivationFunction activationFunction;
 
-    public CreatureFactory(final int seed) {
+    public CreatureFactory(final ActivationFunctionType activationFunctionType, final int seed) {
         this.seed = seed;
         this.random = new Random(seed);
-        this.activationFunction = new TanH();
-        // this.activationFunction = new Sigmoid();
+        this.activationFunction = ActivationFunctionFactory.create(activationFunctionType);
     }
 
     public final Creature create(final World world, final Vector position) {
