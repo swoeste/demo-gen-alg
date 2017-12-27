@@ -20,9 +20,6 @@ package de.swoeste.demo.gen.alg;
 
 import java.text.MessageFormat;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.util.SimpleExecutor;
 
@@ -31,16 +28,12 @@ import de.swoeste.demo.gen.alg.util.SimpleExecutor;
  */
 public class Simulation {
 
-    private static final Logger  LOG       = LoggerFactory.getLogger(Simulation.class);
-
     private static final long    MAX_DELAY = 1000;
 
-    private final Configuration  config;
     private final World          world;
     private final SimulationTask task;
 
     public Simulation(final Configuration config) {
-        this.config = config;
         this.world = new World(config);
 
         this.task = new SimulationTask(this.world);

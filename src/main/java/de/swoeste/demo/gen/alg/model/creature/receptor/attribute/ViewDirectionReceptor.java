@@ -18,9 +18,6 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.receptor.attribute;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 
@@ -28,8 +25,6 @@ import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
  * @author swoeste
  */
 public class ViewDirectionReceptor extends AbstractAttributeReceptor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ViewDirectionReceptor.class);
 
     public ViewDirectionReceptor(final Creature creature) {
         super(creature);
