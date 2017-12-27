@@ -51,18 +51,18 @@ public class AlignedRectangleTest {
     public void testGetOrigin() {
         final AlignedRectangle rectangle = new AlignedRectangle(5, 5, 5, 5);
         final Vector origin = rectangle.getOrigin();
-        Assert.assertEquals(origin.getX(), 5);
-        Assert.assertEquals(origin.getY(), 5);
+        Assert.assertEquals(origin.getX(), 5.0);
+        Assert.assertEquals(origin.getY(), 5.0);
     }
 
     public void testGetWidth() {
         final AlignedRectangle rectangle = new AlignedRectangle(5, 5, 5, 5);
-        Assert.assertEquals(rectangle.getWidth(), 5);
+        Assert.assertEquals(rectangle.getWidth(), 5.0);
     }
 
     public void testGetHeight() {
         final AlignedRectangle rectangle = new AlignedRectangle(5, 5, 5, 5);
-        Assert.assertEquals(rectangle.getHeight(), 5);
+        Assert.assertEquals(rectangle.getHeight(), 5.0);
     }
 
 }
