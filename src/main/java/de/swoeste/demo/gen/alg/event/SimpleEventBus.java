@@ -27,8 +27,6 @@ import java.util.List;
  */
 public class SimpleEventBus {
 
-    // TODO write a small test for this
-
     private final EnumMap<SimpleEventType, List<SimpleEventListener>> listeners;
 
     public SimpleEventBus() {
@@ -43,11 +41,15 @@ public class SimpleEventBus {
     }
 
     public void registerListener(final SimpleEventType eventType, final SimpleEventListener listener) {
-        this.listeners.get(eventType).add(listener);
+        if (listener != null) {
+            this.listeners.get(eventType).add(listener);
+        }
     }
 
     public void unregisterListener(final SimpleEventType eventType, final SimpleEventListener listener) {
-        this.listeners.get(eventType).remove(listener);
+        if (listener != null) {
+            this.listeners.get(eventType).remove(listener);
+        }
     }
 
     public void fireEvent(final SimpleEventType eventType, final Object eventData) {
@@ -55,8 +57,10 @@ public class SimpleEventBus {
     }
 
     public void fireEvent(final SimpleEvent event) {
-        final List<SimpleEventListener> eventListener = this.listeners.get(event.getType());
-        eventListener.stream().forEach(entry -> entry.handle(event));
+        if (event != null) {
+            final List<SimpleEventListener> eventListener = this.listeners.get(event.getType());
+            eventListener.stream().forEach(entry -> entry.handle(event));
+        }
     }
 
 }

@@ -39,4 +39,5 @@ public class CreatureAttributeComparator implements Comparator<Creature> {
     public int compare(final Creature o1, final Creature o2) {
         return Integer.compare(o1.getAttributeValue(this.attribute), o2.getAttributeValue(this.attribute)) * -1;
     }
+
 }

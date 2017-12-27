@@ -21,20 +21,8 @@ package de.swoeste.demo.gen.alg.model.creature.sensor;
 /**
  * @author swoeste
  */
-public abstract class AbstractSensor implements Sensor {
+public enum SensorType {
 
-    // TODO identify best working normalization method
-
-    protected double normalizeInputValue(final int value, final int maxValue) {
-
-        // double result = (value - (maxValue / 2.0)) / (maxValue / 2.0);
-
-        double result = (1.0 * value) / (1.0 * maxValue);
-        if (result <= 0) {
-            result = -1;
-        }
-
-        return result;
-    }
+    HEALTH, HUNGER, VISION_CREATURE, VISION_TILE_FOOD, VISION_TILE_COLOR;
 
 }

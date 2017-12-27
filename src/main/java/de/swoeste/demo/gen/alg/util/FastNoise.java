@@ -1,42 +1,32 @@
-//
-// MIT License
-//
-// Copyright(c) 2017 Jordan Peck
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files(the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions :
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-//
-// The developer's email is jorzixdan.me2@gzixmail.com (for great email, take
-// off every 'zix'.)
-//
+// NOSONAR_THIS_FILE
+
+/*
+ * MIT License
+ *
+ * Copyright(c) 2017 Jordan Peck
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+ * documentation files(the "Software"), to deal in the Software without restriction, including without limitation the
+ * rights to use, copy, modify, merge, publish, distribute, sublicense, and / or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to the following conditions :
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ * WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * The developer's email is jorzixdan.me2@gzixmail.com (for great email, take off every 'zix'.)
+ */
 
 package de.swoeste.demo.gen.alg.util;
-
-import com.sun.javafx.geom.Vec2f;
-import com.sun.javafx.geom.Vec3f;
 
 /**
  * @author jpeck
  */
 public class FastNoise {
-
-    // FIXME fix sonar issues
-    // FIXME replace com sun with own implementation
 
     public enum NoiseType {
         VALUE, VALUE_FRACTAL, PERLIN, PERLIN_FRACTAL, SIMPLEX, SIMPLEX_FRACTAL, CELLULAR, WHITE_NOISE, CUBIC, CUBIC_FRACTAL
@@ -2337,6 +2327,27 @@ public class FastNoise {
 
         v2.x += lerp(lx0x, lx1x, ys) * perturbAmp;
         v2.y += lerp(ly0x, ly1x, ys) * perturbAmp;
+    }
+
+    /**
+     * A simple Vector implementation to remove dependency to {@code com.sun.javafx.geom.Vec2f}.
+     *
+     * @author swoeste
+     */
+    private final class Vec2f {
+        public float x;
+        public float y;
+    }
+
+    /**
+     * A simple Vector implementation to remove dependency to {@code com.sun.javafx.geom.Vec3f}.
+     *
+     * @author swoeste
+     */
+    private final class Vec3f {
+        public float x;
+        public float y;
+        public float z;
     }
 
 }

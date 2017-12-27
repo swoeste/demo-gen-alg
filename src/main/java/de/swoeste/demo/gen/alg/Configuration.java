@@ -18,6 +18,7 @@
  */
 package de.swoeste.demo.gen.alg;
 
+import java.text.MessageFormat;
 import java.util.Random;
 
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
@@ -122,6 +123,14 @@ public class Configuration {
 
     public void setCreatureSeed(final int creatureSeed) {
         this.creatureSeed = creatureSeed;
+    }
+
+    @Override
+    public String toString() {
+        return MessageFormat.format(
+                "Configuration [activationFunction={0}, worldWidthTiles={1}, worldHeightTiles={2}, worldWidthPixel={3}, worldHeightPixel={4}, worldSeed={5}, tileSize={6}, creatureAmount={7}, creatureSeed={8}]", //$NON-NLS-1$
+                this.activationFunction, this.worldWidthTiles, this.worldHeightTiles, this.worldWidthPixel, this.worldHeightPixel, this.worldSeed, this.tileSize,
+                this.creatureAmount, this.creatureSeed);
     }
 
 }

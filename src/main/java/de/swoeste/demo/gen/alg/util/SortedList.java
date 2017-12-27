@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * TODO JAVADOC
- *
  * @author swoeste
  */
 public class SortedList<E> implements List<E> {
+
+    // TODO JAVADOC
 
     private final Comparator<E> comparator;
     private final List<E>       list;
