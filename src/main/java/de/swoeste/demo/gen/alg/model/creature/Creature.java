@@ -22,12 +22,12 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
 import de.swoeste.demo.gen.alg.model.creature.receptor.AttributeReceptor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.Sensor;
 import de.swoeste.demo.gen.alg.model.creature.skill.Skill;
 import de.swoeste.demo.gen.alg.model.neural.network.Network;
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 import de.swoeste.demo.gen.alg.position.Identifiable;
 import de.swoeste.demo.gen.alg.position.Shapeaware;
 
@@ -97,11 +97,11 @@ public class Creature implements Identifiable, Shapeaware {
     }
 
     @Override
-    public Rectangle getShape() {
+    public AlignedRectangle getShape() {
         final int posX = getAttributeValue(CreatureAttribute.POSITION_X);
         final int posY = getAttributeValue(CreatureAttribute.POSITION_Y);
         final int size = getAttributeValue(CreatureAttribute.SIZE);
-        return new Rectangle(posX, posY, size, size);
+        return new AlignedRectangle(posX, posY, size, size);
     }
 
     public void update() {

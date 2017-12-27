@@ -18,16 +18,58 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
+import java.util.List;
+
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Triangle;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects other creatures in the left view area of the sensor owner.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * * * *
+ *      * * | * *
+ *      * 0 | * *
+ *      \ * | * *
+ *      * \ | * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionLeftCreatureSensor extends AbstractCreatureVisionSensor {
 
     public VisionLeftCreatureSensor(final World world, final Creature creature) {
         super(world, creature);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean collidesWithCreature(final Creature creature, final Vector position, final List<Creature> creaturesInArea) {
+        final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int viewArcDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_ARC);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
+
+        final double centerViewDirectionRadians = Math.toRadians(viewDirectionDegrees);
+        final double leftViewAreaBorderRadians = Math.toRadians(viewDirectionDegrees - (viewArcDegrees / 2.0));
+
+        final Vector centerLineOfSightEndPoint = position.project(centerViewDirectionRadians, viewDistance);
+        final Vector leftLineOfSightEndPoint = position.project(leftViewAreaBorderRadians, viewDistance);
+
+        final Triangle leftViewArea = new Triangle(position, centerLineOfSightEndPoint, leftLineOfSightEndPoint);
+
+        for (final Creature creatureInArea : creaturesInArea) {
+            if (leftViewArea.collidesWith(creatureInArea.getShape())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

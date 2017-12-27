@@ -18,8 +18,8 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
@@ -41,9 +41,7 @@ public abstract class AbstractTileFoodVisionSensor extends AbstractVisionSensor 
             final Tile tile = world.getTile(visionPosition);
             final int food = tile.getAttributeValue(TileAttribute.FOOD);
             final int maxFood = tile.getAttributeValue(TileAttribute.MAX_FOOD);
-            final double value = normalizeInputValue(food, maxFood);
-            // TODO logging debug?
-            return value;
+            return normalizeInputValue(food, maxFood);
         } else {
             return 0.0;
         }

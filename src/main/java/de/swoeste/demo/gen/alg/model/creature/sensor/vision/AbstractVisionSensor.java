@@ -18,13 +18,10 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.creature.sensor.AbstractSensor;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
@@ -32,10 +29,8 @@ import de.swoeste.demo.gen.alg.model.world.World;
  */
 public abstract class AbstractVisionSensor extends AbstractSensor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AbstractVisionSensor.class);
-
-    private final World         world;
-    private final Creature      creature;
+    private final World    world;
+    private final Creature creature;
 
     public AbstractVisionSensor(final World world, final Creature creature) {
         this.world = world;
@@ -48,7 +43,6 @@ public abstract class AbstractVisionSensor extends AbstractSensor {
         final int x = this.creature.getAttributeValue(CreatureAttribute.POSITION_X);
         final int y = this.creature.getAttributeValue(CreatureAttribute.POSITION_Y);
         final Vector position = new Vector(x, y);
-        // TODO logging debug?
         return getSensorValue(this.world, this.creature, position);
     }
 

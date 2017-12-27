@@ -18,20 +18,28 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects the food amount of the tile in front of the sensor owner.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * 0 * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionCenterTileFoodSensor extends AbstractTileFoodVisionSensor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(VisionCenterTileFoodSensor.class);
 
     public VisionCenterTileFoodSensor(final World world, final Creature creature) {
         super(world, creature);
@@ -41,11 +49,10 @@ public class VisionCenterTileFoodSensor extends AbstractTileFoodVisionSensor {
     @Override
     protected Vector getPosition(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
+
         final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
-
-        final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        return position.project(viewDirectionRadians, visionSize);
-
+        return position.project(viewDirectionRadians, viewDistance);
     }
 
 }

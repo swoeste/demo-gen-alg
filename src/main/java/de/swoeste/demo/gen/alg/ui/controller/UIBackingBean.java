@@ -22,7 +22,7 @@ import java.text.DecimalFormat;
 
 import de.swoeste.demo.gen.alg.Configuration;
 import de.swoeste.demo.gen.alg.Simulation;
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.ui.controller.model.UIWorldModel;
 import de.swoeste.demo.gen.alg.ui.controller.section.model.UICreatureHistoryModel;
 import de.swoeste.demo.gen.alg.ui.controller.section.model.UIRuntimeInformationModel;

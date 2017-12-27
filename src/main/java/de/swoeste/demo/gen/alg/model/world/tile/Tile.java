@@ -18,7 +18,7 @@
  */
 package de.swoeste.demo.gen.alg.model.world.tile;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 
 /**
  * @author swoeste
@@ -36,8 +36,6 @@ public interface Tile {
     boolean isWalkable();
 
     void update();
-
-    boolean hasAttributeValue(final TileAttribute attribute);
 
     int getAttributeValue(TileAttribute attribute);
 

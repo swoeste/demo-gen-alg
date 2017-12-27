@@ -18,9 +18,6 @@
  */
 package de.swoeste.demo.gen.alg.model;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -28,13 +25,15 @@ import java.util.Locale;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
+
 /**
  * @author swoeste
  */
 @Test
 public class VectorTest {
 
-    private final static DecimalFormat DF = new DecimalFormat("#.###", DecimalFormatSymbols.getInstance(Locale.ENGLISH)); //$NON-NLS-1$
+    private final static DecimalFormat DF = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH)); //$NON-NLS-1$
 
     public void testAdd() {
         final Vector base = new Vector(4.5, 3.5);
@@ -96,37 +95,45 @@ public class VectorTest {
         Assert.assertEquals(DF.format(result.getY()), "0.4"); //$NON-NLS-1$
     }
 
-    public void testDistance() {
+    public void testDistanceOn1Axis() {
+        final Vector pointA = new Vector(4.6, 2.4);
+        final Vector pointB = new Vector(0.5, 2.4);
+        final double resultAB = pointA.distance(pointB);
+        final double resultBA = pointB.distance(pointA);
+        Assert.assertEquals(resultAB, resultBA);
+        Assert.assertEquals(DF.format(resultAB), "4.1"); //$NON-NLS-1$
+    }
+
+    public void testDistanceOn2Axis() {
         final Vector pointA = new Vector(4.6, 2.4);
         final Vector pointB = new Vector(0.5, -0.5);
         final double resultAB = pointA.distance(pointB);
         final double resultBA = pointB.distance(pointA);
         Assert.assertEquals(resultAB, resultBA);
-        Assert.assertEquals(Math.round(resultAB), 5L);
+        Assert.assertEquals(DF.format(resultAB), "5.02"); //$NON-NLS-1$
     }
 
-    public void testRound() {
-        final Vector base = new Vector(4.49, 2.51);
-        final Vector result = base.round();
-        Assert.assertEquals(result.getX(), 4.0);
-        Assert.assertEquals(result.getY(), 3.0);
+    public void testDotProduct() {
+        final Vector pointA = new Vector(1.25, 2);
+        final Vector pointB = new Vector(0.5, 4);
+        final double resultAB = pointA.dotProduct(pointB);
+        final double resultBA = pointB.dotProduct(pointA);
+        Assert.assertEquals(resultAB, resultBA);
+        Assert.assertEquals(DF.format(resultAB), "8.62"); //$NON-NLS-1$
     }
 
-    public void testIsInTriangle() {
-        final Vector triangleP1 = new Vector(-1, -1);
-        final Vector triangleP2 = new Vector(5, 1);
-        final Vector triangleP3 = new Vector(1, 5);
+    public void testNormalize() {
+        final Vector point = new Vector(20, 10);
+        final Vector normalize = point.normalize();
+        Assert.assertEquals(normalize.getX(), 2 / Math.sqrt(5));
+        Assert.assertEquals(normalize.getY(), 1 / Math.sqrt(5));
+    }
 
-        assertTrue(new Vector(0, 0).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertTrue(new Vector(3, 1).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertTrue(new Vector(1, 3).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertTrue(new Vector(3, 3).isInTriangle(triangleP1, triangleP2, triangleP3));
-
-        assertFalse(new Vector(-2, -2).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertFalse(new Vector(6, 1).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertFalse(new Vector(1, 6).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertFalse(new Vector(-1, 5).isInTriangle(triangleP1, triangleP2, triangleP3));
-        assertFalse(new Vector(5, -1).isInTriangle(triangleP1, triangleP2, triangleP3));
+    public void testPerpendicularize() {
+        final Vector point = new Vector(0.5, 4);
+        final Vector perpendicularize = point.perpendicularize();
+        Assert.assertEquals(perpendicularize.getX(), 4.0);
+        Assert.assertEquals(perpendicularize.getY(), -0.5);
     }
 
 }

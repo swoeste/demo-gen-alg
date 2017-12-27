@@ -18,20 +18,28 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects the food amount of the tile which intersects the left outer point of the view area.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * * * *
+ *      * * | * *
+ *      * * | * *
+ *      0 * | * *
+ *      * \ | * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionLeftTileFoodSensor extends AbstractTileFoodVisionSensor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(VisionLeftTileFoodSensor.class);
 
     public VisionLeftTileFoodSensor(final World world, final Creature creature) {
         super(world, creature);
@@ -41,10 +49,11 @@ public class VisionLeftTileFoodSensor extends AbstractTileFoodVisionSensor {
     @Override
     protected Vector getPosition(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
-        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees + 45.0);
+        final int viewArcDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_ARC);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
 
-        final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        return position.project(viewDirectionRadians, visionSize);
+        final double leftViewAreaBorderRadians = Math.toRadians(viewDirectionDegrees - (viewArcDegrees / 2.0));
+        return position.project(leftViewAreaBorderRadians, viewDistance);
     }
 
 }

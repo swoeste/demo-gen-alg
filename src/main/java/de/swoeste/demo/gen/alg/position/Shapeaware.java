@@ -18,13 +18,17 @@
  */
 package de.swoeste.demo.gen.alg.position;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 
 /**
  * @author swoeste
  */
 public interface Shapeaware {
 
-    Rectangle getShape();
+    // TODO javadoc!
+
+    // this is only a rough shape !!!
+
+    AlignedRectangle getShape();
 
 }

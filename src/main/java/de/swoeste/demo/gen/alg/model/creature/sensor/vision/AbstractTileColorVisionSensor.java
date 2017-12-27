@@ -18,8 +18,8 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
@@ -42,9 +42,7 @@ public abstract class AbstractTileColorVisionSensor extends AbstractVisionSensor
             final int r = tile.getAttributeValue(TileAttribute.COLOR_R);
             final int g = tile.getAttributeValue(TileAttribute.COLOR_G);
             final int b = tile.getAttributeValue(TileAttribute.COLOR_B);
-            final double value = getNumberRepresentation(r, g, b);
-            // TODO logging debug?
-            return value;
+            return getNumberRepresentation(r, g, b);
         } else {
             return 0.0;
         }

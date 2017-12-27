@@ -16,26 +16,16 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.world.tile;
+package de.swoeste.demo.gen.alg.model;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
-import de.swoeste.demo.gen.alg.model.polygon.Vector;
+import org.testng.annotations.Test;
 
 /**
  * @author swoeste
  */
-public class WaterTile extends AbstractTile {
+@Test
+public class QuadrilateralTest {
 
-    public WaterTile(final Vector position, final int size, final double height) {
-        super(position, size, height, false, false);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    void init() {
-        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.BLUE.getRed());
-        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.BLUE.getGreen());
-        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.BLUE.getBlue());
-    }
+    // TODO implement
 
 }

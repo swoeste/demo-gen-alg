@@ -18,20 +18,28 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects the color of the tile which intersects the right outer point of the view area.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * * * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * 0
+ *      * * | / *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionRightTileColorSensor extends AbstractTileColorVisionSensor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(VisionRightTileColorSensor.class);
 
     public VisionRightTileColorSensor(final World world, final Creature creature) {
         super(world, creature);
@@ -41,10 +49,11 @@ public class VisionRightTileColorSensor extends AbstractTileColorVisionSensor {
     @Override
     protected Vector getPosition(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
-        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees - 45.0);
+        final int viewArcDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_ARC);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
 
-        final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        return position.project(viewDirectionRadians, visionSize);
+        final double rightViewAreaBorderRadians = Math.toRadians(viewDirectionDegrees + (viewArcDegrees / 2.0));
+        return position.project(rightViewAreaBorderRadians, viewDistance);
     }
 
 }

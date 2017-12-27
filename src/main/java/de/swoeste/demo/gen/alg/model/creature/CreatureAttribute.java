@@ -31,7 +31,7 @@ public enum CreatureAttribute {
     THIRST(0), MAX_THIRST(100), //
     POSITION_X(0), POSITION_Y(0),//
     COLOR_R(0), COLOR_G(0), COLOR_B(0),//
-    VISION_SIZE(40), //
+    VIEW_DISTANCE(40), VIEW_ARC(90), //
 
     // SKill Attributes
     EAT(-1), //

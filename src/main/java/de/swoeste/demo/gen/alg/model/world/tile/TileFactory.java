@@ -22,7 +22,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Random;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 
 /**
  * @author swoeste

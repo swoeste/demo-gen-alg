@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import de.swoeste.demo.gen.alg.model.world.tile.TileAttribute;
 import javafx.scene.canvas.GraphicsContext;

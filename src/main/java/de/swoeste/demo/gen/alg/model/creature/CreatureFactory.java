@@ -27,7 +27,6 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.receptor.AttributeReceptor;
 import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.MoveDirectionReceptor;
 import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.MoveDistanceReceptor;
@@ -58,6 +57,7 @@ import de.swoeste.demo.gen.alg.model.neural.network.Network;
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunction;
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionFactory;
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.util.NumberUtil;
 
@@ -68,12 +68,11 @@ public class CreatureFactory {
 
     private static final Logger      LOG = LoggerFactory.getLogger(CreatureFactory.class);
 
-    private int                      id;
     private final int                seed;
     private final Random             random;
-
-    // TODO implement this a little bit more nicely
     private final ActivationFunction activationFunction;
+
+    private int                      id;
 
     public CreatureFactory(final ActivationFunctionType activationFunctionType, final int seed) {
         this.seed = seed;

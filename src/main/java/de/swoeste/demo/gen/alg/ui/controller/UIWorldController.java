@@ -14,7 +14,7 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.ui.controller.model.UIWorldModel;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;

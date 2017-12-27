@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model;
+package de.swoeste.demo.gen.alg.model.polygon;
 
 import java.text.MessageFormat;
 
@@ -25,14 +25,8 @@ import java.text.MessageFormat;
  */
 public class Vector {
 
-    // TODO check if we should move some methods to a util class
-
     private final double x;
     private final double y;
-
-    public Vector(final Vector vector) {
-        this(vector.x, vector.y);
-    }
 
     public Vector(final int x, final int y) {
         this((double) x, (double) y);
@@ -58,9 +52,9 @@ public class Vector {
     }
 
     public Vector substract(final Vector vector) {
-        final double addX = this.x - vector.x;
-        final double addY = this.y - vector.y;
-        return new Vector(addX, addY);
+        final double subX = this.x - vector.x;
+        final double subY = this.y - vector.y;
+        return new Vector(subX, subY);
     }
 
     public Vector multiply(final double factor) {
@@ -88,26 +82,23 @@ public class Vector {
     }
 
     public double distance(final Vector vector) {
+        // http://mathworld.wolfram.com/Distance.html
         return Math.sqrt(Math.pow(vector.x - this.x, 2) + Math.pow(vector.y - this.y, 2));
     }
 
-    // TODO delete?
-    public Vector round() {
-        final double roundX = Math.round(this.x);
-        final double roundY = Math.round(this.y);
-        return new Vector(roundX, roundY);
+    public double dotProduct(final Vector b) {
+        // http://mathworld.wolfram.com/DotProduct.html
+        return (this.x * b.getX()) + (this.y * b.getY());
     }
 
-    // TODO move to extra util?
-    public boolean isInTriangle(final Vector p1, final Vector p2, final Vector p3) {
-        final boolean sideA = (((p2.y - p1.y) * (this.x - p1.x)) - ((p2.x - p1.x) * (this.y - p1.y))) > 0.0;
-        final boolean sideB = (((p3.y - p2.y) * (this.x - p2.x)) - ((p3.x - p2.x) * (this.y - p2.y))) > 0.0;
-        if (sideA != sideB) {
-            // fast exit, the point is already outside of the triangle
-            return false;
-        }
-        final boolean sideC = (((p1.y - p3.y) * (this.x - p3.x)) - ((p1.x - p3.x) * (this.y - p3.y))) > 0.0;
-        return (sideA == sideC);
+    public Vector normalize() {
+        // http://mathworld.wolfram.com/NormalizedVector.html
+        return divide(Math.sqrt((this.x * this.x) + (this.y * this.y)));
+    }
+
+    public Vector perpendicularize() {
+        // http://mathworld.wolfram.com/PerpendicularVector.html
+        return new Vector(this.y, this.x * -1);
     }
 
     /** {@inheritDoc} */

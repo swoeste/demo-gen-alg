@@ -18,20 +18,27 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
-import de.swoeste.demo.gen.alg.model.creature.sensor.HealthSensor;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects the food amount of the tile the sensor owner currently stand on.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * 0 * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionCurrentTileFoodSensor extends AbstractTileFoodVisionSensor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(HealthSensor.class);
 
     public VisionCurrentTileFoodSensor(final World world, final Creature creature) {
         super(world, creature);

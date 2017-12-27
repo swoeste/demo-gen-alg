@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 
 /**
  * A partition can store MAX_ELEMENTS before it splits itself into 4 sub-partitions. Each sub-partition is a partition
@@ -56,35 +56,35 @@ public final class Partition<T> {
     private final int                    minX;
     private final int                    midX;
     private final int                    maxX;
-    private final int                    sizeX;
-    private final int                    midY;
-    private final int                    sizeY;
+    private final int                    width;
     private final int                    minY;
+    private final int                    midY;
     private final int                    maxY;
+    private final int                    height;
 
     private boolean                      splitted;
 
-    public Partition(final Rectangle partitionShape) {
-        this(0, partitionShape.getPosX(), partitionShape.getPosY(), partitionShape.getSizeX(), partitionShape.getSizeY());
+    public Partition(final AlignedRectangle partitionShape) {
+        this(0, (int) partitionShape.getOrigin().getX(), (int) partitionShape.getOrigin().getY(), (int) partitionShape.getWidth(), (int) partitionShape.getHeight());
     }
 
-    private Partition(final int level, final int minX, final int minY, final int sizeX, final int sizeY) {
+    private Partition(final int level, final int minX, final int minY, final int width, final int height) {
         this.level = level;
         this.minX = minX;
         this.minY = minY;
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.maxX = minX + sizeX;
-        this.maxY = minY + sizeY;
-        this.midX = minX + (sizeX / 2);
-        this.midY = minY + (sizeY / 2);
+        this.width = width;
+        this.height = height;
+        this.maxX = minX + width;
+        this.maxY = minY + height;
+        this.midX = minX + (width / 2);
+        this.midY = minY + (height / 2);
         this.partitions = new Partition[4];
         this.elements = new ArrayList<>();
         this.splitted = false;
     }
 
-    public Rectangle getPartitionShape() {
-        return new Rectangle(this.minX, this.minY, this.sizeX, this.sizeY);
+    public AlignedRectangle getPartitionShape() {
+        return new AlignedRectangle(this.minX, this.minY, this.width, this.height);
     }
 
     public boolean removeElement(final Partitionable<T> partitionable) {
@@ -93,19 +93,19 @@ public final class Partition<T> {
     }
 
     public int countElements() {
-        int size = this.elements.size();
+        int count = this.elements.size();
         for (Partition<T> partition : this.partitions) {
             if (partition != null) {
-                size = size + partition.countElements();
+                count = count + partition.countElements();
             }
         }
-        return size;
+        return count;
     }
 
     public void insert(final Partitionable<T> partitionable) {
         if (this.splitted) {
-            final Rectangle shape = partitionable.getElementShape();
-            final int index = getIndex(shape.getPosX(), shape.getPosY(), shape.getSizeX(), shape.getSizeY());
+            final AlignedRectangle shape = partitionable.getElementShape();
+            final int index = getIndex(shape.getOrigin().getX(), shape.getOrigin().getY(), shape.getWidth(), shape.getHeight());
             if (index != -1) {
                 this.partitions[index].insert(partitionable);
                 return;
@@ -123,17 +123,17 @@ public final class Partition<T> {
         }
     }
 
-    public List<Partitionable<T>> retrieve(final Rectangle shape) {
-        return retrieve(shape.getPosX(), shape.getPosY(), shape.getSizeX(), shape.getSizeY());
+    public List<Partitionable<T>> retrieve(final AlignedRectangle shape) {
+        return retrieve(shape.getOrigin().getX(), shape.getOrigin().getY(), shape.getWidth(), shape.getHeight());
     }
 
-    public List<Partitionable<T>> retrieve(final int x, final int y, final int sizeX, final int sizeY) {
+    public List<Partitionable<T>> retrieve(final double x, final double y, final double width, final double height) {
         final List<Partitionable<T>> result = new ArrayList<>();
-        retrieve(result, x, y, sizeX, sizeY);
+        retrieve(result, x, y, width, height);
         return result;
     }
 
-    private void retrieve(final List<Partitionable<T>> returnObjects, final int x, final int y, final int sizeX, final int sizeY) {
+    private void retrieve(final List<Partitionable<T>> returnObjects, final double x, final double y, final double sizeX, final double sizeY) {
         final int index = getIndex(x, y, sizeX, sizeY);
         if (this.splitted && (index != -1)) {
             this.partitions[index].retrieve(returnObjects, x, y, sizeX, sizeY);
@@ -141,12 +141,12 @@ public final class Partition<T> {
         returnObjects.addAll(this.elements);
     }
 
-    private int getIndex(final int x, final int y, final int sizeX, final int sizeY) {
-        final boolean bottomPartition = ((y < this.midY) && ((y + sizeY) < this.midY));
-        final boolean topPartition = ((y >= this.midY) && ((y + sizeY) < this.maxY));
+    private int getIndex(final double originX, final double originY, final double width, final double height) {
+        final boolean bottomPartition = ((originY < this.midY) && ((originY + height) < this.midY));
+        final boolean topPartition = ((originY >= this.midY) && ((originY + height) < this.maxY));
 
-        final boolean leftPartition = ((x < this.midX) && ((x + sizeX) < this.midX));
-        final boolean rightPartition = (x >= this.midX) && ((x + sizeX) < this.maxX);
+        final boolean leftPartition = ((originX < this.midX) && ((originX + width) < this.midX));
+        final boolean rightPartition = (originX >= this.midX) && ((originX + width) < this.maxX);
 
         if (leftPartition) {
             if (bottomPartition) {
@@ -172,8 +172,8 @@ public final class Partition<T> {
         final Iterator<Partitionable<T>> iterator = this.elements.iterator();
         while (iterator.hasNext()) {
             final Partitionable<T> current = iterator.next();
-            final Rectangle shape = current.getElementShape();
-            final int index = getIndex(shape.getPosX(), shape.getPosY(), shape.getSizeX(), shape.getSizeY());
+            final AlignedRectangle shape = current.getElementShape();
+            final int index = getIndex(shape.getOrigin().getX(), shape.getOrigin().getY(), shape.getWidth(), shape.getHeight());
             if (index != -1) {
                 iterator.remove();
                 this.partitions[index].insert(current);

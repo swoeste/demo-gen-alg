@@ -18,7 +18,7 @@
  */
 package de.swoeste.demo.gen.alg.model.world.tile;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 
 /**
  * @author swoeste

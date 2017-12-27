@@ -16,26 +16,33 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.world.tile;
+package de.swoeste.demo.gen.alg.model.polygon;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
-import de.swoeste.demo.gen.alg.model.polygon.Vector;
+import java.util.List;
 
 /**
+ * A quadrilateral is a polygon with four edges and four vertices.
+ *
+ * <pre>
+ *   p1          p2
+ *    *-----------*
+ *     \           \
+ *      \           \
+ *       \           \
+ *        *-----------*
+ *        p0          p3
+ * </pre>
+ *
  * @author swoeste
  */
-public class WaterTile extends AbstractTile {
+public class Quadrilateral extends Polygon {
 
-    public WaterTile(final Vector position, final int size, final double height) {
-        super(position, size, height, false, false);
+    protected Quadrilateral(final List<Vector> points) {
+        super(points);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    void init() {
-        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.BLUE.getRed());
-        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.BLUE.getGreen());
-        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.BLUE.getBlue());
+    public Quadrilateral(final Vector p0, final Vector p1, final Vector p2, final Vector p3) {
+        super(p0, p1, p2, p3);
     }
 
 }

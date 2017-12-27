@@ -18,16 +18,56 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
+import java.util.List;
+
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects other creatures with direct contact to the sensor owner.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * * * *
+ *      * * 0 * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionCurrentCreatureSensor extends AbstractCreatureVisionSensor {
 
+    // TODO add a comment, we ignore the particular shape of the creature and assume it is a rectangle!
+
     public VisionCurrentCreatureSensor(final World world, final Creature creature) {
         super(world, creature);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected AlignedRectangle getDetectionShape(final Creature creature, final Vector position) {
+        return creature.getShape();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean collidesWithCreature(final Creature creature, final Vector position, final List<Creature> creaturesInArea) {
+        final AlignedRectangle creatureShape = creature.getShape();
+
+        for (Creature creatureInArea : creaturesInArea) {
+            final AlignedRectangle creatureInAreaShape = creatureInArea.getShape();
+            if (creatureShape.collidesWith(creatureInAreaShape)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

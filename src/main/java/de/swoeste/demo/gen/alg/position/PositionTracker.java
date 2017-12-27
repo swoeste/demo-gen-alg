@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 
 /**
  * @author swoeste
@@ -32,7 +32,7 @@ public class PositionTracker<T extends Identifiable & Shapeaware> {
     private final Partition<T>                       root;
     private final HashMap<Integer, Partitionable<T>> elements;
 
-    public PositionTracker(final Rectangle rootShape) {
+    public PositionTracker(final AlignedRectangle rootShape) {
         this.root = new Partition<>(rootShape);
         this.elements = new HashMap<>();
     }
@@ -43,7 +43,7 @@ public class PositionTracker<T extends Identifiable & Shapeaware> {
         final Partitionable<T> prevElement = this.elements.put(element.getId(), partitionable);
         if (prevElement != null) {
             // TODO maybe we can remove this check in the future
-            throw new IllegalArgumentException("The element has been added already!");
+            throw new IllegalArgumentException("The element has been added already!"); //$NON-NLS-1$
         }
 
         this.root.insert(partitionable);
@@ -55,17 +55,17 @@ public class PositionTracker<T extends Identifiable & Shapeaware> {
             final boolean removed = removedElement.getCurrentPartition().removeElement(removedElement);
             if (!removed) {
                 // TODO maybe we can remove this check in the future
-                throw new IllegalArgumentException("An element was removed which had no representation in its partition!");
+                throw new IllegalArgumentException("An element was removed which had no representation in its partition!"); //$NON-NLS-1$
             }
         }
     }
 
-    public List<T> getElementsInArea(final Rectangle area) {
+    public List<T> getElementsInArea(final AlignedRectangle area) {
         final List<T> result = new ArrayList<>();
         final List<Partitionable<T>> retrievedPartitionables = this.root.retrieve(area);
 
         retrievedPartitionables.stream() //
-                .filter(entry -> entry.getElementShape().intersect(area)) //
+                .filter(entry -> entry.getElementShape().collidesWith(area)) //
                 .forEach(filteredEntry -> result.add(filteredEntry.getElement()));
 
         return result;
@@ -83,7 +83,7 @@ public class PositionTracker<T extends Identifiable & Shapeaware> {
         return this.root.countElements();
     }
 
-    public Rectangle getRootPartitionShape() {
+    public AlignedRectangle getRootPartitionShape() {
         return this.root.getPartitionShape();
     }
 

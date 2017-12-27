@@ -20,28 +20,28 @@ package de.swoeste.demo.gen.alg.position;
 
 import java.text.MessageFormat;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 
 /**
  * @author swoeste
  */
 public final class Partitionable<T> {
 
-    private final T         element;
-    private final Rectangle elementShape;
+    private final T                element;
+    private final AlignedRectangle elementShape;
 
-    private Partition<T>    currentPartition;
+    private Partition<T>           currentPartition;
 
-    public Partitionable(final T element, final Rectangle shape) {
+    public Partitionable(final T element, final AlignedRectangle shape) {
         this.element = element;
-        this.elementShape = new Rectangle(shape);
+        this.elementShape = shape;
     }
 
     public T getElement() {
         return this.element;
     }
 
-    public Rectangle getElementShape() {
+    public AlignedRectangle getElementShape() {
         return this.elementShape;
     }
 

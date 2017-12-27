@@ -18,20 +18,28 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects the color of the tile in front of the sensor owner.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * 0 * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionCenterTileColorSensor extends AbstractTileColorVisionSensor {
-
-    private static final Logger LOG = LoggerFactory.getLogger(VisionCenterTileColorSensor.class);
 
     public VisionCenterTileColorSensor(final World world, final Creature creature) {
         super(world, creature);
@@ -41,10 +49,10 @@ public class VisionCenterTileColorSensor extends AbstractTileColorVisionSensor {
     @Override
     protected Vector getPosition(final World world, final Creature creature, final Vector position) {
         final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
-        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
 
-        final int visionSize = creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        return position.project(viewDirectionRadians, visionSize);
+        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
+        return position.project(viewDirectionRadians, viewDistance);
     }
 
 }

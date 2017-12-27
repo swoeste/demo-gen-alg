@@ -21,9 +21,9 @@ package de.swoeste.demo.gen.alg.ui.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
@@ -49,28 +49,29 @@ public class UICreature implements Selectable {
         final int bodySize = this.creature.getAttributeValue(CreatureAttribute.SIZE);
         final double x = this.creature.getAttributeValue(CreatureAttribute.POSITION_X);
         final double y = this.creature.getAttributeValue(CreatureAttribute.POSITION_Y);
-        final int orientation = this.creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int viewDirectionDegrees = this.creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int visionArcSizeDegrees = this.creature.getAttributeValue(CreatureAttribute.VIEW_ARC);
 
         // body
-        final int startAngle = orientation - 45;
+        final int startAngle = viewDirectionDegrees - (visionArcSizeDegrees / 2);
         gc.setFill(getColor());
-        gc.fillArc(x, y, bodySize, bodySize, startAngle, 270, ArcType.ROUND);
+        gc.fillArc(x, y, bodySize, bodySize, startAngle, 360 - visionArcSizeDegrees, ArcType.ROUND);
 
         // body shape
         if (this.selected) {
             gc.setStroke(COLOR_SHAPE_SELECTED);
-            gc.strokeArc(x, y, bodySize, bodySize, startAngle, 270, ArcType.ROUND);
+            gc.strokeArc(x, y, bodySize, bodySize, startAngle, 360 - visionArcSizeDegrees, ArcType.ROUND);
         } else {
             gc.setStroke(COLOR_SHAPE);
-            gc.strokeArc(x, y, bodySize, bodySize, startAngle, 270, ArcType.ROUND);
+            gc.strokeArc(x, y, bodySize, bodySize, startAngle, 360 - visionArcSizeDegrees, ArcType.ROUND);
         }
 
         // vision indicator
-        final double visionSize = this.creature.getAttributeValue(CreatureAttribute.VISION_SIZE);
-        final double visionCenterX = (x - (visionSize / 2.0)) + (bodySize / 2.0);
-        final double visionCenterY = (y - (visionSize / 2.0)) + (bodySize / 2.0);
+        final double visionDistance = this.creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
+        final double visionCenterX = (x - (visionDistance / 2.0)) + (bodySize / 2.0);
+        final double visionCenterY = (y - (visionDistance / 2.0)) + (bodySize / 2.0);
         gc.setFill(COLOR_VISION);
-        gc.fillArc(visionCenterX, visionCenterY, visionSize, visionSize, startAngle, -90, ArcType.ROUND);
+        gc.fillArc(visionCenterX, visionCenterY, visionDistance, visionDistance, startAngle, visionArcSizeDegrees * -1.0, ArcType.ROUND);
     }
 
     public Color getColor() {

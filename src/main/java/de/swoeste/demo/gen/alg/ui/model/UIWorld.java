@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import de.swoeste.demo.gen.alg.event.SimpleEvent;
 import de.swoeste.demo.gen.alg.event.SimpleEventListener;
 import de.swoeste.demo.gen.alg.event.SimpleEventType;
-import de.swoeste.demo.gen.alg.model.Rectangle;
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import de.swoeste.demo.gen.alg.ui.util.UICreatureAgeComparator;
@@ -148,7 +148,7 @@ public class UIWorld implements SimpleEventListener {
     }
 
     public UICreature getCreature(final Vector position) {
-        final Rectangle area = new Rectangle((int) position.getX(), (int) position.getY(), 0, 0);
+        final AlignedRectangle area = new AlignedRectangle((int) position.getX(), (int) position.getY(), 0, 0);
         final List<Creature> inArea = this.world.getCreaturesInArea(area);
 
         if (inArea.isEmpty()) {

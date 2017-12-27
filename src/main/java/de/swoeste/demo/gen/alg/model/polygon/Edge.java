@@ -16,26 +16,41 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.world.tile;
+package de.swoeste.demo.gen.alg.model.polygon;
 
-import de.swoeste.demo.gen.alg.model.RGBColor;
-import de.swoeste.demo.gen.alg.model.polygon.Vector;
+import java.util.List;
 
 /**
+ * An edge is a particular type of line segment joining two vertices in a polygon.
+ *
+ * <pre>
+ *            P1
+ *            *
+ *           /
+ *          /
+ *         /
+ *        /
+ *       /
+ *      *
+ *     P0
+ * </pre>
+ *
  * @author swoeste
  */
-public class WaterTile extends AbstractTile {
+public class Edge extends Polygon {
 
-    public WaterTile(final Vector position, final int size, final double height) {
-        super(position, size, height, false, false);
+    protected Edge(final List<Vector> points) {
+        super(points);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    void init() {
-        this.setAttributeValue(TileAttribute.COLOR_R, RGBColor.BLUE.getRed());
-        this.setAttributeValue(TileAttribute.COLOR_G, RGBColor.BLUE.getGreen());
-        this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.BLUE.getBlue());
+    public Edge(final Vector p0, final Vector p1) {
+        super(p0, p1);
+    }
+
+    public Vector getDirection() {
+        final Vector p0 = getPoints().get(0);
+        final Vector p1 = getPoints().get(1);
+        return p1.substract(p0);
     }
 
 }

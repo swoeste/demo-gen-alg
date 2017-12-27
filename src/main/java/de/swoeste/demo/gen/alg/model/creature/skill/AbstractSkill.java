@@ -21,9 +21,9 @@ package de.swoeste.demo.gen.alg.model.creature.skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**

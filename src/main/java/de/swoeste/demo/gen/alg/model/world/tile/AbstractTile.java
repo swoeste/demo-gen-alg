@@ -17,7 +17,7 @@ package de.swoeste.demo.gen.alg.model.world.tile;
 import java.text.MessageFormat;
 import java.util.Map;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 
 /**
  * @author swoeste
@@ -83,13 +83,6 @@ public abstract class AbstractTile implements Tile {
     @Override
     public void update() {
         // default implementation, do nothing
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public boolean hasAttributeValue(final TileAttribute attribute) {
-        // TODO remove? - we init always with all values ...
-        return this.attributes.containsKey(attribute);
     }
 
     /** {@inheritDoc} */

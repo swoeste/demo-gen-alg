@@ -28,11 +28,11 @@ import de.swoeste.demo.gen.alg.event.SimpleEvent;
 import de.swoeste.demo.gen.alg.event.SimpleEventBus;
 import de.swoeste.demo.gen.alg.event.SimpleEventListener;
 import de.swoeste.demo.gen.alg.event.SimpleEventType;
-import de.swoeste.demo.gen.alg.model.Rectangle;
-import de.swoeste.demo.gen.alg.model.Vector;
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
 import de.swoeste.demo.gen.alg.model.creature.CreatureFactory;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.tile.Tile;
 import de.swoeste.demo.gen.alg.model.world.tile.TileFactory;
 import de.swoeste.demo.gen.alg.position.PositionTracker;
@@ -103,7 +103,7 @@ public class World implements SimpleEventListener {
     }
 
     private PositionTracker<Creature> createCreaturePositionTracker() {
-        final Rectangle worldShape = new Rectangle(0, 0, this.config.getWorldWidthPixel(), this.config.getWorldHeightPixel());
+        final AlignedRectangle worldShape = new AlignedRectangle(0, 0, this.config.getWorldWidthPixel(), this.config.getWorldHeightPixel());
         return new PositionTracker<>(worldShape);
     }
 
@@ -235,11 +235,19 @@ public class World implements SimpleEventListener {
         return this.apsCalculator.getFrameRate();
     }
 
+    // TODO there is still something wrong with this method ...
     // TODO write a unit test for this !
     public Tile getTile(final Vector position) {
         final int tileX = (int) position.getX() / this.config.getTileSize();
         final int tileY = (int) position.getY() / this.config.getTileSize();
-        return this.tiles.get(tileY + (tileX * this.getWorldHeightTiles()));
+
+        int index = tileY + (tileX * this.getWorldHeightTiles());
+
+        if (index >= this.tiles.size()) {
+            throw new IllegalStateException("X: " + position.getX() + " Y: " + position.getY() + " Index: " + index + " TileSize: " + this.config.getTileSize());
+        }
+
+        return this.tiles.get(index);
     }
 
     public boolean isPositionInWorld(final Vector position) {
@@ -251,7 +259,7 @@ public class World implements SimpleEventListener {
         return this.eventBus;
     }
 
-    public List<Creature> getCreaturesInArea(final Rectangle area) {
+    public List<Creature> getCreaturesInArea(final AlignedRectangle area) {
         return this.creaturePositionTracker.getElementsInArea(area);
     }
 

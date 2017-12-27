@@ -18,8 +18,12 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
-import de.swoeste.demo.gen.alg.model.Vector;
+import java.util.List;
+
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
@@ -34,25 +38,66 @@ public abstract class AbstractCreatureVisionSensor extends AbstractVisionSensor 
     /** {@inheritDoc} */
     @Override
     protected double getSensorValue(final World world, final Creature creature, final Vector position) {
-        return 0;
-        // final Vector visionPosition = getPosition(world, creature, position);
+        final AlignedRectangle detectionShape = getDetectionShape(creature, position);
+        final List<Creature> creaturesInArea = world.getCreaturesInArea(detectionShape);
 
-        // final Rectangle detectionShape = getDetectionShape(world, creature, position);
-        //
-        // if (world.isPositionInWorld(visionPosition)) {
-        // final Tile tile = world.getTile(visionPosition);
-        // final int r = tile.getAttributeValue(TileAttribute.COLOR_R);
-        // final int g = tile.getAttributeValue(TileAttribute.COLOR_G);
-        // final int b = tile.getAttributeValue(TileAttribute.COLOR_B);
-        // final double value = getNumberRepresentation(r, g, b);
-        // // TODO logging debug?
-        // return value;
-        // } else {
-        // return 0.0;
-        // }
+        if (collidesWithCreature(creature, position, creaturesInArea)) {
+            return 1.0;
+        } else {
+            return -1.0;
+        }
     }
 
-    // protected abstract Rectangle getDetectionShape(final World world, final Creature creature, final Vector
-    // position);
+    protected AlignedRectangle getDetectionShape(final Creature creature, final Vector position) {
+        final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int viewArcDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_ARC);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
+
+        final Vector p1 = position;
+        final Vector p2 = position.project(Math.toRadians(viewDirectionDegrees + (viewArcDegrees / 2.0)), viewDistance);
+        final Vector p3 = position.project(Math.toRadians(viewDirectionDegrees), viewDistance);
+        final Vector p4 = position.project(Math.toRadians(viewDirectionDegrees - (viewArcDegrees / 2.0)), viewDistance);
+
+        final int minX = getMinX(p1, p2, p3, p4);
+        final int maxX = getMaxX(p1, p2, p3, p4);
+        final int minY = getMinY(p1, p2, p3, p4);
+        final int maxY = getMaxY(p1, p2, p3, p4);
+
+        return new AlignedRectangle(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    private int getMaxX(final Vector... points) {
+        int max = Integer.MIN_VALUE;
+        for (Vector vector : points) {
+            max = Math.max(max, (int) vector.getX());
+        }
+        return max;
+    }
+
+    private int getMinX(final Vector... points) {
+        int min = Integer.MAX_VALUE;
+        for (Vector vector : points) {
+            min = Math.min(min, (int) vector.getX());
+        }
+        return min;
+    }
+
+    private int getMaxY(final Vector... points) {
+        int max = Integer.MIN_VALUE;
+        for (Vector vector : points) {
+            max = Math.max(max, (int) vector.getY());
+        }
+        return max;
+    }
+
+    private int getMinY(final Vector... points) {
+        int min = Integer.MAX_VALUE;
+        for (Vector vector : points) {
+            min = Math.min(min, (int) vector.getY());
+        }
+        return min;
+    }
+
+    protected abstract boolean collidesWithCreature(final Creature creature, final Vector position, final List<Creature> creaturesInArea);
 
 }

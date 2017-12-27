@@ -18,16 +18,53 @@
  */
 package de.swoeste.demo.gen.alg.model.creature.sensor.vision;
 
+import java.util.List;
+
 import de.swoeste.demo.gen.alg.model.creature.Creature;
+import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
+import de.swoeste.demo.gen.alg.model.polygon.Edge;
+import de.swoeste.demo.gen.alg.model.polygon.Vector;
 import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
+ * This sensor detects other creatures in front of the sensor owner.
+ *
+ * <pre>
+ *      * * * * *
+ *      * * 0 * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * | * *
+ *      * * x * *
+ *      * * * * *
+ * </pre>
+ *
  * @author swoeste
  */
 public class VisionCenterCreatureSensor extends AbstractCreatureVisionSensor {
 
     public VisionCenterCreatureSensor(final World world, final Creature creature) {
         super(world, creature);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected boolean collidesWithCreature(final Creature creature, final Vector position, final List<Creature> creaturesInArea) {
+        final int viewDirectionDegrees = creature.getAttributeValue(CreatureAttribute.VIEW_DIRECTION);
+        final int viewDistance = creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
+
+        final double viewDirectionRadians = Math.toRadians(viewDirectionDegrees);
+        final Vector lineOfSightEndPoint = position.project(viewDirectionRadians, viewDistance);
+
+        final Edge lineOfSight = new Edge(position, lineOfSightEndPoint);
+        for (final Creature creatureInArea : creaturesInArea) {
+            if (lineOfSight.collidesWith(creatureInArea.getShape())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

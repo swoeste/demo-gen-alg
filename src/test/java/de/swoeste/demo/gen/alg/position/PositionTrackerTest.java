@@ -25,7 +25,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import de.swoeste.demo.gen.alg.model.Rectangle;
+import de.swoeste.demo.gen.alg.model.polygon.AlignedRectangle;
 
 /**
  * @author swoeste
@@ -38,12 +38,12 @@ public class PositionTrackerTest {
 
     @BeforeClass
     public void init() {
-        this.positionTracker = new PositionTracker<>(new Rectangle(0, 0, 100, 100));
+        this.positionTracker = new PositionTracker<>(new AlignedRectangle(0, 0, 100, 100));
         this.elements = new ArrayList<>();
 
         for (int i = 0; i <= 10; i++) {
             for (int j = 0; j <= 10; j++) {
-                final Rectangle shape = new Rectangle(i * 10, j * 10, 5, 5);
+                final AlignedRectangle shape = new AlignedRectangle(i * 10, j * 10, 5, 5);
                 final int id = (i * 100) + j;
                 final IdentifiableStub element = new IdentifiableStub(id, shape);
                 this.positionTracker.addElement(element);
@@ -76,13 +76,13 @@ public class PositionTrackerTest {
 
     @Test(dependsOnMethods = { "testAddElement" })
     public void testRetrieveElements() {
-        final Rectangle shape = new Rectangle(25, 25, 25, 25);
+        final AlignedRectangle shape = new AlignedRectangle(25, 25, 25, 25);
 
         final List<IdentifiableStub> retrievedElements = this.positionTracker.getElementsInArea(shape);
         for (IdentifiableStub retrievedElement : retrievedElements) {
-            final Rectangle retrievedShape = retrievedElement.getShape();
-            if (!shape.intersect(retrievedShape)) {
-                Assert.fail("Received an element which does not intersect with the requested area!"); //$NON-NLS-1$
+            final AlignedRectangle retrievedShape = retrievedElement.getShape();
+            if (!shape.collidesWith(retrievedShape)) {
+                Assert.fail("Received an element which does not collide with the requested area!"); //$NON-NLS-1$
             }
         }
 
@@ -91,19 +91,21 @@ public class PositionTrackerTest {
 
     private final class IdentifiableStub implements Identifiable, Shapeaware {
 
-        private final int       id;
-        private final Rectangle shape;
+        private final int              id;
+        private final AlignedRectangle shape;
 
-        public IdentifiableStub(final int id, final Rectangle shape) {
+        public IdentifiableStub(final int id, final AlignedRectangle shape) {
             this.id = id;
             this.shape = shape;
         }
 
+        @Override
         public int getId() {
             return this.id;
         }
 
-        public Rectangle getShape() {
+        @Override
+        public AlignedRectangle getShape() {
             return this.shape;
         }
 
