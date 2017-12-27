@@ -20,6 +20,7 @@ The basic idea of this demo implementation was to get an impression of the follo
 A rough listing of new features I want to implement in the future.
 * implementing a sensor for creatures in view
 * display the neural network in the UI
+* toggle each sensor (group) in configuration section
 
 ## Resources
 During research and implementation of the various topics I found the following resources quite useful.
@@ -48,6 +49,7 @@ During research and implementation of the various topics I found the following r
   * https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
   * http://www.java-gaming.org/index.php?topic=15566.0
   * https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
+  * http://www.phailed.me/2011/02/polygonal-collision-detection/
 
 * Fighting and Damage
   * http://www.redblobgames.com/articles/probability/damage-rolls.html
