@@ -19,10 +19,10 @@
 package de.swoeste.demo.gen.alg.ui.controller.section.model;
 
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
 /**
  * @author swoeste
@@ -30,12 +30,12 @@ import javafx.beans.property.StringProperty;
 public class UISimulationConfigurationModel {
 
     private final ObjectProperty<ActivationFunctionType> activationFunction = new SimpleObjectProperty<>();
-    private final StringProperty                         worldSeed          = new SimpleStringProperty();
-    private final StringProperty                         worldWidth         = new SimpleStringProperty();
-    private final StringProperty                         worldHeight        = new SimpleStringProperty();
-    private final StringProperty                         tileSize           = new SimpleStringProperty();
-    private final StringProperty                         creatureSeed       = new SimpleStringProperty();
-    private final StringProperty                         creatureAmount     = new SimpleStringProperty();
+    private final IntegerProperty                        worldSeed          = new SimpleIntegerProperty();
+    private final IntegerProperty                        worldWidth         = new SimpleIntegerProperty();
+    private final IntegerProperty                        worldHeight        = new SimpleIntegerProperty();
+    private final IntegerProperty                        tileSize           = new SimpleIntegerProperty();
+    private final IntegerProperty                        creatureSeed       = new SimpleIntegerProperty();
+    private final IntegerProperty                        creatureAmount     = new SimpleIntegerProperty();
 
     public ObjectProperty<ActivationFunctionType> getActivationFunction() {
         return this.activationFunction;
@@ -45,51 +45,51 @@ public class UISimulationConfigurationModel {
         return this.activationFunction.get();
     }
 
-    public StringProperty getWorldSeed() {
+    public IntegerProperty getWorldSeed() {
         return this.worldSeed;
     }
 
-    public String getWorldSeedValue() {
+    public Integer getWorldSeedValue() {
         return this.worldSeed.get();
     }
 
-    public StringProperty getWorldWidth() {
+    public IntegerProperty getWorldWidth() {
         return this.worldWidth;
     }
 
-    public String getWorldWithValue() {
+    public Integer getWorldWithValue() {
         return this.worldWidth.get();
     }
 
-    public StringProperty getWorldHeight() {
+    public IntegerProperty getWorldHeight() {
         return this.worldHeight;
     }
 
-    public String getWorldHeightValue() {
+    public Integer getWorldHeightValue() {
         return this.worldHeight.get();
     }
 
-    public StringProperty getTileSize() {
+    public IntegerProperty getTileSize() {
         return this.tileSize;
     }
 
-    public String getTileSizeValue() {
+    public Integer getTileSizeValue() {
         return this.tileSize.get();
     }
 
-    public StringProperty getCreatureSeed() {
+    public IntegerProperty getCreatureSeed() {
         return this.creatureSeed;
     }
 
-    public String getCreatureSeedValue() {
+    public Integer getCreatureSeedValue() {
         return this.creatureSeed.get();
     }
 
-    public StringProperty getCreatureAmount() {
+    public IntegerProperty getCreatureAmount() {
         return this.creatureAmount;
     }
 
-    public String getCreatureAmountValue() {
+    public Integer getCreatureAmountValue() {
         return this.creatureAmount.get();
     }
 

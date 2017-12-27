@@ -5,11 +5,13 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.SpinnerValueFactory?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 
 <TitledPane fx:id="pane" animated="false" prefWidth="300.0" text="Simulation Configuration" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="de.swoeste.demo.gen.alg.ui.controller.section.UISimulationConfigurationController">
@@ -41,24 +43,48 @@
                         <Label text="Tile Size:" GridPane.rowIndex="4" />
                         <Label text="Creature Seed:" GridPane.rowIndex="5" />
                         <Label text="Creature Amount:" GridPane.rowIndex="6" />
-                        <ComboBox fx:id="cbActivationFunction" prefWidth="150.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.halignment="CENTER"
-                            GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtWorldSeed" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                        <ComboBox fx:id="cbActivationFunction" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER"
                             GridPane.valignment="CENTER" />
                         <Button fx:id="btnWorldSeedRandom" mnemonicParsing="false" onAction="#createRandomWorldSeed" text="Random" GridPane.columnIndex="4"
                             GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtWorldWidth" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2"
-                            GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtWorldHeight" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"
-                            GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtTileSize" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4"
-                            GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtCreatureSeed" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5"
-                            GridPane.valignment="CENTER" />
                         <Button fx:id="btnCreatureSeedRandom" mnemonicParsing="false" onAction="#createRandomCreatureSeed" text="Random"
                             GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-                        <TextField fx:id="txtCreatureAmount" prefWidth="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6"
-                            GridPane.valignment="CENTER" />
+                        <Spinner fx:id="spnrWorldSeed" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="-2147483648" max="2147483647" />
+                            </valueFactory>
+                        </Spinner>
+                        <Spinner fx:id="spnrWorldWidth" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="2" max="1000" initialValue="30" />
+                            </valueFactory>
+                        </Spinner>
+                        <Spinner fx:id="spnrWorldHeight" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="2" max="1000" initialValue="20" />
+                            </valueFactory>
+                        </Spinner>
+                        <Spinner fx:id="spnrTileSize" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="10" max="1000" initialValue="20" />
+                            </valueFactory>
+                        </Spinner>
+                        <Spinner fx:id="spnrCreatureSeed" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="-2147483648" max="2147483647" />
+                            </valueFactory>
+                        </Spinner>
+                        <Spinner fx:id="spnrCreatureAmount" prefWidth="100.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6"
+                            GridPane.valignment="CENTER" editable="true">
+                            <valueFactory>
+                                <SpinnerValueFactory.IntegerSpinnerValueFactory min="0" max="1000" initialValue="20" />
+                            </valueFactory>
+                        </Spinner>
                     </children>
                     <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -22,13 +22,11 @@ import java.util.Random;
 
 import de.swoeste.demo.gen.alg.model.neural.network.activation.ActivationFunctionType;
 import de.swoeste.demo.gen.alg.ui.controller.section.model.UISimulationConfigurationModel;
-import de.swoeste.demo.gen.alg.ui.listener.AllowOnlyNumbersInRangeTextChangeListener;
-import de.swoeste.demo.gen.alg.ui.listener.AllowOnlyNumbersTextChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.Spinner;
 
 /**
  * @author swoeste
@@ -42,84 +40,69 @@ public class UISimulationConfigurationController extends AbstractUISectionContro
     private ComboBox<ActivationFunctionType>     cbActivationFunction;
 
     @FXML
-    private TextField                            txtWorldSeed;
+    private Spinner<Integer>                     spnrWorldSeed;
 
     @FXML
     private Button                               btnWorldSeedRandom;
 
     @FXML
-    private TextField                            txtWorldWidth;
+    private Spinner<Integer>                     spnrWorldWidth;
 
     @FXML
-    private TextField                            txtWorldHeight;
+    private Spinner<Integer>                     spnrWorldHeight;
 
     @FXML
-    private TextField                            txtTileSize;
+    private Spinner<Integer>                     spnrTileSize;
 
     @FXML
-    private TextField                            txtCreatureSeed;
+    private Spinner<Integer>                     spnrCreatureSeed;
 
     @FXML
     private Button                               btnCreatureSeedRandom;
 
     @FXML
-    private TextField                            txtCreatureAmount;
+    private Spinner<Integer>                     spnrCreatureAmount;
 
     public UISimulationConfigurationController() {
         this.model = getBackingBean().getSimulationConfiguration();
-        this.random = new Random(); // TODO move to backing bean?
+        this.random = new Random();
     }
 
     @FXML
     void initialize() {
-        initializeNumericTextFields();
-        initializeComboBox();
+        initializeRandomValueSpinners();
+        initializeComboBoxes();
         initializeBindings();
     }
 
-    private void initializeNumericTextFields() {
-        this.txtWorldSeed.textProperty().addListener(new AllowOnlyNumbersTextChangeListener(this.txtWorldSeed));
-        this.txtWorldSeed.setText(String.valueOf(this.random.nextInt()));
-
-        this.txtWorldWidth.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtWorldWidth, 2, 100));
-        this.txtWorldWidth.setText("20"); //$NON-NLS-1$
-
-        this.txtWorldHeight.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtWorldHeight, 2, 100));
-        this.txtWorldHeight.setText("20"); //$NON-NLS-1$
-
-        this.txtTileSize.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtTileSize, 20, 200));
-        this.txtTileSize.setText("20"); //$NON-NLS-1$
-
-        this.txtCreatureSeed.textProperty().addListener(new AllowOnlyNumbersTextChangeListener(this.txtCreatureSeed));
-        this.txtCreatureSeed.setText(String.valueOf(this.random.nextInt()));
-
-        this.txtCreatureAmount.textProperty().addListener(new AllowOnlyNumbersInRangeTextChangeListener(this.txtCreatureAmount, 0, 100));
-        this.txtCreatureAmount.setText("25"); //$NON-NLS-1$
+    private void initializeRandomValueSpinners() {
+        this.spnrCreatureSeed.getValueFactory().setValue(this.random.nextInt());
+        this.spnrWorldSeed.getValueFactory().setValue(this.random.nextInt());
     }
 
-    private void initializeComboBox() {
+    private void initializeComboBoxes() {
         this.cbActivationFunction.getItems().setAll(ActivationFunctionType.values());
         this.cbActivationFunction.setValue(ActivationFunctionType.TANH);
     }
 
     private void initializeBindings() {
         this.model.getActivationFunction().bind(this.cbActivationFunction.valueProperty());
-        this.model.getWorldSeed().bind(this.txtWorldSeed.textProperty());
-        this.model.getWorldWidth().bind(this.txtWorldWidth.textProperty());
-        this.model.getWorldHeight().bind(this.txtWorldHeight.textProperty());
-        this.model.getTileSize().bind(this.txtTileSize.textProperty());
-        this.model.getCreatureSeed().bind(this.txtCreatureSeed.textProperty());
-        this.model.getCreatureAmount().bind(this.txtCreatureAmount.textProperty());
+        this.model.getWorldSeed().bind(this.spnrWorldSeed.valueProperty());
+        this.model.getWorldWidth().bind(this.spnrWorldWidth.valueProperty());
+        this.model.getWorldHeight().bind(this.spnrWorldHeight.valueProperty());
+        this.model.getTileSize().bind(this.spnrTileSize.valueProperty());
+        this.model.getCreatureSeed().bind(this.spnrCreatureSeed.valueProperty());
+        this.model.getCreatureAmount().bind(this.spnrCreatureAmount.valueProperty());
     }
 
     @FXML
     void createRandomCreatureSeed(final ActionEvent event) {
-        this.txtCreatureSeed.setText(String.valueOf(this.random.nextInt()));
+        this.spnrCreatureSeed.getValueFactory().setValue(this.random.nextInt());
     }
 
     @FXML
     void createRandomWorldSeed(final ActionEvent event) {
-        this.txtWorldSeed.setText(String.valueOf(this.random.nextInt()));
+        this.spnrWorldSeed.getValueFactory().setValue(this.random.nextInt());
     }
 
 }
