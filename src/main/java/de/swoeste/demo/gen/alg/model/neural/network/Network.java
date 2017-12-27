@@ -18,6 +18,7 @@
  */
 package de.swoeste.demo.gen.alg.model.neural.network;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -74,7 +75,8 @@ public class Network {
 
         // create input neurons
         for (int i = 0; i < this.inputLayerSize; i++) {
-            this.inputLayer.addNeuron(new InputNeuron("Input_" + i)); //$NON-NLS-1$
+            final String neuronName = MessageFormat.format("Input_{0}", i); //$NON-NLS-1$
+            this.inputLayer.addNeuron(new InputNeuron(neuronName));
         }
 
         // create bias neuron
@@ -85,17 +87,19 @@ public class Network {
         this.hiddenLayers = new ArrayList<>();
 
         for (int i = 0; i < this.hiddenLayerSize.length; i++) {
-            final Layer layer = new Layer("Hidden_" + i); //$NON-NLS-1$
+            final String layerName = MessageFormat.format("Hidden_{0}", i); //$NON-NLS-1$
+            final Layer layer = new Layer(layerName);
 
             final int size = this.hiddenLayerSize[i];
-            Validate.isTrue(size >= 1, "Expected at least 1 hidden neuron in hidden layer " + i + "."); //$NON-NLS-1$ //$NON-NLS-2$
+            Validate.isTrue(size >= 1, MessageFormat.format("Expected at least 1 hidden neuron in hidden layer {0}.", i)); //$NON-NLS-1$
             for (int j = 0; j < size; j++) {
-                final String name = "Hidden_" + i + "_" + j; //$NON-NLS-1$ //$NON-NLS-2$
+                final String name = MessageFormat.format("Hidden_{0}_{1}", i, j); //$NON-NLS-1$
                 layer.addNeuron(new Neuron(name, this.activationFunction));
             }
 
             // create bias
-            layer.addNeuron(new BiasNeuron("Hidden_" + i + "_Bias")); //$NON-NLS-1$ //$NON-NLS-2$
+            final String biasName = MessageFormat.format("Hidden_{0}_Bias", i); //$NON-NLS-1$
+            layer.addNeuron(new BiasNeuron(biasName));
 
             this.hiddenLayers.add(layer);
         }
@@ -108,7 +112,7 @@ public class Network {
 
         // create output neurons
         for (int i = 0; i < this.outputLayerSize; i++) {
-            final String name = "Output_" + i;
+            final String name = MessageFormat.format("Output_{0}", i); //$NON-NLS-1$
             this.outputLayer.addNeuron(new Neuron(name, this.activationFunction));
         }
     }
