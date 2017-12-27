@@ -59,6 +59,10 @@ public class VisionCenterCreatureSensor extends AbstractCreatureVisionSensor {
 
         final Edge lineOfSight = new Edge(position, lineOfSightEndPoint);
         for (final Creature creatureInArea : creaturesInArea) {
+            if (creature.equals(creatureInArea)) {
+                // the creature should not collide with itself
+                continue;
+            }
             if (lineOfSight.collidesWith(creatureInArea.getShape())) {
                 return true;
             }

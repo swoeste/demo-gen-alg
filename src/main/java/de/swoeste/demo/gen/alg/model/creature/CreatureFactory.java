@@ -39,12 +39,16 @@ import de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill.MoveRecep
 import de.swoeste.demo.gen.alg.model.creature.sensor.HealthSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.HungerSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.Sensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCenterCreatureSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCenterTileColorSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCenterTileFoodSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCurrentCreatureSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCurrentTileColorSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionCurrentTileFoodSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionLeftCreatureSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionLeftTileColorSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionLeftTileFoodSensor;
+import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionRightCreatureSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionRightTileColorSensor;
 import de.swoeste.demo.gen.alg.model.creature.sensor.vision.VisionRightTileFoodSensor;
 import de.swoeste.demo.gen.alg.model.creature.skill.EatingSkill;
@@ -175,6 +179,11 @@ public class CreatureFactory {
         sensors.add(new VisionCenterTileFoodSensor(world, creature));
         sensors.add(new VisionLeftTileFoodSensor(world, creature));
         sensors.add(new VisionRightTileFoodSensor(world, creature));
+
+        sensors.add(new VisionCurrentCreatureSensor(world, creature));
+        sensors.add(new VisionCenterCreatureSensor(world, creature));
+        sensors.add(new VisionLeftCreatureSensor(world, creature));
+        sensors.add(new VisionRightCreatureSensor(world, creature));
 
         return sensors;
     }

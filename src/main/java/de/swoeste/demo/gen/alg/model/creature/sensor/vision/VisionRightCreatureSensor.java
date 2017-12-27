@@ -64,6 +64,10 @@ public class VisionRightCreatureSensor extends AbstractCreatureVisionSensor {
         final Triangle rightViewArea = new Triangle(position, centerLineOfSightEndPoint, rightLineOfSightEndPoint);
 
         for (final Creature creatureInArea : creaturesInArea) {
+            if (creature.equals(creatureInArea)) {
+                // the creature should not collide with itself
+                continue;
+            }
             if (rightViewArea.collidesWith(creatureInArea.getShape())) {
                 return true;
             }

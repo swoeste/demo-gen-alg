@@ -61,6 +61,10 @@ public class VisionCurrentCreatureSensor extends AbstractCreatureVisionSensor {
         final AlignedRectangle creatureShape = creature.getShape();
 
         for (Creature creatureInArea : creaturesInArea) {
+            if (creature.equals(creatureInArea)) {
+                // the creature should not collide with itself
+                continue;
+            }
             final AlignedRectangle creatureInAreaShape = creatureInArea.getShape();
             if (creatureShape.collidesWith(creatureInAreaShape)) {
                 return true;

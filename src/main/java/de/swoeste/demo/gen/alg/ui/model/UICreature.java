@@ -68,10 +68,10 @@ public class UICreature implements Selectable {
 
         // vision indicator
         final double visionDistance = this.creature.getAttributeValue(CreatureAttribute.VIEW_DISTANCE);
-        final double visionCenterX = (x - (visionDistance / 2.0)) + (bodySize / 2.0);
-        final double visionCenterY = (y - (visionDistance / 2.0)) + (bodySize / 2.0);
+        final double visionCenterX = (x - (visionDistance)) + (bodySize / 2.0);
+        final double visionCenterY = (y - (visionDistance)) + (bodySize / 2.0);
         gc.setFill(COLOR_VISION);
-        gc.fillArc(visionCenterX, visionCenterY, visionDistance, visionDistance, startAngle, visionArcSizeDegrees * -1.0, ArcType.ROUND);
+        gc.fillArc(visionCenterX, visionCenterY, visionDistance * 2, visionDistance * 2, startAngle, visionArcSizeDegrees * -1.0, ArcType.ROUND);
     }
 
     public Color getColor() {
