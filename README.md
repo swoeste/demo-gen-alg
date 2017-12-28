@@ -6,6 +6,7 @@
 ## Basic Idea
 The basic idea of this demo implementation was to get an impression of the following topics, most of them are actually used in the current implementation.
 
+* JavaFX
 * Genetic Algorithms
 * Crossover Algorithm
 * Neural Networks
@@ -13,7 +14,8 @@ The basic idea of this demo implementation was to get an impression of the follo
 * Procedural World Generation
 * Vectors and Movement in 2D
 * Collision Detection
-* Barycentric Technique
+  * Barycentric Technique
+  * Separating Axis Theorem
 * Color Perception
 
 ## Next Steps
@@ -25,10 +27,14 @@ A rough listing of new features I want to implement in the future.
 ## Resources
 During research and implementation of the various topics I found the following resources quite useful.
 
+* JavaFX
+  * http://code.makery.ch/library/javafx-8-tutorial/part3/
+
 * Genetic Algorithms
-   * https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_crossover.htm
+  * https://www.tutorialspoint.com/genetic_algorithms/genetic_algorithms_crossover.htm
 
 * Neural Networks
+  * https://www.youtube.com/watch?v=9sRIOMm4mvw
 
 * Noise Generation
   * https://www.redblobgames.com/articles/noise/introduction.html
