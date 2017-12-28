@@ -16,43 +16,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package de.swoeste.demo.gen.alg.model.creature.skill;
+package de.swoeste.demo.gen.alg.model.creature.receptor.attribute.skill;
 
 import de.swoeste.demo.gen.alg.model.creature.Creature;
 import de.swoeste.demo.gen.alg.model.creature.CreatureAttribute;
-import de.swoeste.demo.gen.alg.model.world.World;
 
 /**
  * @author swoeste
  */
-public class ReproduceSkill extends AbstractSkill {
+public class ReproduceReceptor extends AbstractSkillActivationAttributeReceptor {
 
-    /**
-     * Constructor for a new ReproduceSkill.
-     *
-     * @param world
-     * @param creature
-     * @param activator
-     */
-    public ReproduceSkill(final World world, final Creature creature, final CreatureAttribute activator) {
-        super(world, creature, activator);
-        // TODO Auto-generated constructor stub
+    public ReproduceReceptor(final Creature creature) {
+        super(creature, CreatureAttribute.REPRODUCE);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doPerform(final World world, final Creature creature) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doNotPerform(final World world, final Creature creature) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // TODO implement
 
 }
