@@ -27,7 +27,7 @@ public enum TileAttribute {
 
     COLOR_R(0), COLOR_G(0), COLOR_B(0),//
 
-    FOOD(0), MAX_FOOD(200); //
+    FOOD(0), MAX_FOOD(0); //
 
     private final int defaultValue;
 

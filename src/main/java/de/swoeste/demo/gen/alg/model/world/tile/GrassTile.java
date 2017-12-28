@@ -38,7 +38,9 @@ public class GrassTile extends AbstractTile {
         this.setAttributeValue(TileAttribute.COLOR_B, RGBColor.GREEN.getBlue());
 
         this.setAttributeValue(TileAttribute.STEP_COST, 1);
-        this.setAttributeValue(TileAttribute.FOOD, TileAttribute.MAX_FOOD.getDefaultValue());
+
+        this.setAttributeValue(TileAttribute.MAX_FOOD, 200);
+        this.setAttributeValue(TileAttribute.FOOD, 200);
     }
 
     /** {@inheritDoc} */
