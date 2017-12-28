@@ -49,6 +49,10 @@ public class UITile implements Selectable {
         return this.tile.getSize();
     }
 
+    public String getName() {
+        return this.tile.getClass().getSimpleName();
+    }
+
     public Color getColor() {
         final int r = this.tile.getAttributeValue(TileAttribute.COLOR_R);
         final int g = this.tile.getAttributeValue(TileAttribute.COLOR_G);

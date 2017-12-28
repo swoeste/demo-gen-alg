@@ -53,6 +53,7 @@ public class GenAlgApplication extends Application {
             // Load root layout from fxml file.
             final FXMLLoader loader = new FXMLLoader();
             loader.setLocation(GenAlgApplication.class.getResource("view/root.fxml")); //$NON-NLS-1$
+
             final Parent root = loader.load();
 
             final Scene scene = new Scene(root);
