@@ -83,8 +83,8 @@ public class MoveSkill extends AbstractSkill {
 
     private void setPosition(final World world, final Creature creature, final Vector position) {
         // ensure that we don't "round" out of the world at the world edges
-        final int x = Math.min(NumberUtil.round(position.getX()), world.getWorldWidthPixel() - 1);
-        final int y = Math.min(NumberUtil.round(position.getY()), world.getWorldWidthPixel() - 1);
+        final int x = NumberUtil.getValueInRange(NumberUtil.round(position.getX()), 0, world.getWorldWidthPixel() - 1);
+        final int y = NumberUtil.getValueInRange(NumberUtil.round(position.getY()), 0, world.getWorldHeightPixel() - 1);
 
         creature.setAttributeValue(CreatureAttribute.POSITION_X, x);
         creature.setAttributeValue(CreatureAttribute.POSITION_Y, y);
