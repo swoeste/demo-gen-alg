@@ -42,6 +42,7 @@ public class AbstractUISectionController {
         return this.backingBean;
     }
 
+    // TODO (RE)MOVE?
     protected void bindTooltipValueToSliderValue(final Tooltip aTooltip, final Slider aSlider) {
         aTooltip.textProperty().bindBidirectional(aSlider.valueProperty(), new StringToIntegerConverter());
     }

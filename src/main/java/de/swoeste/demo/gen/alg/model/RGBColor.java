@@ -81,10 +81,7 @@ public class RGBColor {
         if (this.g != other.g) {
             return false;
         }
-        if (this.r != other.r) {
-            return false;
-        }
-        return true;
+        return this.r == other.r;
     }
 
     /** {@inheritDoc} */
