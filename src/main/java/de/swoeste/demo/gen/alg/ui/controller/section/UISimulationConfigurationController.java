@@ -27,6 +27,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextFormatter;
 
 /**
  * @author swoeste
@@ -73,6 +75,7 @@ public class UISimulationConfigurationController extends AbstractUISectionContro
         initializeRandomValueSpinners();
         initializeComboBoxes();
         initializeBindings();
+        enableCommitOnFocusLost();
     }
 
     private void initializeRandomValueSpinners() {
@@ -93,6 +96,25 @@ public class UISimulationConfigurationController extends AbstractUISectionContro
         this.model.getTileSize().bind(this.spnrTileSize.valueProperty());
         this.model.getCreatureSeed().bind(this.spnrCreatureSeed.valueProperty());
         this.model.getCreatureAmount().bind(this.spnrCreatureAmount.valueProperty());
+    }
+
+    private void enableCommitOnFocusLost() {
+        enableCommitOnFocusLost(this.spnrWorldSeed);
+        enableCommitOnFocusLost(this.spnrWorldWidth);
+        enableCommitOnFocusLost(this.spnrWorldHeight);
+        enableCommitOnFocusLost(this.spnrTileSize);
+        enableCommitOnFocusLost(this.spnrCreatureSeed);
+        enableCommitOnFocusLost(this.spnrCreatureAmount);
+    }
+
+    private void enableCommitOnFocusLost(final Spinner<Integer> spinner) {
+        // use factory from spinner
+        final SpinnerValueFactory<Integer> factory = spinner.getValueFactory();
+        // create a new text formatter
+        final TextFormatter<Integer> formatter = new TextFormatter<>(factory.getConverter(), factory.getValue());
+        spinner.getEditor().setTextFormatter(formatter);
+        // bidirectional bind property values
+        factory.valueProperty().bindBidirectional(formatter.valueProperty());
     }
 
     @FXML
