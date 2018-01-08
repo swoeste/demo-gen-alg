@@ -42,7 +42,7 @@ public class Connection {
         return this.weight;
     }
 
-    public void setWeight(final double weight) {
+    protected void setWeight(final double weight) {
         this.weight = weight;
     }
 

@@ -96,6 +96,10 @@ public class Creature implements Identifiable, Shapeaware {
         return this.lastname;
     }
 
+    public Network getNetwork() {
+        return this.network;
+    }
+
     @Override
     public AlignedRectangle getShape() {
         final int posX = getAttributeValue(CreatureAttribute.POSITION_X);

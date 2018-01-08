@@ -29,7 +29,7 @@ public class InputNeuron extends Neuron {
         super(name, null);
     }
 
-    public void setInputValue(final double value) {
+    protected void setInputValue(final double value) {
         this.value = value;
     }
 

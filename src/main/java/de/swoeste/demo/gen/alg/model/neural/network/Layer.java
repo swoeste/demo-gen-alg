@@ -39,7 +39,7 @@ public class Layer {
         return this.name;
     }
 
-    public void addNeuron(final Neuron neuron) {
+    protected void addNeuron(final Neuron neuron) {
         this.neurons.add(neuron);
     }
 

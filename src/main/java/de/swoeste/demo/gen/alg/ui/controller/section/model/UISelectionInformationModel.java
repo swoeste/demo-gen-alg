@@ -18,8 +18,11 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section.model;
 
+import de.swoeste.demo.gen.alg.ui.model.Selectable;
 import de.swoeste.demo.gen.alg.ui.model.UIProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -29,21 +32,32 @@ import javafx.collections.FXCollections;
  */
 public class UISelectionInformationModel {
 
-    private final StringProperty                 selection  = new SimpleStringProperty();
+    private final ObjectProperty<Selectable>     selection  = new SimpleObjectProperty<>();
+
+    private final StringProperty                 name       = new SimpleStringProperty();
     private final StringProperty                 positionX  = new SimpleStringProperty();
     private final StringProperty                 positionY  = new SimpleStringProperty();
+
     private final SimpleListProperty<UIProperty> properties = new SimpleListProperty<>();
 
     public UISelectionInformationModel() {
         this.properties.set(FXCollections.observableArrayList());
     }
 
-    public StringProperty getSelection() {
+    public ObjectProperty<Selectable> getSelection() {
         return this.selection;
     }
 
-    public void setSelection(final String value) {
+    public void setSelection(final Selectable value) {
         this.selection.set(value);
+    }
+
+    public StringProperty getName() {
+        return this.name;
+    }
+
+    public void setName(final String value) {
+        this.name.set(value);
     }
 
     public StringProperty getPositionX() {

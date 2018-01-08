@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.swoeste.demo.gen.alg.ui.controller.dialog.UICreatureNetworkDialogController">
+    <center>
+        <ScrollPane fx:id="networkPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <content>
+                <Canvas fx:id="networkCanvas" height="50.0" width="50.0" />
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

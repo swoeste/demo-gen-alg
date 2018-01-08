@@ -43,7 +43,7 @@ public class UIBackingBean {
 
     private static final UIBackingBean           INSTANCE       = new UIBackingBean();
     private static final DecimalFormat           DECIMAL_FORMAT = new DecimalFormat("#.##"); //$NON-NLS-1$
-    private static final DecimalFormat           INTEGER_FORMAT = new DecimalFormat("#");                                                                                                    //$NON-NLS-1$
+    private static final DecimalFormat           INTEGER_FORMAT = new DecimalFormat("#");                                                                                                                   //$NON-NLS-1$
 
     private final UIWorldModel                   control;
     private final UICreatureHistoryModel         creatureHistory;
@@ -181,7 +181,8 @@ public class UIBackingBean {
         if (creature != null) {
             this.selection = creature;
             this.selection.setSelected(true);
-            this.selectionInformation.setSelection(String.valueOf(creature));
+            this.selectionInformation.setSelection(this.selection);
+            this.selectionInformation.setName(creature.getName());
             this.selectionInformation.setPositionX(String.valueOf(creature.getPosition().getX()));
             this.selectionInformation.setPositionY(String.valueOf(creature.getPosition().getY()));
             this.selectionInformation.getProperties().setAll(creature.getProperties());
@@ -191,12 +192,15 @@ public class UIBackingBean {
         if (tile != null) {
             this.selection = tile;
             this.selection.setSelected(true);
-            this.selectionInformation.setSelection(String.valueOf(tile));
+            this.selectionInformation.setSelection(this.selection);
+            this.selectionInformation.setName(tile.getName());
             this.selectionInformation.setPositionX(String.valueOf(tile.getPosition().getX()));
             this.selectionInformation.setPositionY(String.valueOf(tile.getPosition().getY()));
             return;
         }
     }
+
+    // TODO duplicated code ...
 
     private void updateSelectionInformation() {
         if (this.selection == null) {
@@ -205,7 +209,8 @@ public class UIBackingBean {
 
         if (this.selection instanceof UICreature) {
             final UICreature creature = (UICreature) this.selection;
-            this.selectionInformation.setSelection(creature.getName());
+            this.selectionInformation.setSelection(this.selection);
+            this.selectionInformation.setName(creature.getName());
             this.selectionInformation.setPositionX(String.valueOf(creature.getPosition().getX()));
             this.selectionInformation.setPositionY(String.valueOf(creature.getPosition().getY()));
             this.selectionInformation.getProperties().setAll(creature.getProperties());
@@ -214,7 +219,8 @@ public class UIBackingBean {
 
         if (this.selection instanceof UITile) {
             final UITile tile = (UITile) this.selection;
-            this.selectionInformation.setSelection(tile.getName());
+            this.selectionInformation.setSelection(this.selection);
+            this.selectionInformation.setName(tile.getName());
             this.selectionInformation.setPositionX(String.valueOf(tile.getPosition().getX()));
             this.selectionInformation.setPositionY(String.valueOf(tile.getPosition().getY()));
             this.selectionInformation.getProperties().setAll(tile.getProperties());

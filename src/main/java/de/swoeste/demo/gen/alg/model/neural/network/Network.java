@@ -68,6 +68,14 @@ public class Network {
         return this.activationFunction;
     }
 
+    public List<Layer> getAllLayer() {
+        final List<Layer> allLayers = new ArrayList<>();
+        allLayers.add(this.inputLayer);
+        allLayers.addAll(this.hiddenLayers);
+        allLayers.add(this.outputLayer);
+        return allLayers;
+    }
+
     private void createInputLayer() {
         Validate.isTrue(this.inputLayerSize >= 1, "Expected at least 1 input neuron."); //$NON-NLS-1$
 

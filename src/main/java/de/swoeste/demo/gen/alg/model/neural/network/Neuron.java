@@ -20,6 +20,7 @@ package de.swoeste.demo.gen.alg.model.neural.network;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class Neuron {
     private final List<Connection>   connectionsIn  = new ArrayList<>();
     private final List<Connection>   connectionsOut = new ArrayList<>();
 
-    private final String             name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               // ?
+    private final String             name;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 // ?
     private final ActivationFunction activationFunction;
 
     public Neuron(final String name, final ActivationFunction activationFunction) {
@@ -49,7 +50,7 @@ public class Neuron {
         return this.name;
     }
 
-    public Connection connect(final Neuron target, final double weight) {
+    protected Connection connect(final Neuron target, final double weight) {
         LOG.debug("[{}] connecting with {}", this, target); //$NON-NLS-1$
         final Connection connection = new Connection(this, target, weight);
         this.connectionsOut.add(connection);
@@ -77,12 +78,12 @@ public class Neuron {
         return this.activationFunction.apply(sum);
     }
 
-    List<Connection> getConnectionsIn() {
-        return this.connectionsIn;
+    public List<Connection> getConnectionsIn() {
+        return Collections.unmodifiableList(this.connectionsIn);
     }
 
-    List<Connection> getConnectionsOut() {
-        return this.connectionsOut;
+    public List<Connection> getConnectionsOut() {
+        return Collections.unmodifiableList(this.connectionsOut);
     }
 
     @Override

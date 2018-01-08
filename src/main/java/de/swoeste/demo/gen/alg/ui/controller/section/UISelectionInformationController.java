@@ -14,11 +14,19 @@
  */
 package de.swoeste.demo.gen.alg.ui.controller.section;
 
+import de.swoeste.demo.gen.alg.ui.controller.dialog.UICreatureNetworkDialogController;
 import de.swoeste.demo.gen.alg.ui.controller.section.model.UISelectionInformationModel;
+import de.swoeste.demo.gen.alg.ui.model.Selectable;
+import de.swoeste.demo.gen.alg.ui.model.UICreature;
 import de.swoeste.demo.gen.alg.ui.model.UIProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.stage.Window;
 
 /**
  * @author swoeste
@@ -28,16 +36,19 @@ public class UISelectionInformationController extends AbstractUISectionControlle
     private final UISelectionInformationModel model;
 
     @FXML
-    private Label                        lblSelection;
+    private Label                             lblName;
 
     @FXML
-    private Label                        lblPositionX;
+    private Label                             lblPositionX;
 
     @FXML
-    private Label                        lblPositionY;
+    private Label                             lblPositionY;
 
     @FXML
-    private TableView<UIProperty>        tblProperties;
+    private Button                            btnDetails;
+
+    @FXML
+    private TableView<UIProperty>             tblProperties;
 
     public UISelectionInformationController() {
         this.model = getBackingBean().getSelectionInformation();
@@ -45,14 +56,45 @@ public class UISelectionInformationController extends AbstractUISectionControlle
 
     @FXML
     void initialize() {
+        this.btnDetails.setDisable(true);
+
+        initializeListeners();
         initializeBindings();
     }
 
+    private void initializeListeners() {
+        this.model.getSelection().addListener(new ChangeListenerImplementation());
+    }
+
     private void initializeBindings() {
-        this.lblSelection.textProperty().bind(this.model.getSelection());
+        this.lblName.textProperty().bind(this.model.getName());
         this.lblPositionX.textProperty().bind(this.model.getPositionX());
         this.lblPositionY.textProperty().bind(this.model.getPositionY());
         this.tblProperties.itemsProperty().bind(this.model.getProperties());
+    }
+
+    @FXML
+    void showDetails(final ActionEvent event) {
+        final Window owner = this.btnDetails.getScene().getWindow();
+        final Selectable selectable = this.model.getSelection().get();
+
+        if (selectable instanceof UICreature) {
+            UICreatureNetworkDialogController.show(owner, (UICreature) selectable);
+        }
+    }
+
+    /**
+     * @author swoeste
+     */
+    private final class ChangeListenerImplementation implements ChangeListener<Selectable> {
+        @Override
+        public void changed(final ObservableValue<? extends Selectable> observable, final Selectable oldValue, final Selectable newValue) {
+            if (newValue instanceof UICreature) {
+                UISelectionInformationController.this.btnDetails.setDisable(false);
+            } else {
+                UISelectionInformationController.this.btnDetails.setDisable(true);
+            }
+        }
     }
 
 }

@@ -99,6 +99,10 @@ public class UICreature implements Selectable {
         return this.creature.getLastname() + ", " + this.creature.getName(); //$NON-NLS-1$
     }
 
+    public UINetwork getNetwork() {
+        return new UINetwork(this.creature.getNetwork());
+    }
+
     public List<UIProperty> getProperties() {
         final List<UIProperty> result = new ArrayList<>();
 
