@@ -128,7 +128,8 @@ public class CreatureFactory {
 
     private Network createNetwork(final int sensors, final int receptors) {
         final int[] hidden = { sensors + 1, receptors + 1 };
-        return new Network(sensors, hidden, receptors, this.seed, this.activationFunction);
+        final int networkSeed = this.random.nextInt();
+        return new Network(sensors, hidden, receptors, networkSeed, this.activationFunction);
     }
 
     private List<Skill> createSkills(final World world, final Creature creature) {
