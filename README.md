@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/swoeste/demo-gen-alg.svg?branch=master)](https://travis-ci.org/swoeste/demo-gen-alg)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=de.swoeste.demo:demo-gen-alg)](https://sonarcloud.io/dashboard/index/de.swoeste.demo:demo-gen-alg)
 
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=de.swoeste.demo:demo-gen-alg&metric=alert_status)](https://sonarcloud.io/dashboard?id=de.swoeste.demo:demo-gen-alg)
+
 ## Basic Idea
 The basic idea of this demo implementation was to get an impression of the following topics, most of them are actually used in the current implementation.
 
